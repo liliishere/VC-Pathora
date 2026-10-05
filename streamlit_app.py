@@ -259,7 +259,10 @@ def guest_chat():
     left = 5 - sum(1 for m in ss.guest_chat if m["role"] == "user")
     for m in ss.guest_chat:
         with st.chat_message(m["role"], avatar="🧳" if m["role"] == "user" else "🌿"):
-            st.markdown(m["content"]) if m["role"] == "user" else render_answer(m["content"], key=f"g{id(m)}", can_add=False)
+            if m["role"] == "user":
+                st.markdown(m["content"])
+            else:
+                render_answer(m["content"], key=f"g{id(m)}", can_add=False)
     q = st.chat_input("Ask about places, times or food…", disabled=left <= 0, key="guest_in")
     if q:
         with Conn() as con:
@@ -476,7 +479,10 @@ def t_ask():
             if cols[i].button(s, key=f"sg{i}", width="stretch"): ask_traveler(s, trip); st.rerun()
     for i, m in enumerate(ss.chat):
         with st.chat_message(m["role"], avatar="🧳" if m["role"] == "user" else "🌿"):
-            st.markdown(m["content"]) if m["role"] == "user" else render_answer(m["content"], key=str(i), trip=trip)
+            if m["role"] == "user":
+                st.markdown(m["content"])
+            else:
+                render_answer(m["content"], key=str(i), trip=trip)
     q = st.chat_input("Ask about places, times or food…", disabled=(left is not None and left <= 0))
     if q: ask_traveler(q, trip); st.rerun()
 
