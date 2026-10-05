@@ -93,56 +93,165 @@ def login(email, pw):
 
 def logout():
     for k in ("user", "trip_id", "day", "sel_rate", "page"): ss[k] = None
+    ss.public = "landing"
     ss.chat = []; ss.bchat = []
 
-# ================================================================= PUBLIC: landing / login / sign up / guest
+# ================================================================= PUBLIC: landing → auth
+ss.setdefault("public", "landing")      # "landing" or "auth"
+ss.setdefault("auth_tab", "Log in")
+
+def go_auth(tab):
+    ss.public = "auth"; ss.auth_tab = tab
+
+def demo_row():
+    st.markdown('<p class="muted" style="margin:0 0 6px 0">Presenting? Jump straight into the demo:</p>', unsafe_allow_html=True)
+    c1, c2, c3 = st.columns(3)
+    if c1.button("🧳 Traveler (Maya)", width="stretch", key="d1"): login("maya@demo.id", "demo1234"); st.rerun()
+    if c2.button("🏨 Hotel (Ratna)", width="stretch", key="d2"): login("ratna@demo.id", "demo1234"); st.rerun()
+    if c3.button("🛠 Admin", width="stretch", key="d3"): login("admin@demo.id", "demo1234"); st.rerun()
+
+HOTEL_CARD = """<div class="hero" style="background:#FFFDF6;border:1px solid rgba(81,50,41,.14);padding:28px;margin-top:2.5rem"><small class="muted">This week's suggestion</small>
+<div class="serif" style="font-size:1.5rem;margin:6px 0 12px 0">Raise Saturday 10 Oct by 8%</div><span class="pill p-mid">Demand 12% above normal</span>
+<p class="muted" style="margin-top:12px">Based on weather, local events and what travelers near you are asking.</p></div>"""
+
+HOTEL_TEXT = """<div class="hero" style="background:#FCE6B7;padding:40px;margin-top:2.5rem"><h2 style="font-size:2.3rem">Run a hotel in Bali?</h2>
+<p style="font-size:1.05rem;color:#5E4238">See what travelers near you are asking for, get a 14-day demand forecast, and set the right price for each night. Try everything free for 14 days.</p></div>"""
+
+HERO_DEMO = """<div class="hero" style="background:#D8EBF9;padding:26px">
+<div style="background:#FFFDF6;border-radius:18px 18px 6px 18px;padding:12px 16px;margin-left:15%;margin-bottom:14px">A quiet waterfall near Ubud on Saturday?</div>
+<div style="background:#FFFDF6;border-radius:18px;padding:20px 22px">
+<div class="serif" style="font-size:1.35rem">Tibumana Waterfall, before 11:00</div>
+<div style="margin-top:10px"><span class="pill p-quiet">Quiet in the morning</span><span class="pill p-line">18 min from Ubud</span><span class="pill p-local">Family warung nearby</span></div>
+<p class="muted" style="margin-top:12px;border-top:1px solid rgba(81,50,41,.14);padding-top:12px"><b style="color:#513229">Why this place:</b> locals rate it highly, it rarely gets crowded before 11:00, and Saturday looks dry.</p>
+</div></div>"""
+
 def page_public():
-    st.markdown('<div class="serif" style="font-size:1.3rem;font-weight:600">🌿 Tourism Intelligence</div>', unsafe_allow_html=True)
+    if ss.public == "auth": page_auth(); return
+    # ---- top bar
+    a, b, c, d = st.columns([3, 3.2, 1, 1.4])
+    a.markdown('<div class="serif" style="font-size:1.35rem;font-weight:600;padding-top:6px">🌿 Tourism Intelligence</div>', unsafe_allow_html=True)
+    b.markdown('<div style="padding-top:10px;color:#7A5E55"><a href="#how" style="color:inherit;text-decoration:none;margin-right:26px">How it works</a>'
+               '<a href="#hotels" style="color:inherit;text-decoration:none;margin-right:26px">For hotels</a>'
+               '<a href="#pricing" style="color:inherit;text-decoration:none">Pricing</a></div>', unsafe_allow_html=True)
+    if c.button("Log in", key="top_login"): go_auth("Log in"); st.rerun()
+    if d.button("Get started", type="primary", key="top_start"): go_auth("Sign up"); st.rerun()
+
+    # ---- hero
+    st.write("")
     left, right = st.columns([1.15, 1], gap="large")
     with left:
-        st.markdown('<h1 style="font-size:3.4rem;line-height:1.02;margin-top:1.2rem">Plan a quieter, better trip to Bali.</h1>', unsafe_allow_html=True)
-        st.markdown('<p class="muted" style="font-size:1.15rem">Ask our AI where to go and when. It finds places worth visiting — not just the viral ones — and tells you when they\'re quiet. Hotels see what travelers want and price each night better.</p>', unsafe_allow_html=True)
-        st.write("")
-        st.markdown("**Try the demo in one click**")
-        c1, c2, c3 = st.columns(3)
-        if c1.button("🧳 Traveler (Maya)", width="stretch", type="primary"): login("maya@demo.id", "demo1234"); st.rerun()
-        if c2.button("🏨 Hotel (Ratna)", width="stretch"): login("ratna@demo.id", "demo1234"); st.rerun()
-        if c3.button("🛠 Admin", width="stretch"): login("admin@demo.id", "demo1234"); st.rerun()
-        st.write("")
-        with st.container(border=True):
-            st.markdown("#### How we choose places")
-            a, b = st.columns(2); c, d = st.columns(2)
-            a.markdown(f'{pill("quiet","Quiet at your time")}<br><span class="muted">Crowd patterns by hour</span>', unsafe_allow_html=True)
-            b.markdown(f'{pill("mid","Worth the trip")}<br><span class="muted">Checked by our team</span>', unsafe_allow_html=True)
-            c.markdown(f'{pill("line","Easy to reach")}<br><span class="muted">Real travel time</span>', unsafe_allow_html=True)
-            d.markdown(f'{pill("local","Good for locals")}<br><span class="muted">Local businesses nearby</span>', unsafe_allow_html=True)
-            st.caption("We never rank by how viral a place is, and businesses can't pay to appear.")
+        st.markdown('<h1 style="font-size:3.6rem;line-height:1.02;margin-top:1.2rem">Plan a quieter, better trip to Bali.</h1>', unsafe_allow_html=True)
+        st.markdown("<p class='muted' style='font-size:1.2rem'>Ask our AI where to go and when. It finds places worth visiting, not just the viral ones, and tells you when they're quiet.</p>", unsafe_allow_html=True)
+        x, y = st.columns(2)
+        if x.button("Start planning, free", type="primary", width="stretch", key="h1"): go_auth("Sign up"); st.rerun()
+        if y.button("Try without an account", width="stretch", key="h2"): go_auth("Try without an account"); st.rerun()
+        st.caption("Free to use. No card needed.")
     with right:
-        tab1, tab2, tab3 = st.tabs(["Log in", "Sign up", "Try without an account"])
-        with tab1:
+        st.markdown(HERO_DEMO, unsafe_allow_html=True)
+
+    # ---- how it works
+    st.markdown('<div id="how"></div><h2 style="text-align:center;font-size:2.6rem;margin-top:3.5rem">How it works</h2>'
+                '<p class="muted" style="text-align:center;font-size:1.1rem;margin-bottom:1.5rem">Three steps, from first question to a full plan.</p>', unsafe_allow_html=True)
+    cols = st.columns(3, gap="medium")
+    steps = [("1", "Ask", "Ask anything about Bali, the way you'd ask a local friend.", "#D8EBF9", "“Where can we see rice terraces without the crowds?”"),
+             ("2", "Plan your days", "Add the answers to your trip and arrange them day by day.", "#FCE6B7", "Sat 10 · 08:00 Tibumana · 10:00 Warung breakfast"),
+             ("3", "Go together", "Invite friends, see the total cost and split it fairly.", "#D7D4B1", "Total Rp12,3 jt · Rp6,1 jt each")]
+    for col, (n, t, d_, bg, ex) in zip(cols, steps):
+        with col.container(border=True):
+            st.markdown(f'<div class="serif" style="width:40px;height:40px;border-radius:50%;background:#513229;color:#F4F1E2;display:flex;align-items:center;justify-content:center">{n}</div>'
+                        f'<h3 style="margin-top:14px">{t}</h3><p class="muted">{d_}</p>'
+                        f'<div style="background:{bg};border-radius:14px;padding:12px 14px;font-size:.92rem">{ex}</div>', unsafe_allow_html=True)
+
+    # ---- how we choose places (dark band)
+    crit = [("#D8EBF9", "Quiet at your time", "Crowd patterns by hour and day, so you go when it's calm."),
+            ("#FCE6B7", "Worth the trip", "Places our team has checked and locals rate highly."),
+            ("#D7D4B1", "Easy to reach", "Real travel time from where you're staying."),
+            ("#F4F1E2", "Good for locals", "Family-run warungs and workshops nearby.")]
+    cards = "".join(f'<div style="flex:1;min-width:200px;border:1px solid rgba(244,241,226,.2);border-radius:20px;padding:22px">'
+                    f'<div style="width:40px;height:7px;border-radius:9px;background:{c_};margin-bottom:18px"></div>'
+                    f'<div class="serif" style="font-size:1.25rem;color:#F4F1E2">{t}</div>'
+                    f'<p style="color:rgba(244,241,226,.78);margin-top:8px;font-size:.95rem">{d_}</p></div>' for c_, t, d_ in crit)
+    st.markdown('<div style="background:#513229;border-radius:32px;padding:48px 40px;margin-top:3.5rem">'
+                '<h2 style="text-align:center;font-size:2.4rem;color:#F4F1E2 !important">How we choose places</h2>'
+                '<p style="text-align:center;color:#D7D4B1;margin-bottom:28px">Every recommendation shows its reasons. We look at four things.</p>'
+                f'<div style="display:flex;gap:16px;flex-wrap:wrap">{cards}</div>'
+                '<p style="text-align:center;color:#D7D4B1;margin-top:26px"><b style="color:#F4F1E2">What we don\'t use:</b> how viral a place is, or who paid to be shown. '
+                "Businesses can't buy a spot in your answers.</p></div>", unsafe_allow_html=True)
+
+    # ---- for hotels
+    st.markdown('<div id="hotels"></div>', unsafe_allow_html=True)
+    l, r = st.columns([1.3, 1], gap="large")
+    l.markdown(HOTEL_TEXT, unsafe_allow_html=True)
+    r.markdown(HOTEL_CARD, unsafe_allow_html=True)
+    if l.button("Try it free for 14 days", type="primary", key="hotel_cta"): go_auth("Sign up"); st.rerun()
+
+    # ---- pricing
+    st.markdown('<div id="pricing"></div><h2 style="text-align:center;font-size:2.6rem;margin-top:3.5rem">Simple pricing</h2>'
+                '<p class="muted" style="text-align:center;font-size:1.1rem;margin-bottom:1.5rem">Travelers can stay free. Businesses try everything free for 14 days.</p>', unsafe_allow_html=True)
+    plans = [("Free", "Travelers", "Rp0", "forever", ["15 AI questions a day", "Up to 3 trips", "Budget and split bill"], "#FBF9F0", "#513229"),
+             ("Plus", "Travelers", "Rp49.000", "per month, 7 days free", ["Unlimited AI questions", "Crowd forecast for your dates", "Busy-place alerts"], "#D8EBF9", "#513229"),
+             ("Starter", "Hotels, 30–60 rooms", "Rp1,5 jt", "per month, 14 days free", ["14-day demand forecast", "Rate suggestions", "Monthly report"], "#FBF9F0", "#513229"),
+             ("Growth", "Hotels, 60–120 rooms", "Rp4 jt", "per month, 14 days free", ["Everything in Starter", "Traveler interest trends", "Package builder"], "#513229", "#F4F1E2")]
+    cols = st.columns(4, gap="small")
+    for col, (n, who, price, per, feats, bg, fg) in zip(cols, plans):
+        lis = "".join(f"<li style='margin:6px 0'>{f}</li>" for f in feats)
+        col.markdown(f'<div style="background:{bg};color:{fg};border:1px solid rgba(81,50,41,.14);border-radius:24px;padding:24px;min-height:300px">'
+                     f'<small style="opacity:.75">{who}</small><div class="serif" style="font-size:1.5rem;color:{fg}">{n}</div>'
+                     f'<div class="serif" style="font-size:2rem;margin-top:14px;color:{fg}">{price}</div><small style="opacity:.75">{per}</small>'
+                     f'<ul style="padding-left:18px;margin-top:14px;font-size:.95rem">{lis}</ul></div>', unsafe_allow_html=True)
+    st.caption("Prices are team assumptions for the MVP. Cancel any time. No booking commission, ever.")
+
+    # ---- final CTA
+    st.markdown('<h2 style="text-align:center;font-size:2.6rem;margin-top:3.5rem">Where do you want to go first?</h2>'
+                '<p class="muted" style="text-align:center;font-size:1.1rem">Your first trip takes about two minutes to start.</p>', unsafe_allow_html=True)
+    _, m, _ = st.columns([1, 1.4, 1])
+    with m:
+        x, y = st.columns(2)
+        if x.button("Start planning, free", type="primary", width="stretch", key="f1"): go_auth("Sign up"); st.rerun()
+        if y.button("Log in", width="stretch", key="f2"): go_auth("Log in"); st.rerun()
+    st.write(""); st.divider()
+    demo_row()
+
+def page_auth():
+    a, b = st.columns([4, 1])
+    a.markdown('<div class="serif" style="font-size:1.35rem;font-weight:600;padding-top:6px">🌿 Tourism Intelligence</div>', unsafe_allow_html=True)
+    if b.button("← Back to home", key="back_home"): ss.public = "landing"; st.rerun()
+    _, mid, _ = st.columns([1, 1.6, 1])
+    with mid:
+        st.write("")
+        tabs = ["Log in", "Sign up", "Try without an account"]
+        pick = st.segmented_control("Account", tabs, default=ss.auth_tab, key="authsel", label_visibility="collapsed")
+        if pick and pick != ss.auth_tab: ss.auth_tab = pick; st.rerun()
+        if ss.auth_tab == "Log in":
+            st.markdown("<h1>Welcome back</h1><p class='muted'>We'll open your traveler or business app automatically.</p>", unsafe_allow_html=True)
             with st.form("login"):
                 e = st.text_input("Email", placeholder="maya@demo.id"); p = st.text_input("Password", type="password", placeholder="demo1234")
                 if st.form_submit_button("Log in", type="primary", width="stretch"):
                     if login(e, p): st.rerun()
                     else: st.error("Email or password is wrong.")
             st.caption("Demo password for every account: **demo1234**")
-        with tab2:
+            st.divider(); demo_row()
+        elif ss.auth_tab == "Sign up":
+            st.markdown("<h1>Create your account</h1><p class='muted'>Free for travelers. 14 days free for businesses.</p>", unsafe_allow_html=True)
             with st.form("signup"):
                 role = st.radio("I am a…", ["Traveler", "Business"], horizontal=True)
                 n = st.text_input("Name"); e = st.text_input("Email"); p = st.text_input("Password (8+ characters)", type="password")
                 share = st.checkbox("Help improve forecasts with my questions (anonymous)", value=True)
                 if st.form_submit_button("Create account", type="primary", width="stretch"):
-                    if not n or "@" not in e or len(p) < 8: st.error("Please add a name, a valid email and a password of 8+ characters.")
+                    if not n or "@" not in e or len(p) < 8:
+                        st.error("Please add a name, a valid email and a password of 8+ characters.")
                     else:
                         with Conn() as con:
-                            if con.execute("SELECT 1 FROM users WHERE email=?", (e.lower(),)).fetchone(): st.error("That email already has an account.")
-                            else:
+                            exists = con.execute("SELECT 1 FROM users WHERE email=?", (e.lower(),)).fetchone()
+                            if not exists:
                                 r = "traveler" if role == "Traveler" else "business"
-                                uid = con.execute("INSERT INTO users(email,name,password_hash,role,plan,trial_ends,share_data) VALUES(?,?,?,?,?,?,?)",
-                                    (e.lower(), n, hash_password(p), r, "free" if r == "traveler" else "starter",
-                                     None if r == "traveler" else (config.today() + dt.timedelta(days=14)).isoformat(), int(share))).lastrowid
-                        if login(e, p): st.rerun()
-        with tab3:
+                                con.execute("INSERT INTO users(email,name,password_hash,role,plan,trial_ends,share_data) VALUES(?,?,?,?,?,?,?)",
+                                            (e.lower(), n, hash_password(p), r, "free" if r == "traveler" else "starter",
+                                             None if r == "traveler" else (config.today() + dt.timedelta(days=14)).isoformat(), int(share)))
+                        if exists: st.error("That email already has an account.")
+                        elif login(e, p): st.rerun()
+        else:
+            st.markdown("<h1>Ask AI about Bali</h1>", unsafe_allow_html=True)
             guest_chat()
 
 def guest_chat():
@@ -539,6 +648,11 @@ def ask_business(q, p):
 def a_overview():
     st.title("How the product is doing")
     st.caption("Admin · internal only")
+    with st.expander("🔄 Reset demo data (use before presenting)"):
+        st.write("Puts every trip, price, package and account back to the original demo state. New accounts are removed.")
+        if st.button("Reset now", type="primary"):
+            seed.run(reset=True); logout(); ss.guest_chat = []
+            st.toast("Demo data reset"); st.rerun()
     with Conn() as con:
         one = lambda q, *a: con.execute(q, a).fetchone()[0]
         c = st.columns(4)
