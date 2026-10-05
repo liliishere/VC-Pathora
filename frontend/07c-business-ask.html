@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tourism Intelligence — Ask AI (Business)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============ DESIGN TOKENS ============ */
+  :root{
+    --earth:#513229; --dice:#F4F1E2; --blue:#D8EBF9; --bay:#FCE6B7; --vinnie:#D7D4B1;
+    --paper:#FBF9F0; --white:#FFFDF6; --ink-2:#7A5E55; --line:rgba(81,50,41,.14);
+    --ok:#3F5A33; --ok-bg:rgba(124,154,107,.18);
+    --serif:'Fraunces', Georgia, serif;
+    --sans:'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+    /* spacing scale: 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96 */
+    --r-s:10px; --r-m:16px; --r-l:24px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--dice)}
+  body{color:var(--earth);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  button,input,select,textarea{font:inherit;color:inherit}
+  button{cursor:pointer;background:none;border:0}
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--earth);outline-offset:3px}
+  .serif{font-family:var(--serif);font-weight:500}
+  .muted{color:var(--ink-2)}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:999px;font-size:15px;font-weight:600;border:1.5px solid var(--earth);white-space:nowrap}
+  .btn-primary{background:var(--earth);color:var(--dice)}
+  .btn-ghost{background:transparent;color:var(--earth)}
+  .btn-soft{background:var(--paper);border-color:var(--line);color:var(--earth)}
+  .btn-sm{height:38px;padding:0 16px;font-size:14px}
+  .btn-full{width:100%}
+  .link{font-weight:600;text-decoration:underline;text-underline-offset:4px}
+
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-l);padding:32px}
+  .pill{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;font-size:13px;font-weight:600;white-space:nowrap}
+  .p-quiet{background:var(--blue)} .p-mid{background:var(--bay)} .p-busy{background:var(--earth);color:var(--dice)} .p-local{background:var(--vinnie)} .p-line{border:1px solid var(--line);background:var(--white)}
+
+  .logo{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:20px;font-weight:600;letter-spacing:-.01em}
+  .logo-mark{display:flex;gap:2px;height:24px}
+  .logo-mark span{width:5px;border-radius:2px}
+
+  .field label{display:block;font-size:14px;font-weight:600;margin-bottom:8px}
+  .input{width:100%;height:48px;border:1px solid var(--line);background:var(--white);border-radius:var(--r-s);padding:0 14px;font-size:15px}
+  .toast{position:fixed;left:50%;bottom:32px;transform:translateX(-50%) translateY(20px);background:var(--earth);color:var(--dice);padding:12px 20px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;transition:all .25s;pointer-events:none;z-index:50}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  .app{display:flex;min-height:100vh}
+  .side{flex:0 0 248px;min-height:100vh}
+  .side-in{position:sticky;top:0;height:100vh;min-height:860px;display:flex;flex-direction:column;padding:24px 16px}
+  .side .logo{padding:0 8px 28px;font-size:19px}
+  .side .primary{margin-bottom:24px}
+  .nav{display:flex;flex-direction:column;gap:6px}
+  .nav a{display:flex;align-items:center;gap:14px;height:52px;padding:0 14px;border-radius:14px;font-size:15.5px;font-weight:500}
+  .side-t{background:var(--blue)}
+  .side-t .nav a.on{background:var(--earth);color:var(--dice);font-weight:600}
+  .side-b{background:var(--earth);color:var(--dice)}
+  .side-b .nav a{color:rgba(244,241,226,.8)}
+  .side-b .nav a.on{background:var(--bay);color:var(--earth);font-weight:600}
+  .side-b .primary{background:var(--bay);color:var(--earth);border-color:var(--bay)}
+  .side .bottom{margin-top:auto;display:flex;flex-direction:column;gap:12px}
+  .plan{border-radius:14px;padding:14px;font-size:13.5px}
+  .side-t .plan{background:var(--white)}
+  .side-b .plan{background:rgba(244,241,226,.08)}
+  .plan b{display:block;font-size:14px;font-weight:600}
+  .plan a{font-weight:600;text-decoration:underline;text-underline-offset:3px}
+  .me{display:flex;align-items:center;gap:12px;padding:8px}
+  .me .av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:600}
+  .side-t .me .av{background:var(--earth);color:var(--dice)}
+  .side-b .me .av{background:var(--bay);color:var(--earth)}
+  .me small{display:block;font-size:12.5px;opacity:.75;line-height:1.3}
+  .me .out{margin-left:auto;font-size:13px;font-weight:600;opacity:.8;white-space:nowrap}
+  .me>div{min-width:0}
+
+  .ico{flex:none;width:20px;height:20px;position:relative;display:block}
+  .i-home::before{content:"";position:absolute;left:3px;right:3px;bottom:2px;top:8px;border:1.6px solid currentColor;border-top:0;border-radius:0 0 3px 3px}
+  .i-home::after{content:"";position:absolute;left:3px;top:3px;width:11px;height:11px;border-left:1.6px solid currentColor;border-top:1.6px solid currentColor;transform:translateX(0) rotate(45deg);transform-origin:center;left:4.5px}
+  .i-trip::before{content:"";position:absolute;left:2px;right:2px;top:6px;bottom:2px;border:1.6px solid currentColor;border-radius:4px}
+  .i-trip::after{content:"";position:absolute;left:7px;right:7px;top:2px;height:5px;border:1.6px solid currentColor;border-bottom:0;border-radius:3px 3px 0 0}
+  .i-cal::before{content:"";position:absolute;left:2px;right:2px;top:3px;bottom:2px;border:1.6px solid currentColor;border-radius:4px}
+  .i-cal::after{content:"";position:absolute;left:2px;right:2px;top:8px;border-top:1.6px solid currentColor}
+  .i-ask::before{content:"";position:absolute;left:2px;right:2px;top:3px;bottom:5px;border:1.6px solid currentColor;border-radius:7px 7px 7px 2px}
+  .i-ask::after{content:"";position:absolute;left:4px;bottom:1px;width:5px;height:5px;border-left:1.6px solid currentColor;border-bottom:1.6px solid currentColor;transform:skewX(-20deg)}
+  .i-box::before{content:"";position:absolute;inset:3px;border:1.6px solid currentColor;border-radius:4px}
+  .i-box::after{content:"";position:absolute;left:3px;right:3px;top:9px;border-top:1.6px solid currentColor}
+
+  .page{flex:1;min-width:0;padding:40px 56px 80px}
+  .page-in{max-width:1080px;margin:0 auto}
+  .head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:32px}
+  .head h1{font-family:var(--serif);font-weight:500;font-size:40px;line-height:1.1;letter-spacing:-.02em}
+  .head p{font-size:16px;color:var(--ink-2);margin-top:8px;max-width:560px}
+  .head .acts{display:flex;gap:10px}
+
+  .mbar{display:none}
+  @media (max-width: 900px){
+    .side{display:none}
+    .page{padding:24px 20px 100px}
+    .head{flex-direction:column;align-items:flex-start}
+    .head h1{font-size:30px}
+    .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px))}
+    .mbar-t{background:var(--blue)} .mbar-b{background:var(--earth)}
+    .mbar a{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 0;border-radius:12px;font-size:12px;font-weight:600}
+    .mbar-t a{color:var(--ink-2)} .mbar-t a.on{background:var(--earth);color:var(--dice)}
+    .mbar-b a{color:rgba(244,241,226,.75)} .mbar-b a.on{background:var(--bay);color:var(--earth)}
+  }
+
+  .chat{max-width:780px;margin:0 auto;display:flex;flex-direction:column;min-height:calc(100vh - 120px)}
+  .thread{flex:1;display:flex;flex-direction:column;gap:28px;padding-bottom:32px}
+  .empty{text-align:center;padding:48px 0 16px}
+  .empty h2{font-family:var(--serif);font-weight:500;font-size:28px}
+  .empty p{color:var(--ink-2);margin-top:8px}
+  .msg-q{align-self:flex-end;max-width:80%;border-radius:22px 22px 6px 22px;padding:14px 20px;font-size:16px}
+  .q-t{background:var(--blue)} .q-b{background:var(--bay)}
+  .msg-a{display:flex;flex-direction:column;gap:16px}
+  .msg-a h3{font-family:var(--serif);font-weight:500;font-size:24px;line-height:1.25}
+  .msg-a .txt{color:var(--ink-2);font-size:16px}
+  .places{display:flex;flex-direction:column;gap:12px}
+  .pl{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-l);padding:22px 24px}
+  .pl-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+  .pl h4{font-family:var(--serif);font-weight:500;font-size:20px;line-height:1.25}
+  .pl small{display:block;font-size:14px;color:var(--ink-2);margin-top:4px}
+  .pl .pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .pl details{margin-top:12px;font-size:14.5px}
+  .pl summary{cursor:pointer;font-weight:600;color:var(--ink-2);list-style:none}
+  .pl summary::-webkit-details-marker{display:none}
+  .pl details p{margin-top:6px;color:var(--ink-2)}
+  .facts{display:flex;gap:12px;flex-wrap:wrap}
+  .fact{flex:1;min-width:150px;background:var(--paper);border:1px solid var(--line);border-radius:var(--r-m);padding:16px 18px}
+  .fact b{display:block;font-family:var(--serif);font-weight:500;font-size:26px}
+  .fact span{font-size:14px;color:var(--ink-2)}
+  .basis{font-size:13.5px;color:var(--ink-2)}
+  .follow{display:flex;gap:8px;flex-wrap:wrap}
+  .follow button,.sugg button{height:38px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--paper);font-size:14px}
+  .typing{display:flex;gap:6px;padding:8px 0}
+  .typing i{width:8px;height:8px;border-radius:50%;background:var(--ink-2);opacity:.4;animation:b 1s infinite}
+  .typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+  @keyframes b{50%{opacity:1;transform:translateY(-3px)}}
+  @media (prefers-reduced-motion: reduce){ .typing i{animation:none;opacity:.8} }
+  .composer-wrap{position:sticky;bottom:0;background:var(--dice);padding:16px 0 24px}
+  .sugg{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .composer{display:flex;gap:12px;align-items:flex-end;background:var(--white);border:1.5px solid var(--earth);border-radius:24px;padding:12px 12px 12px 22px}
+  .composer textarea{flex:1;border:0;background:transparent;resize:none;font-size:16px;line-height:1.5;padding:10px 0;min-height:44px;max-height:160px;outline:none}
+  .send{flex:none;width:46px;height:46px;border-radius:50%;background:var(--earth);display:flex;align-items:center;justify-content:center}
+  .send::after{content:"";width:10px;height:10px;border-top:2px solid var(--dice);border-right:2px solid var(--dice);transform:rotate(-45deg) translate(-1px,2px)}
+  .send:disabled{opacity:.4}
+  .quota{display:flex;justify-content:space-between;gap:12px;margin-top:10px;font-size:13.5px;color:var(--ink-2)}
+  .quota a{font-weight:600;text-decoration:underline;text-underline-offset:3px;color:var(--earth)}
+
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side side-b" aria-label="Main navigation"><div class="side-in">
+    <a href="07a-business-home.html" class="logo"><span class="logo-mark" aria-hidden="true"><span style="background:var(--dice)"></span><span style="background:var(--vinnie)"></span><span style="background:var(--bay)"></span><span style="background:var(--blue)"></span></span>Tourism Intelligence</a>
+    <a href="07c-business-ask.html" class="btn btn-full primary">Ask a question</a>
+    <nav class="nav"><a href="07a-business-home.html" class=""><span class="ico i-home" aria-hidden="true"></span>Home</a><a href="07b-business-rates.html" class=""><span class="ico i-cal" aria-hidden="true"></span>Rates</a><a href="07d-business-packages.html" class=""><span class="ico i-box" aria-hidden="true"></span>Packages</a><a href="07c-business-ask.html" class="on" aria-current="page"><span class="ico i-ask" aria-hidden="true"></span>Ask AI</a></nav>
+    <div class="bottom"><div class="plan"><b>Free trial · 13 days left</b>Then Starter, Rp1,5 jt/month. <a href="04-pricing.html#business" style="color:var(--bay)">Change</a></div><div class="me"><span class="av" data-me-initial>R</span><div><span data-me-name>Ratna Dewi</span><small data-prop-name>Hotel Taman Sari</small></div><a href="01-landing.html" class="out" onclick="event.preventDefault();TI.logout().then(()=>location.href='01-landing.html')">Log out</a></div></div>
+  </div></aside>
+  <nav class="mbar mbar-b" aria-label="Main"><a href="07a-business-home.html" class=""><span class="ico i-home" aria-hidden="true"></span>Home</a><a href="07b-business-rates.html" class=""><span class="ico i-cal" aria-hidden="true"></span>Rates</a><a href="07d-business-packages.html" class=""><span class="ico i-box" aria-hidden="true"></span>Packages</a><a href="07c-business-ask.html" class="on"><span class="ico i-ask" aria-hidden="true"></span>Ask AI</a></nav>
+  <main class="page"><div class="page-in">
+  <div class="head"><div><h1>Ask AI</h1><p>Ask about demand, prices or what travelers near you want.</p></div></div>
+
+  <div class="chat">
+    <div class="thread" id="thread" aria-live="polite">
+      <div class="empty" id="empty"><h2>What would you like to know?</h2><p>For example: should I change a price, or what package to build next.</p></div>
+    </div>
+    <div class="composer-wrap">
+      <div class="sugg" id="sugg"><button type="button" onclick="ask(this.textContent)">Should I raise my rate for Saturday?</button><button type="button" onclick="ask(this.textContent)">What are travelers near me asking about?</button><button type="button" onclick="ask(this.textContent)">How will February look?</button></div>
+      <form class="composer" id="form">
+        <textarea id="input" rows="1" placeholder="Ask about demand, rates or packages…" aria-label="Your question"></textarea>
+        <button class="send" id="send" type="submit" aria-label="Send"></button>
+      </form>
+      <div class="quota"><span id="quota">49 of 50 questions left today</span></div>
+    </div>
+  </div></div></main>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<script src="assets/ti.js"></script>
+<script>
+/* ==========================================================
+   DATA LAYER — every page talks to the backend ONLY through `api`.
+   Right now it returns demo data. In the backend step we replace
+   the bodies of these functions with fetch('/api/...') calls.
+   ========================================================== */
+const DEMO_DELAY = 500;
+const wait = ms => new Promise(r => setTimeout(r, ms));
+const rupiah = n => 'Rp' + Math.round(n).toLocaleString('id-ID');
+function toast(msg){const t=document.getElementById('toast'); if(!t) return; t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),2200);}
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const QUOTA_LEFT=49, QUOTA_TOTAL=50, Q_CLASS='q-b', ADD_LABEL='';
+
+const ANSWERS = {
+  rate: {title:'Yes, raise Saturday 10 Oct by about 8%', text:'Demand near you is 12% above a normal October Saturday. Sunday looks average, so keep it as it is.',
+    facts:[['112','Demand index (100 = normal)'],['64%','Of your rooms already booked'],['Rp1,95 jt','Suggested rate, up from Rp1,8 jt']],
+    action:['Open in Rates','07b-business-rates.html']},
+  pack: {title:'Quiet waterfalls and cooking classes are rising', text:'Questions about quiet waterfalls near you tripled this week. Cooking classes are up 40%.',
+    facts:[['3×','Quiet waterfall questions'],['+40%','Cooking class questions'],['643','Questions that match a "Quiet Ubud mornings" package']],
+    action:['Build a package','07d-business-packages.html']},
+  low: {title:'February and March will be your quietest months', text:'Expect demand about 30% below normal. Travelers start asking about those months in early December.',
+    facts:[['−30%','Demand vs normal'],['Early Dec','When to launch an offer'],['Rainy-day ideas','Rising topic for those months']],
+    action:['Plan a low-season package','07d-business-packages.html']},
+  general: {title:'Here is your week at a glance', text:'Demand is normal until Friday, then higher over the weekend of 10–11 Oct.',
+    facts:[['+12%','Saturday 10 Oct'],['2','Rate suggestions waiting'],['3×','Rising interest: quiet waterfalls']],
+    action:['Open Rates','07b-business-rates.html']}
+};
+const api = {
+  // BACKEND STEP: replace with  fetch('/api/business/chat', {method:'POST', body: JSON.stringify({message, propertyId})}).then(r=>r.json())
+  async ask(message){
+    await wait(900);
+    const m = message.toLowerCase();
+    const key = /rate|price|harga|saturday|weekend|sabtu/.test(m)?'rate' : /package|paket|interest|trend|asking/.test(m)?'pack' : /low|february|march|sepi|season/.test(m)?'low' : 'general';
+    return ANSWERS[key];
+  }
+};
+function renderAnswer(a){
+  return `<div class="msg-a"><h3>${esc(a.title)}</h3><p class="txt">${esc(a.text)}</p>
+    <div class="facts">${a.facts.map(f=>`<div class="fact"><b>${esc(f[0])}</b><span>${esc(f[1])}</span></div>`).join('')}</div>
+    <div><a href="${a.action[1]}" class="btn btn-primary btn-sm">${esc(a.action[0])}</a></div>
+    <p class="basis">Based on weather, local events, your bookings and anonymous questions from travelers near you. Estimates.</p></div>`;
+}
+
+let LEFT = QUOTA_LEFT;
+const thread = document.getElementById('thread'), input = document.getElementById('input'), sendBtn = document.getElementById('send');
+function addQ(text){ document.getElementById('empty')?.remove(); const d=document.createElement('div'); d.className='msg-q '+Q_CLASS; d.textContent=text; thread.appendChild(d); }
+function addTyping(){ const d=document.createElement('div'); d.className='typing'; d.id='typing'; d.innerHTML='<i></i><i></i><i></i>'; thread.appendChild(d); }
+async function ask(text, quiet){
+  text = (text||'').trim(); if(!text) return;
+  if(LEFT<=0){ onLimit(); return; }
+  addQ(text); document.getElementById('sugg').style.display='none'; input.value=''; sendBtn.disabled=true; addTyping(); if(!quiet) scrollEnd();
+  try{
+    const ans = await api.ask(text);           // <-- the backend call
+    document.getElementById('typing')?.remove();
+    thread.insertAdjacentHTML('beforeend', renderAnswer(ans));
+    if (window.__quota !== undefined) LEFT = window.__quota === null ? Infinity : window.__quota; else LEFT--;
+    showQuota();
+  }catch(e){ document.getElementById('typing')?.remove(); if(e.status===429){ LEFT=0; showQuota(); onLimit(); } else toast(e.message || 'Something went wrong. Please try again.'); }
+  sendBtn.disabled=false; if(!quiet) scrollEnd();
+}
+function showQuota(){ document.getElementById('quota').textContent = LEFT===Infinity ? 'Unlimited questions' : `${LEFT} of ${QUOTA_TOTAL} questions left today`; }
+function scrollEnd(){ window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'}); }
+document.getElementById('form').addEventListener('submit', e=>{ e.preventDefault(); ask(input.value); });
+input.addEventListener('keydown', e=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); ask(input.value); } });
+input.addEventListener('input', ()=>{ input.style.height='auto'; input.style.height=Math.min(160,input.scrollHeight)+'px'; });
+
+function onLimit(){ toast('You have used today\'s questions.'); }
+if (TI.live) {
+  api.ask = async (message) => { const r = await TI.http('POST','/api/business/chat',{message}); window.__quota = r.quota_left; return r.answer; };
+  TI.guard('business').then(m => { if(m){ LEFT = m.quota_left==null?Infinity:m.quota_left; showQuota(); } });
+} else {
+  ask('Should I raise my rate for Saturday?', true);
+}
+</script>
+</body>
+</html>

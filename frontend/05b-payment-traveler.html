@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tourism Intelligence — Payment — Traveler</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============ DESIGN TOKENS (same as 01-landing) ============ */
+  :root{
+    --earth:#513229; --dice:#F4F1E2; --blue:#D8EBF9; --bay:#FCE6B7; --vinnie:#D7D4B1;
+    --paper:#FBF9F0; --ink-2:#7A5E55; --line:rgba(81,50,41,.16);
+    --role:#D8EBF9;   /* traveler = Something Blue, business = The Bay */
+    --serif:'Fraunces', Georgia, serif;
+    --sans:'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+    --r-s:8px; --r-m:14px; --r-l:22px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--dice);color:var(--earth);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  a:focus-visible{outline:2px solid var(--earth);outline-offset:3px}
+  .wrap{width:100%;max-width:1280px;margin:0 auto;padding-left:64px;padding-right:64px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;height:54px;padding:0 24px;border-radius:999px;font-size:15.5px;font-weight:600;border:1.5px solid var(--earth);width:100%}
+  .btn-primary{background:var(--earth);color:var(--dice)}
+
+  .logo{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:21px;font-weight:600;letter-spacing:-.01em}
+  .logo-mark{display:flex;gap:2px;height:26px}
+  .logo-mark span{width:6px;border-radius:2px}
+  .top{display:flex;justify-content:space-between;align-items:center;height:84px;border-bottom:1px solid var(--line)}
+  .secure{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--ink-2)}
+  .lock{width:12px;height:10px;border:1.5px solid var(--ink-2);border-radius:2px;position:relative;margin-top:4px}
+  .lock::before{content:"";position:absolute;left:1.5px;top:-7px;width:6px;height:6px;border:1.5px solid var(--ink-2);border-bottom:0;border-radius:4px 4px 0 0}
+  .steps{display:flex;gap:10px;align-items:center;font-size:14px;color:var(--ink-2)}
+  .st{display:flex;align-items:center;gap:8px}
+  .st i{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-style:normal;font-size:12.5px;font-weight:600}
+  .st.done i{background:var(--vinnie);border-color:var(--vinnie)}
+  .st.now{color:var(--earth);font-weight:600}.st.now i{background:var(--earth);border-color:var(--earth);color:var(--dice)}
+  .st-line{width:28px;height:1px;background:var(--line)}
+  .account{display:flex;align-items:center;gap:10px;font-size:14.5px}
+  .account small{display:block;font-size:12.5px;color:var(--ink-2);line-height:1.2}
+  .avatar{width:36px;height:36px;border-radius:50%;background:var(--role);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:600}
+
+  .layout{display:flex;gap:56px;align-items:flex-start;padding-top:48px;padding-bottom:96px}
+  .left{flex:1 1 0;min-width:0}
+  .left h1{font-family:var(--serif);font-weight:500;font-size:48px;line-height:1.05;letter-spacing:-.02em}
+  .left .sub{margin-top:10px;font-size:16.5px;color:var(--ink-2);max-width:560px}
+
+  .group{margin-top:36px}
+  .group h2{font-family:var(--serif);font-weight:500;font-size:22px;margin-bottom:14px}
+  .methods{display:flex;gap:10px}
+  .method{flex:1;border:1px solid var(--line);background:var(--paper);border-radius:var(--r-m);padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+  .method.on{border:2px solid var(--earth);padding:13px 15px;background:#FFFDF6}
+  .method b{font-weight:600;font-size:15px}
+  .method small{font-size:12.5px;color:var(--ink-2)}
+  .m-icons{display:flex;gap:4px}
+  .m-icons span{font-size:10.5px;font-weight:700;padding:2px 6px;border-radius:4px;border:1px solid var(--line);background:var(--dice)}
+
+  .card-form{margin-top:16px;background:var(--paper);border:1px solid var(--line);border-radius:var(--r-l);padding:22px}
+  .fields{display:flex;flex-direction:column;gap:16px}
+  .row{display:flex;gap:12px}.row>.field{flex:1}
+  .field label{display:flex;justify-content:space-between;font-size:14px;font-weight:500;margin-bottom:6px}
+  .field label span{font-weight:400;color:var(--ink-2)}
+  .input{width:100%;height:48px;border:1px solid var(--line);background:#FFFDF6;border-radius:var(--r-s);padding:0 14px;font-size:15px;display:flex;align-items:center;justify-content:space-between}
+  .input.ph{color:#A8958D}
+  .brands{display:flex;gap:4px}
+  .brands span{font-size:10px;font-weight:700;padding:2px 5px;border-radius:3px;background:var(--dice);border:1px solid var(--line);color:var(--earth)}
+  .select::after{content:"";width:8px;height:8px;border-right:1.5px solid var(--earth);border-bottom:1.5px solid var(--earth);transform:rotate(45deg) translateY(-3px)}
+  .hint{font-size:13px;color:var(--ink-2);margin-top:6px}
+  .other{margin-top:12px;font-size:13.5px;color:var(--ink-2)}
+
+  /* Summary */
+  .summary{flex:0 0 440px;position:sticky;top:24px;display:flex;flex-direction:column;gap:14px}
+  .sum-card{background:var(--role);border:1px solid rgba(81,50,41,.2);border-radius:var(--r-l);padding:26px}
+  .sum-top{display:flex;justify-content:space-between;align-items:flex-start}
+  .sum-top small{font-size:13px;color:#5E4238}
+  .sum-top a{font-size:13.5px;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+  .sum-card h2{font-family:var(--serif);font-weight:500;font-size:30px;line-height:1.1;margin-top:4px}
+  .sum-card .desc{font-size:14.5px;color:#5E4238;margin-top:4px}
+  .lines{margin-top:20px;display:flex;flex-direction:column}
+  .line{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-top:1px solid rgba(81,50,41,.18);font-size:14.5px}
+  .line.today{font-weight:600;font-size:16px}
+  .line.today b{font-family:var(--serif);font-weight:500;font-size:28px;line-height:1}
+  .line span small{display:block;font-size:12.5px;color:#5E4238;font-weight:400}
+  .promise{margin-top:6px;background:rgba(255,253,246,.6);border-radius:var(--r-m);padding:14px 16px;display:flex;flex-direction:column;gap:8px;font-size:13.5px}
+  .promise div{display:flex;gap:10px}
+  .promise i{flex:0 0 16px;height:16px;border-radius:50%;background:var(--earth);position:relative;margin-top:2px}
+  .promise i::after{content:"";position:absolute;left:5.5px;top:2.5px;width:3.5px;height:7px;border-right:1.5px solid var(--dice);border-bottom:1.5px solid var(--dice);transform:rotate(45deg)}
+  .cta{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-l);padding:20px}
+  .fine{margin-top:12px;font-size:12.5px;color:var(--ink-2);line-height:1.5}
+  .fine a{text-decoration:underline;text-underline-offset:3px}
+
+  @media (max-width: 1080px){
+    .wrap{padding-left:40px;padding-right:40px}
+    .layout{flex-direction:column-reverse}.summary{position:static;flex:1 1 auto;width:100%}
+    .steps .st:not(.now) span{display:none}
+    .methods{flex-wrap:wrap}.method{flex:1 1 45%}
+  }
+  @media (max-width: 640px){
+    .wrap{padding-left:20px;padding-right:20px}
+    .left h1{font-size:36px}.row{flex-direction:column}
+    .steps,.account div,.secure span{display:none}
+  }
+</style>
+</head>
+<body>
+<header class="wrap top">
+  <a href="01-landing.html" class="logo"><span class="logo-mark" aria-hidden="true"><span style="background:var(--earth)"></span><span style="background:var(--vinnie)"></span><span style="background:var(--bay)"></span><span style="background:var(--blue)"></span></span>Tourism Intelligence</a>
+  <span class="secure"><span class="lock" aria-hidden="true"></span><span>Secure payment</span></span>
+  <div class="account"><div>Maya<small>Free plan</small></div><span class="avatar">M</span></div>
+</header>
+
+<main class="wrap layout">
+  <section class="left">
+    <h1>Start your 7 days of Plus</h1>
+    <p class="sub">Add a payment method and you can keep planning right away, with no daily limit.</p>
+
+    <div class="group">
+      <h2>Payment method</h2>
+      <div class="methods" role="radiogroup">
+        <div class="method on" role="radio" aria-checked="true"><b>Card</b><div class="m-icons"><span>VISA</span><span>MC</span><span>JCB</span></div><small>Credit or debit</small></div>
+        <div class="method" role="radio" aria-checked="false"><b>E-wallet</b><div class="m-icons"><span>GoPay</span><span>OVO</span><span>DANA</span></div><small>Auto-pay from your wallet</small></div>
+        <div class="method" role="radio" aria-checked="false"><b>QRIS</b><div class="m-icons"><span>QRIS</span></div><small>Scan to pay each month</small></div>
+        
+      </div>
+
+      <div class="card-form">
+        <div class="fields">
+          <div class="field"><label>Card number</label><div class="input ph">1234 5678 9012 3456<span class="brands"><span>VISA</span><span>MC</span></span></div></div>
+          <div class="row">
+            <div class="field"><label>Expiry</label><div class="input ph">MM / YY</div></div>
+            <div class="field"><label>Security code</label><div class="input ph">CVC</div></div>
+          </div>
+          <div class="field"><label>Name on card</label><div class="input">MAYA ANDERSON</div></div>
+        </div>
+      </div>
+      <p class="other">We check your card with a small hold that's released right away. Nothing is charged today.</p>
+    </div>
+
+    <div class="group">
+      <h2>Receipts</h2>
+      <div class="fields"><div class="row">
+          <div class="field"><label>Email for receipts</label><div class="input">maya.a@email.com</div></div>
+          <div class="field"><label>Country</label><div class="input select">Australia</div></div>
+        </div></div>
+    </div>
+  </section>
+
+  <aside class="summary">
+    <div class="sum-card">
+      <div class="sum-top"><small>Your plan</small><a href="04-pricing.html">Change plan</a></div>
+      <h2>Plus, monthly</h2>
+      <p class="desc">Unlimited questions, 14-day crowd calendar, alerts</p>
+      <div class="lines">
+        <div class="line"><span>Free trial</span><span>7 days, until 5 Oct</span></div>
+        <div class="line today"><span>Due today</span><b>Rp0</b></div>
+        <div class="line"><span>From 5 Oct<small>Every month, tax included</small></span><span>Rp49.000</span></div>
+        
+      </div>
+      <div class="promise">
+        <div><i></i><span>We'll email you on 3 Oct before the first charge</span></div>
+        <div><i></i><span>Cancel in settings before 5 Oct and pay nothing</span></div>
+        <div><i></i><span>If you cancel, you go back to Free and keep your trips</span></div>
+      </div>
+    </div>
+    <div class="cta">
+      <a href="06a-traveler-home.html" class="btn btn-primary" id="startTrial">Start 7 days free</a>
+      <p class="fine">By starting your trial you allow us to charge Rp49.000 every month from 5 Oct until you cancel. See our <a href="#">Terms</a> and <a href="#">Refund policy</a>.</p>
+    </div>
+  </aside>
+</main>
+<script src="assets/ti.js"></script>
+<script>
+/* MVP: no real payment gateway yet. In LIVE mode this records the plan + trial end on the server.
+   Real payments (e.g. Midtrans or Xendit) plug in at POST /api/subscriptions/start. */
+const PLAN = new URLSearchParams(location.search).get('plan') || 'plus';
+document.getElementById('startTrial').addEventListener('click', async e => {
+  if (!TI.live) return;
+  e.preventDefault();
+  try { await TI.http('POST','/api/subscriptions/start',{plan: PLAN}); location.href = '06a-traveler-home.html'; }
+  catch(err) { alert(err.message); }
+});
+</script>
+</body>
+</html>

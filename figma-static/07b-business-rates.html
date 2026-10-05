@@ -1,0 +1,182 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tourism Intelligence — Rates (Business)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  /* ============ DESIGN TOKENS ============ */
+  :root{
+    --earth:#513229; --dice:#F4F1E2; --blue:#D8EBF9; --bay:#FCE6B7; --vinnie:#D7D4B1;
+    --paper:#FBF9F0; --white:#FFFDF6; --ink-2:#7A5E55; --line:rgba(81,50,41,.14);
+    --ok:#3F5A33; --ok-bg:rgba(124,154,107,.18);
+    --serif:'Fraunces', Georgia, serif;
+    --sans:'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+    /* spacing scale: 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96 */
+    --r-s:10px; --r-m:16px; --r-l:24px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--dice)}
+  body{color:var(--earth);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  button,input,select,textarea{font:inherit;color:inherit}
+  button{cursor:pointer;background:none;border:0}
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--earth);outline-offset:3px}
+  .serif{font-family:var(--serif);font-weight:500}
+  .muted{color:var(--ink-2)}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:999px;font-size:15px;font-weight:600;border:1.5px solid var(--earth);white-space:nowrap}
+  .btn-primary{background:var(--earth);color:var(--dice)}
+  .btn-ghost{background:transparent;color:var(--earth)}
+  .btn-soft{background:var(--paper);border-color:var(--line);color:var(--earth)}
+  .btn-sm{height:38px;padding:0 16px;font-size:14px}
+  .btn-full{width:100%}
+  .link{font-weight:600;text-decoration:underline;text-underline-offset:4px}
+
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-l);padding:32px}
+  .pill{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;font-size:13px;font-weight:600;white-space:nowrap}
+  .p-quiet{background:var(--blue)} .p-mid{background:var(--bay)} .p-busy{background:var(--earth);color:var(--dice)} .p-local{background:var(--vinnie)} .p-line{border:1px solid var(--line);background:var(--white)}
+
+  .logo{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:20px;font-weight:600;letter-spacing:-.01em}
+  .logo-mark{display:flex;gap:2px;height:24px}
+  .logo-mark span{width:5px;border-radius:2px}
+
+  .field label{display:block;font-size:14px;font-weight:600;margin-bottom:8px}
+  .input{width:100%;height:48px;border:1px solid var(--line);background:var(--white);border-radius:var(--r-s);padding:0 14px;font-size:15px}
+  .toast{position:fixed;left:50%;bottom:32px;transform:translateX(-50%) translateY(20px);background:var(--earth);color:var(--dice);padding:12px 20px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;transition:all .25s;pointer-events:none;z-index:50}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  .app{display:flex;min-height:100vh}
+  .side{flex:0 0 248px;min-height:100vh}
+  .side-in{position:sticky;top:0;height:100vh;min-height:860px;display:flex;flex-direction:column;padding:24px 16px}
+  .side .logo{padding:0 8px 28px;font-size:19px}
+  .side .primary{margin-bottom:24px}
+  .nav{display:flex;flex-direction:column;gap:6px}
+  .nav a{display:flex;align-items:center;gap:14px;height:52px;padding:0 14px;border-radius:14px;font-size:15.5px;font-weight:500}
+  .side-t{background:var(--blue)}
+  .side-t .nav a.on{background:var(--earth);color:var(--dice);font-weight:600}
+  .side-b{background:var(--earth);color:var(--dice)}
+  .side-b .nav a{color:rgba(244,241,226,.8)}
+  .side-b .nav a.on{background:var(--bay);color:var(--earth);font-weight:600}
+  .side-b .primary{background:var(--bay);color:var(--earth);border-color:var(--bay)}
+  .side .bottom{margin-top:auto;display:flex;flex-direction:column;gap:12px}
+  .plan{border-radius:14px;padding:14px;font-size:13.5px}
+  .side-t .plan{background:var(--white)}
+  .side-b .plan{background:rgba(244,241,226,.08)}
+  .plan b{display:block;font-size:14px;font-weight:600}
+  .plan a{font-weight:600;text-decoration:underline;text-underline-offset:3px}
+  .me{display:flex;align-items:center;gap:12px;padding:8px}
+  .me .av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:600}
+  .side-t .me .av{background:var(--earth);color:var(--dice)}
+  .side-b .me .av{background:var(--bay);color:var(--earth)}
+  .me small{display:block;font-size:12.5px;opacity:.75;line-height:1.3}
+  .me .out{margin-left:auto;font-size:13px;font-weight:600;opacity:.8;white-space:nowrap}
+  .me>div{min-width:0}
+
+  .ico{flex:none;width:20px;height:20px;position:relative;display:block}
+  .i-home::before{content:"";position:absolute;left:3px;right:3px;bottom:2px;top:8px;border:1.6px solid currentColor;border-top:0;border-radius:0 0 3px 3px}
+  .i-home::after{content:"";position:absolute;left:3px;top:3px;width:11px;height:11px;border-left:1.6px solid currentColor;border-top:1.6px solid currentColor;transform:translateX(0) rotate(45deg);transform-origin:center;left:4.5px}
+  .i-trip::before{content:"";position:absolute;left:2px;right:2px;top:6px;bottom:2px;border:1.6px solid currentColor;border-radius:4px}
+  .i-trip::after{content:"";position:absolute;left:7px;right:7px;top:2px;height:5px;border:1.6px solid currentColor;border-bottom:0;border-radius:3px 3px 0 0}
+  .i-cal::before{content:"";position:absolute;left:2px;right:2px;top:3px;bottom:2px;border:1.6px solid currentColor;border-radius:4px}
+  .i-cal::after{content:"";position:absolute;left:2px;right:2px;top:8px;border-top:1.6px solid currentColor}
+  .i-ask::before{content:"";position:absolute;left:2px;right:2px;top:3px;bottom:5px;border:1.6px solid currentColor;border-radius:7px 7px 7px 2px}
+  .i-ask::after{content:"";position:absolute;left:4px;bottom:1px;width:5px;height:5px;border-left:1.6px solid currentColor;border-bottom:1.6px solid currentColor;transform:skewX(-20deg)}
+  .i-box::before{content:"";position:absolute;inset:3px;border:1.6px solid currentColor;border-radius:4px}
+  .i-box::after{content:"";position:absolute;left:3px;right:3px;top:9px;border-top:1.6px solid currentColor}
+
+  .page{flex:1;min-width:0;padding:40px 56px 80px}
+  .page-in{max-width:1080px;margin:0 auto}
+  .head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:32px}
+  .head h1{font-family:var(--serif);font-weight:500;font-size:40px;line-height:1.1;letter-spacing:-.02em}
+  .head p{font-size:16px;color:var(--ink-2);margin-top:8px;max-width:560px}
+  .head .acts{display:flex;gap:10px}
+
+  .mbar{display:none}
+  @media (max-width: 900px){
+    .side{display:none}
+    .page{padding:24px 20px 100px}
+    .head{flex-direction:column;align-items:flex-start}
+    .head h1{font-size:30px}
+    .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px))}
+    .mbar-t{background:var(--blue)} .mbar-b{background:var(--earth)}
+    .mbar a{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 0;border-radius:12px;font-size:12px;font-weight:600}
+    .mbar-t a{color:var(--ink-2)} .mbar-t a.on{background:var(--earth);color:var(--dice)}
+    .mbar-b a{color:rgba(244,241,226,.75)} .mbar-b a.on{background:var(--bay);color:var(--earth)}
+  }
+
+  .rates{display:flex;flex-direction:column;gap:32px}
+  .cal-wrap{min-width:0}
+  .wk{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:14px;margin-bottom:10px}
+  .wk span{font-size:14px;font-weight:600;color:var(--ink-2);padding-left:6px}
+  .cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:14px}
+  .week-label{grid-column:1 / -1;font-size:14px;font-weight:600;color:var(--ink-2);margin-top:12px}
+  .cell{min-height:150px;border-radius:18px;border:1px solid var(--line);background:var(--paper);padding:16px;display:flex;flex-direction:column;gap:10px;text-align:left}
+  .cell:hover{border-color:rgba(81,50,41,.4)}
+  .cell.on{box-shadow:0 0 0 3px var(--earth);border-color:var(--earth)}
+  .cell .n{font-family:var(--serif);font-weight:500;font-size:26px;line-height:1}
+  .cell .r{font-size:17px;font-weight:600;white-space:nowrap}
+  .cell .s{margin-top:auto;font-size:13px;font-weight:600}
+  .cell .s.sug{color:#8A5A0E}
+  .cell .s.ok{color:var(--ok)}
+  .cell.today .n::after{content:"Today";font-family:var(--sans);font-size:11px;font-weight:600;background:var(--earth);color:var(--dice);border-radius:999px;padding:2px 8px;margin-left:8px;vertical-align:4px}
+  .key{display:flex;gap:16px;flex-wrap:wrap;margin-top:20px;font-size:14px;color:var(--ink-2)}
+
+  .panel{display:grid;grid-template-columns:1fr 1.2fr 1.2fr;gap:40px}
+  .panel .title h2{font-family:var(--serif);font-weight:500;font-size:30px;line-height:1.15}
+  .panel .sec{padding-left:40px;border-left:1px solid var(--line)}
+  .panel .sec h3{font-size:14.5px;font-weight:600;margin-bottom:10px}
+  .books{height:12px;border-radius:999px;background:rgba(81,50,41,.1);overflow:hidden}
+  .books i{display:block;height:100%;background:var(--earth)}
+  .books-l{display:flex;justify-content:space-between;font-size:14px;color:var(--ink-2);margin-top:8px}
+  .stepper{display:flex;align-items:center;border:1px solid var(--line);border-radius:999px;background:var(--white);overflow:hidden}
+  .stepper button{width:52px;height:52px;font-size:22px;color:var(--ink-2)}
+  .stepper input{flex:1;text-align:center;border:0;background:transparent;font-size:18px;font-weight:600;height:52px;min-width:0}
+  .sug-note{margin-top:10px;font-size:14.5px}
+  .sug-note b{font-weight:600}
+  .why{list-style:none;display:flex;flex-direction:column;gap:10px;font-size:15px}
+  .why li{display:flex;gap:12px}
+  .why b{flex:0 0 56px;font-family:var(--serif);font-weight:500;font-size:18px}
+  .panel .btn{margin-top:16px}
+  @media (max-width: 1150px){ .panel{grid-template-columns:1fr;gap:24px} .panel .sec{padding-left:0;border-left:0;padding-top:20px;border-top:1px solid var(--line)} }
+  @media (max-width: 700px){ .cal,.wk{grid-template-columns:repeat(7,minmax(96px,1fr))} .cal-wrap{overflow-x:auto} }
+
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side side-b" aria-label="Main navigation"><div class="side-in">
+    <a href="07a-business-home.html" class="logo"><span class="logo-mark" aria-hidden="true"><span style="background:var(--dice)"></span><span style="background:var(--vinnie)"></span><span style="background:var(--bay)"></span><span style="background:var(--blue)"></span></span>Tourism Intelligence</a>
+    <a href="07c-business-ask.html" class="btn btn-full primary">Ask a question</a>
+    <nav class="nav"><a href="07a-business-home.html" class=""><span class="ico i-home" aria-hidden="true"></span>Home</a><a href="07b-business-rates.html" class="on" aria-current="page"><span class="ico i-cal" aria-hidden="true"></span>Rates</a><a href="07d-business-packages.html" class=""><span class="ico i-box" aria-hidden="true"></span>Packages</a><a href="07c-business-ask.html" class=""><span class="ico i-ask" aria-hidden="true"></span>Ask AI</a></nav>
+    <div class="bottom"><div class="plan"><b>Free trial · 13 days left</b>Then Starter, Rp1,5 jt/month. <a href="04-pricing.html#business" style="color:var(--bay)">Change</a></div><div class="me"><span class="av" data-me-initial="">R</span><div><span data-me-name="">Ratna Dewi</span><small data-prop-name="">Hotel Taman Sari</small></div><a href="01-landing.html" class="out" onclick="event.preventDefault();TI.logout().then(()=&gt;location.href='01-landing.html')">Log out</a></div></div>
+  </div></aside>
+  <nav class="mbar mbar-b" aria-label="Main"><a href="07a-business-home.html" class=""><span class="ico i-home" aria-hidden="true"></span>Home</a><a href="07b-business-rates.html" class="on"><span class="ico i-cal" aria-hidden="true"></span>Rates</a><a href="07d-business-packages.html" class=""><span class="ico i-box" aria-hidden="true"></span>Packages</a><a href="07c-business-ask.html" class=""><span class="ico i-ask" aria-hidden="true"></span>Ask AI</a></nav>
+  <main class="page"><div class="page-in">
+  <div class="head"><div><h1>Rates</h1><p>The next 14 days. Tap a day to see our suggestion and set your price.</p></div>
+    <div class="acts"><button class="btn btn-primary" id="applyAll">Apply all suggestions</button></div></div>
+  <div class="rates">
+    <div class="cal-wrap">
+      <div class="wk"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+      <div class="cal" id="cal"><div class="week-label">This week</div><button class="cell  today" onclick="pick(0)" aria-pressed="false"><span class="n">28</span><span class="pill p-quiet" style="align-self:flex-start">Low</span><span class="r">Rp1,8 jt</span></button><button class="cell  " onclick="pick(1)" aria-pressed="false"><span class="n">29</span><span class="pill p-quiet" style="align-self:flex-start">Low</span><span class="r">Rp1,8 jt</span></button><button class="cell  " onclick="pick(2)" aria-pressed="false"><span class="n">30</span><span class="pill p-quiet" style="align-self:flex-start">Low</span><span class="r">Rp1,8 jt</span></button><button class="cell  " onclick="pick(3)" aria-pressed="false"><span class="n">1</span><span class="pill p-line" style="align-self:flex-start">Normal</span><span class="r">Rp1,8 jt</span></button><button class="cell  " onclick="pick(4)" aria-pressed="false"><span class="n">2</span><span class="pill p-mid" style="align-self:flex-start">High</span><span class="r">Rp1,85 jt</span><span class="s ok">✓ Price updated</span></button><button class="cell  " onclick="pick(5)" aria-pressed="false"><span class="n">3</span><span class="pill p-mid" style="align-self:flex-start">High</span><span class="r">Rp1,8 jt</span><span class="s sug">Suggestion: Rp1,9 jt</span></button><button class="cell  " onclick="pick(6)" aria-pressed="false"><span class="n">4</span><span class="pill p-line" style="align-self:flex-start">Normal</span><span class="r">Rp1,8 jt</span></button><div class="week-label">Next week</div><button class="cell  " onclick="pick(7)" aria-pressed="false"><span class="n">5</span><span class="pill p-quiet" style="align-self:flex-start">Low</span><span class="r">Rp1,8 jt</span></button><button class="cell  " onclick="pick(8)" aria-pressed="false"><span class="n">6</span><span class="pill p-quiet" style="align-self:flex-start">Low</span><span class="r">Rp1,8 jt</span></button><button class="cell  " onclick="pick(9)" aria-pressed="false"><span class="n">7</span><span class="pill p-quiet" style="align-self:flex-start">Low</span><span class="r">Rp1,8 jt</span></button><button class="cell  " onclick="pick(10)" aria-pressed="false"><span class="n">8</span><span class="pill p-line" style="align-self:flex-start">Normal</span><span class="r">Rp1,8 jt</span></button><button class="cell  " onclick="pick(11)" aria-pressed="false"><span class="n">9</span><span class="pill p-mid" style="align-self:flex-start">High</span><span class="r">Rp1,9 jt</span><span class="s ok">✓ Price updated</span></button><button class="cell on " onclick="pick(12)" aria-pressed="true"><span class="n">10</span><span class="pill p-busy" style="align-self:flex-start">Very high</span><span class="r">Rp1,8 jt</span><span class="s sug">Suggestion: Rp1,95 jt</span></button><button class="cell  " onclick="pick(13)" aria-pressed="false"><span class="n">11</span><span class="pill p-line" style="align-self:flex-start">Normal</span><span class="r">Rp1,8 jt</span></button></div>
+      <div class="key"><span class="pill p-quiet">Low demand</span><span class="pill p-line">Normal</span><span class="pill p-mid">High</span><span class="pill p-busy">Very high</span><span>Demand is an estimate.</span></div>
+    </div>
+    <section class="card panel" id="panel" aria-live="polite" aria-label="Selected day">
+    <div class="title"><h2>Saturday 10 Oct</h2>
+    <div style="margin-top:12px"><span class="pill p-busy">Very high demand · 112</span></div>
+    <div style="margin-top:24px"><h3 style="font-size:14.5px;font-weight:600;margin-bottom:10px">Rooms booked</h3><div class="books"><i style="width:64%"></i></div><div class="books-l"><span>64% booked</span><span>27 rooms left</span></div></div></div>
+    <div class="sec"><h3>Your price for this night</h3>
+      <div class="stepper"><button onclick="step(-50000)" aria-label="Lower price">−</button><input id="rate" value="1.950.000" inputmode="numeric" aria-label="Price"><button onclick="step(50000)" aria-label="Raise price">+</button></div>
+      <p class="sug-note">Now Rp1,8 jt. <b>We suggest Rp1,95 jt</b> (+8%).</p>
+      <button class="btn btn-primary btn-full" onclick="apply()">Save price</button></div>
+    <div class="sec"><h3>Why we suggest this</h3><ul class="why"><li><b>+18%</b><span>more traveler questions about Ubud that weekend</span></li><li><b>4 of 6</b><span>similar hotels nearby are almost full</span></li><li><b>10%</b><span>chance of rain</span></li></ul></div></section>
+  </div>
+</div></main>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+
+
+
+</body></html>

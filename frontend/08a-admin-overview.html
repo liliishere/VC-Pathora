@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tourism Intelligence — Admin overview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============ DESIGN TOKENS (same as 01-landing) ============ */
+  :root{
+    --earth:#513229; --dice:#F4F1E2; --blue:#D8EBF9; --bay:#FCE6B7; --vinnie:#D7D4B1;
+    --paper:#FBF9F0; --ink-2:#7A5E55; --line:rgba(81,50,41,.16);
+    --serif:'Fraunces', Georgia, serif;
+    --sans:'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+    --r-s:8px; --r-m:14px; --r-l:22px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--dice);color:var(--earth);font-family:var(--sans);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  a:focus-visible{outline:2px solid var(--earth);outline-offset:2px}
+
+  /* ============ ADMIN SIDEBAR (admin = Walking Vinnie) ============ */
+  .asb{flex:0 0 250px;background:var(--vinnie);display:flex;flex-direction:column;padding:20px 14px;height:100vh;min-height:960px;position:sticky;top:0;border-right:1px solid rgba(81,50,41,.15)}
+  .asb .logo{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:19px;font-weight:600;padding:4px 8px 6px}
+  .asb .logo-mark{display:flex;gap:2px;height:22px}
+  .asb .logo-mark span{width:5px;border-radius:2px}
+  .asb .env{margin:0 8px 16px;display:inline-flex;align-self:flex-start;gap:6px;align-items:center;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--earth);color:var(--dice)}
+  .asb .env i{width:6px;height:6px;border-radius:50%;background:#9BC48A}
+  .asb .grp{font-size:12px;font-weight:600;color:#6B5A48;padding:14px 10px 6px}
+  .atab{display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:10px;font-size:14.5px;font-weight:500}
+  .atab.on{background:var(--earth);color:var(--dice);font-weight:600}
+  .atab .n{margin-left:auto;font-size:11.5px;font-weight:600;padding:1px 8px;border-radius:999px;background:rgba(81,50,41,.12)}
+  .atab .n.alert{background:var(--bay);border:1px solid rgba(81,50,41,.3)}
+  .atab.on .n{background:rgba(244,241,226,.18)}
+  .adot{flex:0 0 10px;height:10px;border-radius:3px;border:1.5px solid currentColor}
+  .asb .foot{margin-top:auto;border-top:1px solid rgba(81,50,41,.18);padding-top:12px}
+  .asb .acct{border-radius:var(--r-m);background:rgba(255,253,246,.5)}
+  .asb .acct-row{display:flex;align-items:center;gap:10px;padding:8px 10px;font-size:14px}
+  .asb .acct-row small{display:block;font-size:12px;color:var(--ink-2);line-height:1.2}
+  .asb .av{width:32px;height:32px;border-radius:50%;background:var(--earth);color:var(--dice);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:600}
+  .asb .acct-links{display:flex;border-top:1px solid rgba(81,50,41,.12)}
+  .asb .acct-links a{flex:1;text-align:center;padding:8px 4px;font-size:12.5px;color:var(--ink-2)}
+  .asb .acct-links a+a{border-left:1px solid rgba(81,50,41,.12)}
+  @media (max-width: 860px){ .asb{display:none} }
+
+  .app{display:flex;min-height:100vh}
+  .main{flex:1;min-width:0;padding:26px 36px 56px}
+  .chipbtn{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--paper);font-size:13.5px;font-weight:500;white-space:nowrap}
+  .chipbtn.dark{background:var(--earth);color:var(--dice);border-color:var(--earth);font-weight:600}
+  .head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px}
+  .head small{font-size:13.5px;color:var(--ink-2)}
+  .head h1{font-family:var(--serif);font-weight:500;font-size:36px;line-height:1.1;letter-spacing:-.02em;margin-top:2px}
+  .head-r{display:flex;gap:8px;align-items:center}
+  .demo{font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;border:1px dashed rgba(81,50,41,.45)}
+  .range{display:flex;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:3px}
+  .range span{height:30px;padding:0 12px;display:flex;align-items:center;border-radius:999px;font-size:13px;font-weight:600;color:var(--ink-2)}
+  .range span.on{background:var(--earth);color:var(--dice)}
+
+  .row{display:flex;gap:16px;margin-top:18px;align-items:stretch}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-l);padding:20px 22px;min-width:0}
+  .card-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:14px}
+  .card-head h2{font-family:var(--serif);font-weight:500;font-size:20px}
+  .card-head span{font-size:12.5px;color:var(--ink-2)}
+  .card-head a{font-size:13px;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+
+  /* Scorecard */
+  .score{flex:1}
+  .verdict{display:flex;gap:18px;align-items:center;background:var(--vinnie);border-radius:var(--r-m);padding:16px 18px;margin-bottom:14px}
+  .verdict b{font-family:var(--serif);font-weight:500;font-size:26px;line-height:1.1}
+  .verdict p{font-size:14px;margin-top:4px;color:#4A3A2F}
+  .verdict .ring{flex:0 0 74px;height:74px;border-radius:50%;background:conic-gradient(var(--earth) 0 83%, rgba(81,50,41,.15) 0);display:flex;align-items:center;justify-content:center}
+  .verdict .ring span{width:56px;height:56px;border-radius:50%;background:var(--vinnie);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:20px;font-weight:500}
+  .verdict .days{margin-left:auto;text-align:right;font-size:12.5px;color:#4A3A2F}
+  .verdict .days b{display:block;font-size:30px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{text-align:left;font-size:12px;font-weight:600;color:var(--ink-2);padding:0 10px 8px}
+  td{padding:11px 10px;border-top:1px solid var(--line);vertical-align:middle}
+  td.m{width:40%}
+  td.m small{display:block;font-size:12px;color:var(--ink-2)}
+  .prog{display:flex;align-items:center;gap:10px}
+  .prog .bar{flex:1;height:8px;border-radius:999px;background:rgba(81,50,41,.1);position:relative}
+  .prog .bar i{position:absolute;left:0;top:0;bottom:0;border-radius:999px}
+  .prog .bar em{position:absolute;top:-4px;width:2px;height:16px;background:var(--earth)}
+  .prog b{font-family:var(--serif);font-weight:500;font-size:17px;min-width:62px;text-align:right}
+  .res{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;white-space:nowrap}
+  .res.ok{background:rgba(124,154,107,.2);color:#3F5A33}
+  .res.no{background:var(--bay);border:1px solid rgba(81,50,41,.3)}
+  .src{margin-top:10px;font-size:12px;color:var(--ink-2)}
+
+  /* KPI strip */
+  .kpis{display:flex;gap:16px;margin-top:18px}
+  .kpi{flex:1;border-radius:var(--r-l);padding:18px 20px;border:1px solid var(--line);background:var(--paper)}
+  .kpi small{font-size:12.5px;font-weight:600}
+  .kpi b{display:block;font-family:var(--serif);font-weight:500;font-size:34px;line-height:1.1;margin-top:6px;letter-spacing:-.01em}
+  .kpi p{font-size:12.5px;color:var(--ink-2);margin-top:4px}
+  .kpi .split{display:flex;height:6px;border-radius:999px;overflow:hidden;margin-top:12px}
+  .kpi.t{background:var(--blue);border-color:rgba(81,50,41,.18)}
+  .kpi.b{background:var(--bay);border-color:rgba(81,50,41,.18)}
+  .kpi.t p,.kpi.b p{color:#5E4238}
+  .tgt{margin-top:12px}
+  .tgt .bar{height:8px;border-radius:999px;background:rgba(81,50,41,.1);overflow:hidden}
+  .tgt .bar i{display:block;height:100%;background:var(--earth)}
+  .tgt span{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink-2);margin-top:5px}
+
+  /* Funnels */
+  .funnel{flex:1}
+  .fstep{display:flex;align-items:center;gap:12px;padding:6px 0}
+  .fstep .lbl{flex:0 0 150px;font-size:13.5px}
+  .fstep .lbl small{display:block;font-size:11.5px;color:var(--ink-2)}
+  .fstep .bar{flex:1;height:28px;border-radius:7px;background:rgba(81,50,41,.06);overflow:hidden}
+  .fstep .bar i{display:flex;align-items:center;height:100%;border-radius:7px;padding-left:10px;font-size:12px;font-weight:600;white-space:nowrap}
+  .fstep .pct{flex:0 0 48px;text-align:right;font-size:12.5px;color:var(--ink-2)}
+  .drop{margin-top:10px;font-size:13px;background:var(--dice);border-radius:var(--r-s);padding:9px 11px}
+  .drop b{font-weight:600}
+
+  /* Attention */
+  .attn{flex:1.05}
+  .aq{display:flex;gap:12px;align-items:center;padding:11px 0;border-top:1px solid var(--line)}
+  .aq:first-of-type{border-top:0;padding-top:0}
+  .aq .num{flex:0 0 44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:20px;font-weight:500}
+  .aq div{flex:1;font-size:14px;line-height:1.35}
+  .aq small{display:block;font-size:12.5px;color:var(--ink-2)}
+
+  /* Costs */
+  .cost{flex:1}
+  .cbig{display:flex;align-items:baseline;gap:10px}
+  .cbig b{font-family:var(--serif);font-weight:500;font-size:34px;letter-spacing:-.01em}
+  .cbig span{font-size:13px;color:var(--ink-2)}
+  .budget{margin-top:10px;height:10px;border-radius:999px;background:rgba(81,50,41,.1);position:relative}
+  .budget i{position:absolute;left:0;top:0;bottom:0;width:80%;border-radius:999px;background:var(--earth)}
+  .budget-ax{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink-2);margin-top:5px}
+  .unit{display:flex;flex-direction:column;margin-top:14px}
+  .unit div{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid var(--line);font-size:13.5px}
+  .unit div span:last-child{font-weight:600}
+  .warnline{margin-top:10px;font-size:13px;background:var(--bay);border-radius:var(--r-s);padding:9px 11px}
+
+  /* Data */
+  .data{flex:1.3}
+  .dstats{display:flex;gap:18px}
+  .dstats div{font-size:12.5px;color:var(--ink-2);line-height:1.3}
+  .dstats b{display:block;font-family:var(--serif);font-weight:500;font-size:24px;color:var(--earth)}
+  .areas{margin-top:16px;display:flex;flex-direction:column;gap:7px}
+  .area{display:flex;align-items:center;gap:12px;font-size:13.5px}
+  .area .nm{flex:0 0 150px}
+  .area .bar{flex:1;height:10px;border-radius:999px;background:rgba(81,50,41,.08);overflow:hidden}
+  .area .bar i{display:block;height:100%;border-radius:999px}
+  .area .v{flex:0 0 120px;text-align:right;font-size:12.5px;color:var(--ink-2)}
+  .area .v.thin{color:#9A5B2E;font-weight:600}
+
+  @media (max-width: 1180px){ .row,.kpis{flex-wrap:wrap} .row>.card,.kpi{flex:1 1 45%} }
+  @media (max-width: 760px){ .main{padding:18px} .head{flex-direction:column;align-items:flex-start} .row>.card,.kpi{flex:1 1 100%} td.m{width:auto} .fstep .lbl{flex-basis:110px} }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <aside class="asb" aria-label="Admin navigation">
+    <a href="08a-admin-overview.html" class="logo"><span class="logo-mark" aria-hidden="true"><span style="background:var(--earth)"></span><span style="background:var(--dice)"></span><span style="background:var(--bay)"></span><span style="background:var(--blue)"></span></span>Tourism Intelligence</a>
+    <span class="env"><i></i>Admin · internal only</span>
+    <nav aria-label="Admin">
+      <a href="08a-admin-overview.html" class="atab on" aria-current="page"><span class="adot"></span>Overview</a>
+      <div class="grp">People</div>
+      <a href="#" class="atab"><span class="adot"></span>Businesses<span class="n">14</span></a>
+      <a href="#" class="atab"><span class="adot"></span>Travelers<span class="n">3,120</span></a>
+      <div class="grp">Data</div>
+      <a href="#" class="atab"><span class="adot"></span>Destinations<span class="n alert">9 to check</span></a>
+      <a href="#" class="atab"><span class="adot"></span>AI answers<span class="n alert">12 flagged</span></a>
+      <a href="#" class="atab"><span class="adot"></span>Data and privacy</a>
+      <div class="grp">Money</div>
+      <a href="#" class="atab"><span class="adot"></span>Revenue and costs</a>
+    </nav>
+    <div class="foot">
+      <div class="acct">
+        <div class="acct-row"><span class="av">A</span><div>Ari Pratama<small>Product lead · Admin</small></div></div>
+        <div class="acct-links"><a href="#">Team</a><a href="#">Settings</a><a href="01-landing.html">Log out</a></div>
+      </div>
+    </div>
+  </aside>
+  <main class="main">
+    <div class="head">
+      <div><small>Monday, 28 September 2026 · Pilot week 12 of 16</small><h1>How the product is doing</h1></div>
+      <div class="head-r"><span class="demo">Demo data</span><div class="range"><span>7 days</span><span class="on">30 days</span><span>Pilot</span></div><span class="chipbtn">Export</span></div>
+    </div>
+
+    <!-- MVP SCORECARD -->
+    <div class="row">
+      <section class="card score">
+        <div class="card-head"><h2>MVP go / no-go scorecard</h2><span>Targets set before building, from slide 21</span></div>
+        <div class="verdict">
+          <div class="ring" aria-hidden="true"><span>5/6</span></div>
+          <div><b>On track for "go"</b><p>5 of 6 targets met. Destination accuracy is the one to fix before week 16.</p></div>
+          <div class="days"><b>4 weeks</b>until the decision</div>
+        </div>
+        <table>
+          <thead><tr><th>Metric</th><th>Progress against target</th><th></th></tr></thead>
+          <tbody>
+            <tr><td class="m">Pilot hotels that finished the trial<small>Target: 7 of 10</small></td><td><div class="prog"><div class="bar"><i style="width:80%;background:var(--earth)"></i><em style="left:70%"></em></div><b>8 / 10</b></div></td><td><span class="res ok">On target</span></td></tr>
+            <tr><td class="m">Hotels opening the dashboard weekly by week 3<small>Target: 5</small></td><td><div class="prog"><div class="bar"><i style="width:60%;background:var(--earth)"></i><em style="left:50%"></em></div><b>6</b></div></td><td><span class="res ok">On target</span></td></tr>
+            <tr><td class="m">Hotels willing to pay<small>Target: 3 · paid or signed a letter of intent</small></td><td><div class="prog"><div class="bar"><i style="width:40%;background:var(--earth)"></i><em style="left:30%"></em></div><b>4</b></div></td><td><span class="res ok">On target</span></td></tr>
+            <tr><td class="m">Travelers rating recommendations useful<small>Target: 70% of 100 surveyed</small></td><td><div class="prog"><div class="bar"><i style="width:74%;background:var(--blue);border:1px solid var(--earth)"></i><em style="left:70%"></em></div><b>74%</b></div></td><td><span class="res ok">On target</span></td></tr>
+            <tr><td class="m">Recommendations outside the 5 busiest spots<small>Target: 40% · our "sustainable" claim</small></td><td><div class="prog"><div class="bar"><i style="width:46%;background:var(--vinnie);border:1px solid var(--earth)"></i><em style="left:40%"></em></div><b>46%</b></div></td><td><span class="res ok">On target</span></td></tr>
+            <tr><td class="m">Destination data accuracy<small>Target: 90% · random check of 30 places</small></td><td><div class="prog"><div class="bar"><i style="width:88%;background:var(--bay);border:1px solid var(--earth)"></i><em style="left:90%"></em></div><b>88%</b></div></td><td><span class="res no">Below target</span></td></tr>
+          </tbody>
+        </table>
+        <p class="src">The thin line on each bar marks the target. If fewer than 3 hotels are willing to pay, the plan is to switch to selling the destination dataset and API to tour operators.</p>
+      </section>
+    </div>
+
+    <!-- KPIs -->
+    <div class="kpis">
+      <div class="kpi b"><small>Businesses</small><b>14</b><p>4 paying · 8 on trial · 2 cancelled</p><div class="split" aria-hidden="true"><i style="flex:4;background:var(--earth)"></i><i style="flex:8;background:rgba(255,253,246,.8)"></i><i style="flex:2;background:rgba(81,50,41,.25)"></i></div></div>
+      <div class="kpi t"><small>Travelers</small><b>3,120</b><p>212 on Plus · 1,480 active this week</p><div class="split" aria-hidden="true"><i style="flex:212;background:var(--earth)"></i><i style="flex:2908;background:rgba(255,253,246,.8)"></i></div></div>
+      <div class="kpi"><small>Monthly revenue</small><b>Rp23,9 jt</b><p>Hotels 11 jt · Plus 10,4 jt · API 2,5 jt</p>
+        <div class="tgt"><div class="bar"><i style="width:43%"></i></div><span><span>43% of year-1 pace</span><span>Target Rp55 jt/mo</span></span></div></div>
+      <div class="kpi"><small>Questions answered</small><b>18,640</b><p>Last 30 days · 92% from travelers</p>
+        <div class="tgt"><div class="bar"><i style="width:92%;background:var(--blue);border-right:1px solid var(--earth)"></i></div><span><span>Travelers</span><span>Businesses 8%</span></span></div></div>
+    </div>
+
+    <!-- FUNNELS -->
+    <div class="row">
+      <section class="card funnel">
+        <div class="card-head"><h2>Traveler funnel</h2><span>Last 30 days</span></div>
+        <div class="fstep"><div class="lbl">Signed up</div><div class="bar"><i style="width:100%;background:var(--blue)">1,240</i></div><div class="pct">100%</div></div>
+        <div class="fstep"><div class="lbl">Asked 3+ questions</div><div class="bar"><i style="width:68%;background:var(--blue)">843</i></div><div class="pct">68%</div></div>
+        <div class="fstep"><div class="lbl">Saved a trip</div><div class="bar"><i style="width:41%;background:var(--blue)">508</i></div><div class="pct">41%</div></div>
+        <div class="fstep"><div class="lbl">Hit the daily limit</div><div class="bar"><i style="width:22%;background:var(--bay)">273</i></div><div class="pct">22%</div></div>
+        <div class="fstep"><div class="lbl">Started Plus trial</div><div class="bar"><i style="width:9%;background:var(--earth);color:var(--dice)">112</i></div><div class="pct">9%</div></div>
+        <div class="fstep"><div class="lbl">Paid for Plus</div><div class="bar"><i style="width:6%;background:var(--earth);color:var(--dice)">74</i></div><div class="pct">6%</div></div>
+        <p class="drop"><b>Biggest drop:</b> of travelers who hit the daily limit, only 41% start a Plus trial. Test showing the crowd calendar on the limit screen.</p>
+      </section>
+
+      <section class="card funnel">
+        <div class="card-head"><h2>Business funnel</h2><span>Since launch</span></div>
+        <div class="fstep"><div class="lbl">Created account</div><div class="bar"><i style="width:100%;background:var(--bay)">31</i></div><div class="pct">100%</div></div>
+        <div class="fstep"><div class="lbl">Finished property setup</div><div class="bar"><i style="width:74%;background:var(--bay)">23</i></div><div class="pct">74%</div></div>
+        <div class="fstep"><div class="lbl">Started trial</div><div class="bar"><i style="width:45%;background:var(--bay)">14</i></div><div class="pct">45%</div></div>
+        <div class="fstep"><div class="lbl">Applied a rate suggestion</div><div class="bar"><i style="width:35%;background:var(--bay)">11</i></div><div class="pct">35%</div></div>
+        <div class="fstep"><div class="lbl">Paid</div><div class="bar"><i style="width:13%;background:var(--earth);color:var(--dice)">4</i></div><div class="pct">13%</div></div>
+        <p class="drop"><b>Biggest drop:</b> 9 hotels finished setup but didn't add a card. Follow up by phone this week.</p>
+      </section>
+    </div>
+
+    <!-- ATTENTION + COSTS -->
+    <div class="row">
+      <section class="card attn">
+        <div class="card-head"><h2>Needs attention</h2><span>Today</span></div>
+        <a href="#" class="aq"><span class="num" style="background:var(--earth);color:var(--dice)">12</span><div>AI answers flagged by users<small>7 say a place was closed, 5 say crowd level was wrong</small></div><span class="chipbtn">Review</span></a>
+        <a href="#" class="aq"><span class="num" style="background:var(--bay)">9</span><div>Destinations not checked in 60+ days<small>Mostly Buleleng and Karangasem</small></div><span class="chipbtn">Verify</span></a>
+        <a href="#" class="aq"><span class="num" style="background:var(--bay)">3</span><div>Hotel trials ending this week<small>2 haven't applied any suggestion yet</small></div><span class="chipbtn">Contact</span></a>
+        <a href="#" class="aq"><span class="num" style="background:var(--blue)">2</span><div>Data deletion requests<small>Due within 30 days by policy</small></div><span class="chipbtn">Handle</span></a>
+      </section>
+
+      <section class="card cost">
+        <div class="card-head"><h2>AI and map costs</h2><span>September</span></div>
+        <div class="cbig"><b>Rp1,2 jt</b><span>of Rp1,5 jt budget</span></div>
+        <div class="budget" aria-hidden="true"><i></i></div>
+        <div class="budget-ax"><span>80% used</span><span>2 days left in month</span></div>
+        <div class="unit">
+          <div><span>Cost per active traveler</span><span>Rp310</span></div>
+          <div><span>Cost per hotel</span><span>Rp18.000</span></div>
+          <div><span>Answers served from cache</span><span>37%</span></div>
+        </div>
+        <p class="warnline">4 Plus users cost more than they pay (heavy daily use). Consider a fair-use limit.</p>
+      </section>
+    </div>
+
+    <!-- DATA -->
+    <div class="row">
+      <section class="card data">
+        <div class="card-head"><h2>Data health</h2><a href="#">Open data and privacy</a></div>
+        <div class="dstats">
+          <div><b>152</b>curated destinations</div>
+          <div><b>92%</b>travelers share data</div>
+          <div><b>100%</b>questions anonymised</div>
+          <div><b>4,812</b>questions this week</div>
+        </div>
+        <div class="areas" aria-label="Questions by area">
+          <div class="area"><span class="nm">Ubud</span><div class="bar"><i style="width:100%;background:var(--earth)"></i></div><span class="v">1,960 questions</span></div>
+          <div class="area"><span class="nm">Badung (south)</span><div class="bar"><i style="width:74%;background:var(--earth)"></i></div><span class="v">1,450 questions</span></div>
+          <div class="area"><span class="nm">Denpasar</span><div class="bar"><i style="width:30%;background:#8C7064"></i></div><span class="v">590 questions</span></div>
+          <div class="area"><span class="nm">Karangasem</span><div class="bar"><i style="width:22%;background:var(--vinnie);border-right:1px solid var(--earth)"></i></div><span class="v">430 questions</span></div>
+          <div class="area"><span class="nm">Tabanan</span><div class="bar"><i style="width:14%;background:var(--vinnie);border-right:1px solid var(--earth)"></i></div><span class="v">270 questions</span></div>
+          <div class="area"><span class="nm">Buleleng (north)</span><div class="bar"><i style="width:6%;background:var(--bay);border-right:1px solid var(--earth)"></i></div><span class="v thin">112 · too thin to forecast</span></div>
+        </div>
+      </section>
+
+      <section class="card" style="flex:1">
+        <div class="card-head"><h2>Recent sign-ups</h2><a href="#">See all</a></div>
+        <table>
+          <tbody>
+            <tr><td><b style="font-weight:600">Hotel Taman Sari</b><br><small style="color:var(--ink-2)">Ubud · 74 rooms</small></td><td><span class="res" style="background:var(--bay)">Business · trial</span></td><td style="text-align:right;color:var(--ink-2);font-size:12.5px">Today</td></tr>
+            <tr><td><b style="font-weight:600">Maya A.</b><br><small style="color:var(--ink-2)">Australia</small></td><td><span class="res" style="background:var(--blue)">Traveler · Free</span></td><td style="text-align:right;color:var(--ink-2);font-size:12.5px">Today</td></tr>
+            <tr><td><b style="font-weight:600">Sidemen Eco Lodge</b><br><small style="color:var(--ink-2)">Karangasem · 32 rooms</small></td><td><span class="res" style="background:var(--earth);color:var(--dice)">Business · paid</span></td><td style="text-align:right;color:var(--ink-2);font-size:12.5px">Sat</td></tr>
+            <tr><td><b style="font-weight:600">Kadek W.</b><br><small style="color:var(--ink-2)">Indonesia</small></td><td><span class="res" style="background:var(--blue);border:1px solid var(--earth)">Traveler · Plus</span></td><td style="text-align:right;color:var(--ink-2);font-size:12.5px">Fri</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </main>
+</div>
+</body>
+</html>

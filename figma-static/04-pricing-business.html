@@ -1,0 +1,168 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tourism Intelligence — Pricing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  /* ============ DESIGN TOKENS ============ */
+  :root{
+    --earth:#513229; --dice:#F4F1E2; --blue:#D8EBF9; --bay:#FCE6B7; --vinnie:#D7D4B1;
+    --paper:#FBF9F0; --white:#FFFDF6; --ink-2:#7A5E55; --line:rgba(81,50,41,.14);
+    --ok:#3F5A33; --ok-bg:rgba(124,154,107,.18);
+    --serif:'Fraunces', Georgia, serif;
+    --sans:'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+    /* spacing scale: 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96 */
+    --r-s:10px; --r-m:16px; --r-l:24px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--dice)}
+  body{color:var(--earth);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  button,input,select,textarea{font:inherit;color:inherit}
+  button{cursor:pointer;background:none;border:0}
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--earth);outline-offset:3px}
+  .serif{font-family:var(--serif);font-weight:500}
+  .muted{color:var(--ink-2)}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:999px;font-size:15px;font-weight:600;border:1.5px solid var(--earth);white-space:nowrap}
+  .btn-primary{background:var(--earth);color:var(--dice)}
+  .btn-ghost{background:transparent;color:var(--earth)}
+  .btn-soft{background:var(--paper);border-color:var(--line);color:var(--earth)}
+  .btn-sm{height:38px;padding:0 16px;font-size:14px}
+  .btn-full{width:100%}
+  .link{font-weight:600;text-decoration:underline;text-underline-offset:4px}
+
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-l);padding:32px}
+  .pill{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;font-size:13px;font-weight:600;white-space:nowrap}
+  .p-quiet{background:var(--blue)} .p-mid{background:var(--bay)} .p-busy{background:var(--earth);color:var(--dice)} .p-local{background:var(--vinnie)} .p-line{border:1px solid var(--line);background:var(--white)}
+
+  .logo{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:20px;font-weight:600;letter-spacing:-.01em}
+  .logo-mark{display:flex;gap:2px;height:24px}
+  .logo-mark span{width:5px;border-radius:2px}
+
+  .field label{display:block;font-size:14px;font-weight:600;margin-bottom:8px}
+  .input{width:100%;height:48px;border:1px solid var(--line);background:var(--white);border-radius:var(--r-s);padding:0 14px;font-size:15px}
+  .toast{position:fixed;left:50%;bottom:32px;transform:translateX(-50%) translateY(20px);background:var(--earth);color:var(--dice);padding:12px 20px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;transition:all .25s;pointer-events:none;z-index:50}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  .wrap{width:100%;max-width:1280px;margin:0 auto;padding-left:64px;padding-right:64px}
+  .nav-top{display:flex;align-items:center;justify-content:space-between;height:88px}
+  .nav-r{display:flex;align-items:center;gap:16px}
+  .top{text-align:center;padding-top:56px}
+  .top h1{font-family:var(--serif);font-weight:500;font-size:56px;letter-spacing:-.025em;line-height:1.05}
+  .top p{margin-top:14px;font-size:18px;color:var(--ink-2)}
+  .switch{display:inline-flex;margin-top:36px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:5px}
+  .switch a{height:46px;padding:0 26px;display:flex;align-items:center;border-radius:999px;font-weight:600;font-size:15px;color:var(--ink-2)}
+  .switch a.on{background:var(--earth);color:var(--dice)}
+
+  .tab{display:none;padding-top:48px}
+  .tab.show{display:block}
+  .plans{display:flex;gap:24px;justify-content:center;align-items:stretch}
+  .plan{flex:0 1 380px;background:var(--paper);border:1px solid var(--line);border-radius:28px;padding:36px;display:flex;flex-direction:column}
+  .plan.feat-t{background:var(--blue);border-color:rgba(81,50,41,.2)}
+  .plan.feat-b{background:var(--earth);color:var(--dice);border-color:var(--earth)}
+  .plan .tag{align-self:flex-start;margin-bottom:16px}
+  .plan h2{font-family:var(--serif);font-weight:500;font-size:28px}
+  .plan .for{font-size:15px;color:var(--ink-2);margin-top:4px}
+  .plan.feat-b .for{color:var(--vinnie)}
+  .price{font-family:var(--serif);font-size:44px;margin-top:28px;letter-spacing:-.02em;line-height:1}
+  .per{font-size:14px;color:var(--ink-2);margin-top:8px}
+  .plan.feat-b .per{color:var(--vinnie)}
+  .plan ul{list-style:none;margin:28px 0 32px;display:flex;flex-direction:column;gap:14px;font-size:15.5px;flex:1}
+  .plan li{padding-left:28px;position:relative}
+  .plan li::before{content:"";position:absolute;left:4px;top:5px;width:6px;height:11px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg)}
+  .plan.feat-b .btn-primary{background:var(--bay);color:var(--earth);border-color:var(--bay)}
+  .plan.feat-b .btn-ghost{color:var(--dice);border-color:var(--dice)}
+  .small{text-align:center;margin-top:28px;font-size:14.5px;color:var(--ink-2)}
+
+  .faq{max-width:760px;margin:0 auto;padding-top:96px;padding-bottom:112px}
+  .faq h2{font-family:var(--serif);font-weight:500;font-size:36px;text-align:center;margin-bottom:28px}
+  details{border-top:1px solid var(--line);padding:22px 4px}
+  details:last-child{border-bottom:1px solid var(--line)}
+  summary{cursor:pointer;font-size:17px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:16px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";font-family:var(--serif);font-size:22px;line-height:1}
+  details[open] summary::after{content:"–"}
+  details p{margin-top:12px;font-size:15.5px;color:var(--ink-2);max-width:640px}
+
+  @media (max-width: 900px){ .wrap{padding-left:20px;padding-right:20px} .plans{flex-direction:column;align-items:stretch} .plan{flex:none} .top h1{font-size:38px} }
+
+</style>
+</head>
+<body>
+
+<header class="wrap nav-top">
+  <a href="01-landing.html" class="logo"><span class="logo-mark" aria-hidden="true"><span style="background:var(--earth)"></span><span style="background:var(--vinnie)"></span><span style="background:var(--bay)"></span><span style="background:var(--blue)"></span></span>Tourism Intelligence</a>
+  <div class="nav-r"><a href="02d-login.html">Log in</a><a href="02a-role.html" class="btn btn-primary btn-sm">Get started</a></div>
+</header>
+
+<main class="wrap">
+  <div class="top">
+    <h1>Simple pricing</h1>
+    <p>Travelers can stay free. Businesses try everything free for 14 days.</p>
+    <nav class="switch" role="tablist" aria-label="Who is this for">
+      <a href="#travelers" id="t-trav" role="tab" class="" aria-selected="false">For travelers</a>
+      <a href="#business" id="t-biz" role="tab" class="on" aria-selected="true">For businesses</a>
+    </nav>
+  </div>
+
+  <section class="tab" id="travelers" aria-labelledby="t-trav">
+    <div class="plans">
+      <div class="plan">
+        <h2>Free</h2><p class="for">For planning a trip now and then</p>
+        <div class="price">Rp0</div><p class="per">Free forever</p>
+        <ul><li>15 AI questions a day</li><li>Up to 3 trips</li><li>Day-by-day planner</li><li>Budget and split bill</li></ul>
+        <a href="02b-signup-traveler.html" class="btn btn-ghost btn-full">Start free</a>
+      </div>
+      <div class="plan feat-t">
+        <span class="pill p-busy tag">For longer trips</span>
+        <h2>Plus</h2><p class="for">For planning every day in detail</p>
+        <div class="price">Rp49.000</div><p class="per">per month, after 7 days free</p>
+        <ul><li>Unlimited AI questions</li><li>Unlimited trips and friends</li><li>Crowd forecast for your exact dates</li><li>Alerts when a place gets busy</li></ul>
+        <a href="05b-payment-traveler.html?plan=plus" class="btn btn-primary btn-full">Try Plus free for 7 days</a>
+      </div>
+    </div>
+    <p class="small">Cancel any time from settings. We remind you before the first payment.</p>
+  </section>
+
+  <section class="tab show" id="business" aria-labelledby="t-biz">
+    <div class="plans">
+      <div class="plan">
+        <h2>Starter</h2><p class="for">Hotels with 30–60 rooms</p>
+        <div class="price">Rp1,5 jt</div><p class="per">per month, after 14 days free</p>
+        <ul><li>14-day demand forecast</li><li>Rate suggestions</li><li>Ask AI about your area</li><li>Monthly report</li></ul>
+        <a href="05a-payment-business.html?plan=starter" class="btn btn-ghost btn-full">Start free trial</a>
+      </div>
+      <div class="plan feat-b">
+        <span class="pill tag" style="background:var(--bay);color:var(--earth)">Most chosen</span>
+        <h2>Growth</h2><p class="for">Hotels with 60–120 rooms</p>
+        <div class="price">Rp4 jt</div><p class="per">per month, after 14 days free</p>
+        <ul><li>Everything in Starter</li><li>What travelers near you are asking</li><li>Package builder</li><li>Up to 3 team members</li></ul>
+        <a href="05a-payment-business.html?plan=growth" class="btn btn-primary btn-full">Start free trial</a>
+      </div>
+      <div class="plan">
+        <h2>API</h2><p class="for">Tour operators and travel apps</p>
+        <div class="price">Rp2,5 jt</div><p class="per">per month, 50,000 requests</p>
+        <ul><li>Place recommendations</li><li>Crowd and demand data</li><li>Rp40 per extra request</li></ul>
+        <a href="#" class="btn btn-ghost btn-full">Contact us</a>
+      </div>
+    </div>
+    <p class="small">Prices exclude 11% VAT. Cancel before day 14 and you pay nothing.</p>
+  </section>
+
+  <section class="faq">
+    <h2>Common questions</h2>
+    <details><summary>Will I be charged during the free trial?</summary><p>No. You add a payment method, and we email you before the first payment. Cancel before the trial ends and you pay nothing.</p></details>
+    <details><summary>Can I book hotels or tickets here?</summary><p>Not yet. We help you decide where to go and when, and link to the place's own website to book. We don't take commission, so our advice stays neutral.</p></details>
+    <details><summary>Can I plan a trip with friends?</summary><p>Yes, on both plans. Invite friends to a trip, plan the days together, and split the costs. Free trips can have up to 4 people.</p></details>
+    <details><summary>How do you choose which places to recommend?</summary><p>We look at crowd patterns, travel time, places our team has checked, and local businesses nearby. We never rank places by how viral they are, and businesses can't pay to appear.</p></details>
+    <details><summary>Do businesses see my questions?</summary><p>No. They only see combined trends from many travelers, never your name or your chats. You can switch this off in settings.</p></details>
+  </section>
+</main>
+
+
+
+
+</body></html>

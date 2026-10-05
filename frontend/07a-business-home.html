@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tourism Intelligence — Home (Business)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============ DESIGN TOKENS ============ */
+  :root{
+    --earth:#513229; --dice:#F4F1E2; --blue:#D8EBF9; --bay:#FCE6B7; --vinnie:#D7D4B1;
+    --paper:#FBF9F0; --white:#FFFDF6; --ink-2:#7A5E55; --line:rgba(81,50,41,.14);
+    --ok:#3F5A33; --ok-bg:rgba(124,154,107,.18);
+    --serif:'Fraunces', Georgia, serif;
+    --sans:'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+    /* spacing scale: 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96 */
+    --r-s:10px; --r-m:16px; --r-l:24px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--dice)}
+  body{color:var(--earth);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  button,input,select,textarea{font:inherit;color:inherit}
+  button{cursor:pointer;background:none;border:0}
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--earth);outline-offset:3px}
+  .serif{font-family:var(--serif);font-weight:500}
+  .muted{color:var(--ink-2)}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:999px;font-size:15px;font-weight:600;border:1.5px solid var(--earth);white-space:nowrap}
+  .btn-primary{background:var(--earth);color:var(--dice)}
+  .btn-ghost{background:transparent;color:var(--earth)}
+  .btn-soft{background:var(--paper);border-color:var(--line);color:var(--earth)}
+  .btn-sm{height:38px;padding:0 16px;font-size:14px}
+  .btn-full{width:100%}
+  .link{font-weight:600;text-decoration:underline;text-underline-offset:4px}
+
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-l);padding:32px}
+  .pill{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;font-size:13px;font-weight:600;white-space:nowrap}
+  .p-quiet{background:var(--blue)} .p-mid{background:var(--bay)} .p-busy{background:var(--earth);color:var(--dice)} .p-local{background:var(--vinnie)} .p-line{border:1px solid var(--line);background:var(--white)}
+
+  .logo{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:20px;font-weight:600;letter-spacing:-.01em}
+  .logo-mark{display:flex;gap:2px;height:24px}
+  .logo-mark span{width:5px;border-radius:2px}
+
+  .field label{display:block;font-size:14px;font-weight:600;margin-bottom:8px}
+  .input{width:100%;height:48px;border:1px solid var(--line);background:var(--white);border-radius:var(--r-s);padding:0 14px;font-size:15px}
+  .toast{position:fixed;left:50%;bottom:32px;transform:translateX(-50%) translateY(20px);background:var(--earth);color:var(--dice);padding:12px 20px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;transition:all .25s;pointer-events:none;z-index:50}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  .app{display:flex;min-height:100vh}
+  .side{flex:0 0 248px;min-height:100vh}
+  .side-in{position:sticky;top:0;height:100vh;min-height:860px;display:flex;flex-direction:column;padding:24px 16px}
+  .side .logo{padding:0 8px 28px;font-size:19px}
+  .side .primary{margin-bottom:24px}
+  .nav{display:flex;flex-direction:column;gap:6px}
+  .nav a{display:flex;align-items:center;gap:14px;height:52px;padding:0 14px;border-radius:14px;font-size:15.5px;font-weight:500}
+  .side-t{background:var(--blue)}
+  .side-t .nav a.on{background:var(--earth);color:var(--dice);font-weight:600}
+  .side-b{background:var(--earth);color:var(--dice)}
+  .side-b .nav a{color:rgba(244,241,226,.8)}
+  .side-b .nav a.on{background:var(--bay);color:var(--earth);font-weight:600}
+  .side-b .primary{background:var(--bay);color:var(--earth);border-color:var(--bay)}
+  .side .bottom{margin-top:auto;display:flex;flex-direction:column;gap:12px}
+  .plan{border-radius:14px;padding:14px;font-size:13.5px}
+  .side-t .plan{background:var(--white)}
+  .side-b .plan{background:rgba(244,241,226,.08)}
+  .plan b{display:block;font-size:14px;font-weight:600}
+  .plan a{font-weight:600;text-decoration:underline;text-underline-offset:3px}
+  .me{display:flex;align-items:center;gap:12px;padding:8px}
+  .me .av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:600}
+  .side-t .me .av{background:var(--earth);color:var(--dice)}
+  .side-b .me .av{background:var(--bay);color:var(--earth)}
+  .me small{display:block;font-size:12.5px;opacity:.75;line-height:1.3}
+  .me .out{margin-left:auto;font-size:13px;font-weight:600;opacity:.8;white-space:nowrap}
+  .me>div{min-width:0}
+
+  .ico{flex:none;width:20px;height:20px;position:relative;display:block}
+  .i-home::before{content:"";position:absolute;left:3px;right:3px;bottom:2px;top:8px;border:1.6px solid currentColor;border-top:0;border-radius:0 0 3px 3px}
+  .i-home::after{content:"";position:absolute;left:3px;top:3px;width:11px;height:11px;border-left:1.6px solid currentColor;border-top:1.6px solid currentColor;transform:translateX(0) rotate(45deg);transform-origin:center;left:4.5px}
+  .i-trip::before{content:"";position:absolute;left:2px;right:2px;top:6px;bottom:2px;border:1.6px solid currentColor;border-radius:4px}
+  .i-trip::after{content:"";position:absolute;left:7px;right:7px;top:2px;height:5px;border:1.6px solid currentColor;border-bottom:0;border-radius:3px 3px 0 0}
+  .i-cal::before{content:"";position:absolute;left:2px;right:2px;top:3px;bottom:2px;border:1.6px solid currentColor;border-radius:4px}
+  .i-cal::after{content:"";position:absolute;left:2px;right:2px;top:8px;border-top:1.6px solid currentColor}
+  .i-ask::before{content:"";position:absolute;left:2px;right:2px;top:3px;bottom:5px;border:1.6px solid currentColor;border-radius:7px 7px 7px 2px}
+  .i-ask::after{content:"";position:absolute;left:4px;bottom:1px;width:5px;height:5px;border-left:1.6px solid currentColor;border-bottom:1.6px solid currentColor;transform:skewX(-20deg)}
+  .i-box::before{content:"";position:absolute;inset:3px;border:1.6px solid currentColor;border-radius:4px}
+  .i-box::after{content:"";position:absolute;left:3px;right:3px;top:9px;border-top:1.6px solid currentColor}
+
+  .page{flex:1;min-width:0;padding:40px 56px 80px}
+  .page-in{max-width:1080px;margin:0 auto}
+  .head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:32px}
+  .head h1{font-family:var(--serif);font-weight:500;font-size:40px;line-height:1.1;letter-spacing:-.02em}
+  .head p{font-size:16px;color:var(--ink-2);margin-top:8px;max-width:560px}
+  .head .acts{display:flex;gap:10px}
+
+  .mbar{display:none}
+  @media (max-width: 900px){
+    .side{display:none}
+    .page{padding:24px 20px 100px}
+    .head{flex-direction:column;align-items:flex-start}
+    .head h1{font-size:30px}
+    .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px))}
+    .mbar-t{background:var(--blue)} .mbar-b{background:var(--earth)}
+    .mbar a{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 0;border-radius:12px;font-size:12px;font-weight:600}
+    .mbar-t a{color:var(--ink-2)} .mbar-t a.on{background:var(--earth);color:var(--dice)}
+    .mbar-b a{color:rgba(244,241,226,.75)} .mbar-b a.on{background:var(--bay);color:var(--earth)}
+  }
+
+  .decide{background:var(--bay);border:1px solid rgba(81,50,41,.18);border-radius:28px;padding:40px;display:flex;gap:40px;align-items:center}
+  .decide-main{flex:1}
+  .decide small{font-size:14px;font-weight:600}
+  .decide h2{font-family:var(--serif);font-weight:500;font-size:38px;line-height:1.1;letter-spacing:-.02em;margin-top:8px}
+  .decide p{font-size:16px;color:#5E4238;margin-top:10px;max-width:520px}
+  .decide .row{display:flex;gap:12px;margin-top:28px}
+  .facts{flex:0 0 300px;display:flex;flex-direction:column;gap:12px}
+  .facts div{background:rgba(255,253,246,.7);border-radius:var(--r-m);padding:14px 18px;font-size:14.5px}
+  .facts b{font-family:var(--serif);font-weight:500;font-size:24px;margin-right:8px}
+  .card h2{font-family:var(--serif);font-weight:500;font-size:24px}
+  .card .hint{font-size:15px;color:var(--ink-2);margin-top:4px}
+  .chart-card{margin-top:24px}
+  .ch-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
+  .legend{display:flex;gap:16px;font-size:13.5px;color:var(--ink-2);flex-wrap:wrap}
+  .legend i{display:inline-block;width:12px;height:12px;border-radius:4px;margin-right:6px;vertical-align:-1px}
+  .chart{display:flex;gap:10px;align-items:flex-end;height:200px;margin-top:28px;position:relative}
+  .chart::before{content:"";position:absolute;left:0;right:0;bottom:50%;border-top:1.5px dashed rgba(81,50,41,.3)}
+  .bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:6px}
+  .bar i{display:block;width:100%;border-radius:8px 8px 4px 4px}
+  .bar span{font-size:12.5px;font-weight:600}
+  .axis{display:flex;gap:10px;margin-top:10px}
+  .axis span{flex:1;text-align:center;font-size:13px;color:var(--ink-2);line-height:1.3}
+  .axis b{display:block;color:var(--earth)}
+  .two{display:flex;gap:24px;margin-top:24px}
+  .two>.card{flex:1}
+  .int{display:flex;align-items:center;gap:16px;padding:16px 0;border-top:1px solid var(--line)}
+  .int:first-of-type{margin-top:16px}
+  .int div{flex:1;font-size:16px}
+  .int small{display:block;font-size:14px;color:var(--ink-2)}
+  .int b{font-family:var(--serif);font-weight:500;font-size:22px}
+  .task{display:flex;align-items:center;gap:14px;padding:16px 0;border-top:1px solid var(--line);font-size:16px;cursor:pointer}
+  .task:first-of-type{margin-top:16px}
+  .task input{width:20px;height:20px;accent-color:var(--earth)}
+  .task small{display:block;font-size:14px;color:var(--ink-2)}
+  .task.done span{text-decoration:line-through;color:var(--ink-2)}
+  .more{margin-top:16px;display:inline-block}
+  @media (max-width: 1000px){ .decide{flex-direction:column;align-items:stretch} .facts{flex:none} .two{flex-direction:column} .ch-head{flex-direction:column} .bar span{display:none} }
+
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side side-b" aria-label="Main navigation"><div class="side-in">
+    <a href="07a-business-home.html" class="logo"><span class="logo-mark" aria-hidden="true"><span style="background:var(--dice)"></span><span style="background:var(--vinnie)"></span><span style="background:var(--bay)"></span><span style="background:var(--blue)"></span></span>Tourism Intelligence</a>
+    <a href="07c-business-ask.html" class="btn btn-full primary">Ask a question</a>
+    <nav class="nav"><a href="07a-business-home.html" class="on" aria-current="page"><span class="ico i-home" aria-hidden="true"></span>Home</a><a href="07b-business-rates.html" class=""><span class="ico i-cal" aria-hidden="true"></span>Rates</a><a href="07d-business-packages.html" class=""><span class="ico i-box" aria-hidden="true"></span>Packages</a><a href="07c-business-ask.html" class=""><span class="ico i-ask" aria-hidden="true"></span>Ask AI</a></nav>
+    <div class="bottom"><div class="plan"><b>Free trial · 13 days left</b>Then Starter, Rp1,5 jt/month. <a href="04-pricing.html#business" style="color:var(--bay)">Change</a></div><div class="me"><span class="av" data-me-initial>R</span><div><span data-me-name>Ratna Dewi</span><small data-prop-name>Hotel Taman Sari</small></div><a href="01-landing.html" class="out" onclick="event.preventDefault();TI.logout().then(()=>location.href='01-landing.html')">Log out</a></div></div>
+  </div></aside>
+  <nav class="mbar mbar-b" aria-label="Main"><a href="07a-business-home.html" class="on"><span class="ico i-home" aria-hidden="true"></span>Home</a><a href="07b-business-rates.html" class=""><span class="ico i-cal" aria-hidden="true"></span>Rates</a><a href="07d-business-packages.html" class=""><span class="ico i-box" aria-hidden="true"></span>Packages</a><a href="07c-business-ask.html" class=""><span class="ico i-ask" aria-hidden="true"></span>Ask AI</a></nav>
+  <main class="page"><div class="page-in">
+  <div class="head"><div><h1>Good morning, Ratna</h1><p>One decision for this week, and what's coming next.</p></div></div>
+
+  <section class="decide" aria-label="Decision for this week">
+    <div class="decide-main">
+      <small>This week's suggestion</small>
+      <h2 id="dec-title">Raise Saturday 10 Oct by 8%</h2>
+      <p id="dec-text">Demand near you is 12% above a normal October Saturday, and similar hotels are filling up.</p>
+      <div class="row"><a href="07b-business-rates.html" class="btn btn-primary">Review in Rates</a><a href="07c-business-ask.html" class="btn btn-ghost">Ask why</a></div>
+    </div>
+    <div class="facts" id="dec-facts"><div><b>112</b>demand index (100 = normal)</div><div><b>64%</b>of rooms already booked</div><div><b>+Rp4,2 jt</b>estimated for that night</div></div>
+  </section>
+
+  <section class="card chart-card" aria-label="Demand forecast">
+    <div class="ch-head"><div><h2>Demand near you, next 14 days</h2><p class="hint">Estimate. The dashed line is a normal day.</p></div>
+      <div class="legend"><span><i style="background:var(--blue)"></i>Low</span><span><i style="background:var(--bay);border:1px solid var(--line)"></i>High</span><span><i style="background:var(--earth)"></i>Very high</span></div></div>
+    <div class="chart" id="chart"></div>
+    <div class="axis" id="axis"></div>
+  </section>
+
+  <div class="two">
+    <section class="card" aria-label="Rising interests">
+      <h2>Travelers near you are asking about</h2>
+      <p class="hint">This week, compared with last week.</p>
+      <div id="ints"><div class="int"><div>Quiet waterfalls<small>412 questions</small></div><b>3×</b></div>
+      <div class="int"><div>Cooking classes<small>268 questions</small></div><b>+40%</b></div>
+      <div class="int"><div>Rice terraces without crowds<small>231 questions</small></div><b>+28%</b></div></div>
+      <a href="07d-business-packages.html" class="btn btn-soft btn-sm more">Build a package</a>
+    </section>
+    <section class="card" aria-label="Tasks">
+      <h2>Your tasks</h2>
+      <p class="hint">Tick them off as you go.</p>
+      <label class="task"><input type="checkbox"><span>Apply Saturday 10 Oct rate<small>Due tomorrow</small></span></label>
+      <label class="task"><input type="checkbox"><span>Finish "Quiet Ubud mornings" package<small>Due 5 Oct</small></span></label>
+      <label class="task"><input type="checkbox"><span>Share quiet-places list with front desk<small>No date</small></span></label>
+    </section>
+  </div>
+</div></main>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<script src="assets/ti.js"></script>
+<script>
+/* ==========================================================
+   DATA LAYER — every page talks to the backend ONLY through `api`.
+   Right now it returns demo data. In the backend step we replace
+   the bodies of these functions with fetch('/api/...') calls.
+   ========================================================== */
+const DEMO_DELAY = 500;
+const wait = ms => new Promise(r => setTimeout(r, ms));
+const rupiah = n => 'Rp' + Math.round(n).toLocaleString('id-ID');
+function toast(msg){const t=document.getElementById('toast'); if(!t) return; t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),2200);}
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* Demo data (becomes GET /api/properties/:id/forecast in the backend step) */
+const DAYS = [
+  {d:'Mon',n:28,idx:92, rate:1800000, booked:71}, {d:'Tue',n:29,idx:94, rate:1800000, booked:68},
+  {d:'Wed',n:30,idx:96, rate:1800000, booked:66}, {d:'Thu',n:1, idx:97, rate:1800000, booked:63},
+  {d:'Fri',n:2, idx:104,rate:1850000, booked:72, applied:true}, {d:'Sat',n:3, idx:108,rate:1800000, booked:75, sug:1900000},
+  {d:'Sun',n:4, idx:101,rate:1800000, booked:70}, {d:'Mon',n:5, idx:90, rate:1800000, booked:55},
+  {d:'Tue',n:6, idx:91, rate:1800000, booked:52}, {d:'Wed',n:7, idx:94, rate:1800000, booked:50},
+  {d:'Thu',n:8, idx:98, rate:1800000, booked:54}, {d:'Fri',n:9, idx:106,rate:1900000, booked:60, applied:true},
+  {d:'Sat',n:10,idx:112,rate:1800000, booked:64, sug:1950000}, {d:'Sun',n:11,idx:102,rate:1800000, booked:58}
+];
+const level = i => i>=110?['p-busy','Very high']: i>=103?['p-mid','High']: i>=97?['p-line','Normal']:['p-quiet','Low'];
+const jt = v => 'Rp' + (v/1e6).toFixed(2).replace(/0$/,'').replace(/\.$/,'').replace('.',',') + ' jt';
+const api = {
+  async getForecast(){ return DAYS; },
+  // BACKEND STEP: PUT /api/properties/:id/rates/:date  {rate}
+  async setRate(i, rate){ await wait(200); DAYS[i].rate=rate; DAYS[i].applied=true; delete DAYS[i].sug; }
+};
+
+function drawChart(){ document.getElementById('chart').innerHTML = DAYS.map(x=>{const h=Math.max(8,(x.idx-80)*2.5); const c=x.idx>=110?'var(--earth)':x.idx>=100?'var(--bay);border:1px solid rgba(81,50,41,.25)':'var(--blue)'; return `<div class="bar"><span>${x.idx}</span><i style="height:${h}%;background:${c}"></i></div>`}).join('');
+document.getElementById('axis').innerHTML = DAYS.map(x=>`<span>${x.d}<b>${x.n}</b></span>`).join(''); }
+document.querySelectorAll('.task input').forEach(c=>c.addEventListener('change',()=>{c.closest('.task').classList.toggle('done',c.checked); if(c.checked) toast('Task done');}));
+if (TI.live) {
+  TI.guard('business').then(async m => { if(!m) return;
+    try {
+      const prop = await TI.http('GET','/api/business/property'); document.querySelectorAll('[data-prop-name]').forEach(e=>e.textContent=prop.name);
+      DAYS.length=0; DAYS.push(...await TI.http('GET','/api/business/forecast')); drawChart();
+      const top = DAYS.reduce((a,b)=>b.idx>a.idx?b:a); const full={Mon:'Monday',Tue:'Tuesday',Wed:'Wednesday',Thu:'Thursday',Fri:'Friday',Sat:'Saturday',Sun:'Sunday'};
+      if (top.sug){ const pct=Math.round((top.sug-top.rate)/top.rate*100);
+        document.getElementById('dec-title').textContent = `Raise ${full[top.d]} ${top.n} by ${pct}%`;
+        document.getElementById('dec-text').textContent = `Demand near you is ${top.idx-100}% above a normal day.${top.event?' '+top.event+'.':''}`;
+        document.getElementById('dec-facts').innerHTML = `<div><b>${top.idx}</b>demand index (100 = normal)</div><div><b>${top.booked}%</b>of rooms already booked</div><div><b>${jt(top.sug)}</b>suggested price</div>`;
+      } else { document.getElementById('dec-title').textContent='Your prices look right this week'; document.getElementById('dec-text').textContent='No changes needed. We will tell you when demand moves.'; document.getElementById('dec-facts').innerHTML=''; }
+      const t = await TI.http('GET','/api/business/trends');
+      document.getElementById('ints').innerHTML = t.slice(0,3).map(x=>`<div class="int"><div>${esc(x.t)}<small>${x.q} questions</small></div><b>${esc(x.c)}</b></div>`).join('') || '<p class="muted" style="margin-top:16px">Not enough traveler questions near you yet.</p>';
+    } catch(e){ if(String(e.message).includes('property')) location.href='03-business-setup.html'; else toast(e.message); }
+  });
+} else { drawChart(); }
+</script>
+</body>
+</html>

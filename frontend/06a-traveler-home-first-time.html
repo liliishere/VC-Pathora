@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tourism Intelligence — Welcome</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============ DESIGN TOKENS ============ */
+  :root{
+    --earth:#513229; --dice:#F4F1E2; --blue:#D8EBF9; --bay:#FCE6B7; --vinnie:#D7D4B1;
+    --paper:#FBF9F0; --white:#FFFDF6; --ink-2:#7A5E55; --line:rgba(81,50,41,.14);
+    --ok:#3F5A33; --ok-bg:rgba(124,154,107,.18);
+    --serif:'Fraunces', Georgia, serif;
+    --sans:'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+    /* spacing scale: 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96 */
+    --r-s:10px; --r-m:16px; --r-l:24px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--dice)}
+  body{color:var(--earth);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  button,input,select,textarea{font:inherit;color:inherit}
+  button{cursor:pointer;background:none;border:0}
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--earth);outline-offset:3px}
+  .serif{font-family:var(--serif);font-weight:500}
+  .muted{color:var(--ink-2)}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:999px;font-size:15px;font-weight:600;border:1.5px solid var(--earth);white-space:nowrap}
+  .btn-primary{background:var(--earth);color:var(--dice)}
+  .btn-ghost{background:transparent;color:var(--earth)}
+  .btn-soft{background:var(--paper);border-color:var(--line);color:var(--earth)}
+  .btn-sm{height:38px;padding:0 16px;font-size:14px}
+  .btn-full{width:100%}
+  .link{font-weight:600;text-decoration:underline;text-underline-offset:4px}
+
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-l);padding:32px}
+  .pill{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;font-size:13px;font-weight:600;white-space:nowrap}
+  .p-quiet{background:var(--blue)} .p-mid{background:var(--bay)} .p-busy{background:var(--earth);color:var(--dice)} .p-local{background:var(--vinnie)} .p-line{border:1px solid var(--line);background:var(--white)}
+
+  .logo{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:20px;font-weight:600;letter-spacing:-.01em}
+  .logo-mark{display:flex;gap:2px;height:24px}
+  .logo-mark span{width:5px;border-radius:2px}
+
+  .field label{display:block;font-size:14px;font-weight:600;margin-bottom:8px}
+  .input{width:100%;height:48px;border:1px solid var(--line);background:var(--white);border-radius:var(--r-s);padding:0 14px;font-size:15px}
+  .toast{position:fixed;left:50%;bottom:32px;transform:translateX(-50%) translateY(20px);background:var(--earth);color:var(--dice);padding:12px 20px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;transition:all .25s;pointer-events:none;z-index:50}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  .app{display:flex;min-height:100vh}
+  .side{flex:0 0 248px;min-height:100vh}
+  .side-in{position:sticky;top:0;height:100vh;min-height:860px;display:flex;flex-direction:column;padding:24px 16px}
+  .side .logo{padding:0 8px 28px;font-size:19px}
+  .side .primary{margin-bottom:24px}
+  .nav{display:flex;flex-direction:column;gap:6px}
+  .nav a{display:flex;align-items:center;gap:14px;height:52px;padding:0 14px;border-radius:14px;font-size:15.5px;font-weight:500}
+  .side-t{background:var(--blue)}
+  .side-t .nav a.on{background:var(--earth);color:var(--dice);font-weight:600}
+  .side-b{background:var(--earth);color:var(--dice)}
+  .side-b .nav a{color:rgba(244,241,226,.8)}
+  .side-b .nav a.on{background:var(--bay);color:var(--earth);font-weight:600}
+  .side-b .primary{background:var(--bay);color:var(--earth);border-color:var(--bay)}
+  .side .bottom{margin-top:auto;display:flex;flex-direction:column;gap:12px}
+  .plan{border-radius:14px;padding:14px;font-size:13.5px}
+  .side-t .plan{background:var(--white)}
+  .side-b .plan{background:rgba(244,241,226,.08)}
+  .plan b{display:block;font-size:14px;font-weight:600}
+  .plan a{font-weight:600;text-decoration:underline;text-underline-offset:3px}
+  .me{display:flex;align-items:center;gap:12px;padding:8px}
+  .me .av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:600}
+  .side-t .me .av{background:var(--earth);color:var(--dice)}
+  .side-b .me .av{background:var(--bay);color:var(--earth)}
+  .me small{display:block;font-size:12.5px;opacity:.75;line-height:1.3}
+  .me .out{margin-left:auto;font-size:13px;font-weight:600;opacity:.8;white-space:nowrap}
+  .me>div{min-width:0}
+
+  .ico{flex:none;width:20px;height:20px;position:relative;display:block}
+  .i-home::before{content:"";position:absolute;left:3px;right:3px;bottom:2px;top:8px;border:1.6px solid currentColor;border-top:0;border-radius:0 0 3px 3px}
+  .i-home::after{content:"";position:absolute;left:3px;top:3px;width:11px;height:11px;border-left:1.6px solid currentColor;border-top:1.6px solid currentColor;transform:translateX(0) rotate(45deg);transform-origin:center;left:4.5px}
+  .i-trip::before{content:"";position:absolute;left:2px;right:2px;top:6px;bottom:2px;border:1.6px solid currentColor;border-radius:4px}
+  .i-trip::after{content:"";position:absolute;left:7px;right:7px;top:2px;height:5px;border:1.6px solid currentColor;border-bottom:0;border-radius:3px 3px 0 0}
+  .i-cal::before{content:"";position:absolute;left:2px;right:2px;top:3px;bottom:2px;border:1.6px solid currentColor;border-radius:4px}
+  .i-cal::after{content:"";position:absolute;left:2px;right:2px;top:8px;border-top:1.6px solid currentColor}
+  .i-ask::before{content:"";position:absolute;left:2px;right:2px;top:3px;bottom:5px;border:1.6px solid currentColor;border-radius:7px 7px 7px 2px}
+  .i-ask::after{content:"";position:absolute;left:4px;bottom:1px;width:5px;height:5px;border-left:1.6px solid currentColor;border-bottom:1.6px solid currentColor;transform:skewX(-20deg)}
+  .i-box::before{content:"";position:absolute;inset:3px;border:1.6px solid currentColor;border-radius:4px}
+  .i-box::after{content:"";position:absolute;left:3px;right:3px;top:9px;border-top:1.6px solid currentColor}
+
+  .page{flex:1;min-width:0;padding:40px 56px 80px}
+  .page-in{max-width:1080px;margin:0 auto}
+  .head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:32px}
+  .head h1{font-family:var(--serif);font-weight:500;font-size:40px;line-height:1.1;letter-spacing:-.02em}
+  .head p{font-size:16px;color:var(--ink-2);margin-top:8px;max-width:560px}
+  .head .acts{display:flex;gap:10px}
+
+  .mbar{display:none}
+  @media (max-width: 900px){
+    .side{display:none}
+    .page{padding:24px 20px 100px}
+    .head{flex-direction:column;align-items:flex-start}
+    .head h1{font-size:30px}
+    .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px))}
+    .mbar-t{background:var(--blue)} .mbar-b{background:var(--earth)}
+    .mbar a{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 0;border-radius:12px;font-size:12px;font-weight:600}
+    .mbar-t a{color:var(--ink-2)} .mbar-t a.on{background:var(--earth);color:var(--dice)}
+    .mbar-b a{color:rgba(244,241,226,.75)} .mbar-b a.on{background:var(--bay);color:var(--earth)}
+  }
+
+  dialog.nt{border:0;border-radius:28px;padding:0;width:min(520px,92vw);background:var(--paper);color:var(--earth);box-shadow:0 30px 80px rgba(81,50,41,.25)}
+  dialog.nt::backdrop{background:rgba(81,50,41,.35)}
+  .nt form{padding:36px;display:flex;flex-direction:column;gap:18px}
+  .nt h2{font-family:var(--serif);font-weight:500;font-size:30px}
+  .nt .sub{color:var(--ink-2);margin-top:-10px}
+  .nt .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .nt .acts{display:flex;gap:10px;justify-content:flex-end;margin-top:6px}
+  .nt .err{display:none;background:var(--bay);border-radius:10px;padding:10px 12px;font-size:14.5px}
+
+  .next{display:flex;gap:0;border-radius:28px;overflow:hidden;background:var(--blue);border:1px solid rgba(81,50,41,.15)}
+  .next-main{flex:1;padding:40px}
+  .next small{font-size:14px;font-weight:600}
+  .next h2{font-family:var(--serif);font-weight:500;font-size:40px;line-height:1.1;letter-spacing:-.02em;margin-top:8px}
+  .next .meta{font-size:16px;color:#5E4238;margin-top:8px}
+  .prog{margin-top:28px;max-width:440px}
+  .prog-top{display:flex;justify-content:space-between;font-size:14.5px;font-weight:600}
+  .bar{height:10px;border-radius:999px;background:rgba(81,50,41,.12);margin-top:10px;overflow:hidden}
+  .bar i{display:block;height:100%;width:57%;background:var(--earth);border-radius:999px}
+  .next .row{display:flex;gap:12px;margin-top:32px}
+  .count{flex:0 0 220px;background:var(--earth);color:var(--dice);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:32px}
+  .count b{font-family:var(--serif);font-weight:500;font-size:88px;line-height:.9}
+  .count span{font-size:16px;margin-top:10px;color:var(--vinnie)}
+
+  .two{display:flex;gap:24px;margin-top:24px}
+  .two>.card{flex:1}
+  .card h2{font-family:var(--serif);font-weight:500;font-size:24px}
+  .card .hint{font-size:15px;color:var(--ink-2);margin-top:4px}
+  .todo{display:flex;gap:16px;align-items:center;padding:18px 0;border-top:1px solid var(--line)}
+  .todo:first-of-type{margin-top:16px}
+  .todo .dot{flex:none;width:12px;height:12px;border-radius:4px}
+  .todo div{flex:1;font-size:15.5px}
+  .todo small{display:block;font-size:14px;color:var(--ink-2)}
+  .quick{display:flex;gap:10px;margin-top:20px}
+  .quick .input{flex:1}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .chips a{height:38px;padding:0 16px;display:flex;align-items:center;border-radius:999px;border:1px solid var(--line);background:var(--white);font-size:14px}
+
+  .sec-title{display:flex;justify-content:space-between;align-items:baseline;margin-top:48px;margin-bottom:20px}
+  .sec-title h2{font-family:var(--serif);font-weight:500;font-size:28px}
+  .trips{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .trip{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-l);overflow:hidden;display:flex;flex-direction:column}
+  .trip .cover{height:96px;display:flex;align-items:flex-end;gap:5px;padding:16px 20px}
+  .trip .cover span{width:16px;border-radius:4px 4px 0 0;background:var(--earth)}
+  .trip .b{padding:20px;flex:1;display:flex;flex-direction:column}
+  .trip b{font-family:var(--serif);font-weight:500;font-size:21px}
+  .trip small{font-size:14px;color:var(--ink-2);margin-top:4px}
+  .trip .link{margin-top:auto;padding-top:16px;font-size:14.5px}
+  .trip.new{border:1.5px dashed rgba(81,50,41,.35);background:transparent;align-items:center;justify-content:center;text-align:center;padding:28px}
+
+  /* first-time */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .st{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-l);padding:32px;display:flex;flex-direction:column}
+  .st.now{background:var(--blue);border-color:rgba(81,50,41,.2)}
+  .st .n{width:40px;height:40px;border-radius:50%;background:var(--earth);color:var(--dice);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:18px}
+  .st h3{font-family:var(--serif);font-weight:500;font-size:24px;margin-top:20px}
+  .st p{color:var(--ink-2);margin-top:8px;flex:1}
+  .st .btn{margin-top:24px;align-self:flex-start}
+  .tip{margin-top:24px;font-size:15px;color:var(--ink-2);text-align:center}
+  @media (max-width: 1000px){ .next{flex-direction:column} .count{flex:none} .two{flex-direction:column} .trips,.steps{grid-template-columns:1fr} }
+
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side side-t" aria-label="Main navigation"><div class="side-in">
+    <a href="06a-traveler-home.html" class="logo"><span class="logo-mark" aria-hidden="true"><span style="background:var(--earth)"></span><span style="background:var(--vinnie)"></span><span style="background:var(--bay)"></span><span style="background:var(--blue)"></span></span>Tourism Intelligence</a>
+    <a href="06b-trip-itinerary.html" class="btn btn-primary btn-full primary">+ New trip</a>
+    <nav class="nav"><a href="06a-traveler-home.html" class="on" aria-current="page"><span class="ico i-home" aria-hidden="true"></span>Home</a><a href="06b-trip-itinerary.html" class=""><span class="ico i-trip" aria-hidden="true"></span>My trips</a><a href="06c-traveler-ask.html" class=""><span class="ico i-ask" aria-hidden="true"></span>Ask AI</a></nav>
+    <div class="bottom"><div class="plan"><b>Free plan</b><span data-quota>15 AI questions a day, free.</span> <a href="04-pricing.html">See plans</a></div><div class="me"><span class="av" data-me-initial>M</span><div><span data-me-name>Maya</span><small>Traveler</small></div><a href="01-landing.html" class="out" onclick="event.preventDefault();TI.logout().then(()=>location.href='01-landing.html')">Log out</a></div></div>
+  </div></aside>
+  <nav class="mbar mbar-t" aria-label="Main"><a href="06a-traveler-home.html" class="on"><span class="ico i-home" aria-hidden="true"></span>Home</a><a href="06b-trip-itinerary.html" class=""><span class="ico i-trip" aria-hidden="true"></span>My trips</a><a href="06c-traveler-ask.html" class=""><span class="ico i-ask" aria-hidden="true"></span>Ask AI</a></nav>
+  <main class="page"><div class="page-in">
+  <div class="head"><div><h1>Welcome, <span data-me-name>Maya</span></h1><p>Plan your first trip in three steps. It takes about two minutes.</p></div></div>
+  <div class="steps">
+    <div class="st now"><span class="n">1</span><h3>Create a trip</h3><p>Give it a name and dates. You can change them later.</p><a href="#" onclick="newTrip(event)" class="btn btn-primary">Create a trip</a></div>
+    <div class="st"><span class="n">2</span><h3>Ask AI for ideas</h3><p>Ask where to go and when it's quiet. Every answer explains why.</p><a href="06c-traveler-ask.html" class="btn btn-ghost">Ask AI</a></div>
+    <div class="st"><span class="n">3</span><h3>Invite friends</h3><p>Plan together, then see the total cost and split it.</p><a href="06b-trip-group.html" class="btn btn-ghost">Invite</a></div>
+  </div>
+  <p class="tip">Not sure where to start? Try asking: <a class="link" href="06c-traveler-ask.html">"Where's quiet near Ubud this weekend?"</a></p>
+
+<dialog class="nt" id="ntDialog" aria-labelledby="ntTitle">
+  <form id="ntForm" method="dialog">
+    <h2 id="ntTitle">New trip</h2>
+    <p class="sub">You can change all of this later.</p>
+    <div class="err" id="ntErr" role="alert"></div>
+    <div class="field"><label for="ntName">Trip name</label><input class="input" id="ntName" placeholder="e.g. Bali with friends" required></div>
+    <div class="row2">
+      <div class="field"><label for="ntStart">First day</label><input class="input" id="ntStart" type="date" value="2026-11-02" required></div>
+      <div class="field"><label for="ntEnd">Last day</label><input class="input" id="ntEnd" type="date" value="2026-11-06" required></div>
+    </div>
+    <div class="field"><label for="ntStay">Where are you staying?</label><select class="input" id="ntStay"><option>Ubud</option><option>Penestanan</option><option>Gianyar</option><option>Badung</option><option>Denpasar</option><option>Tabanan</option><option>Karangasem</option></select></div>
+    <div class="acts"><button type="button" class="btn btn-ghost" onclick="document.getElementById('ntDialog').close()">Cancel</button><button type="submit" class="btn btn-primary" value="ok">Create trip</button></div>
+  </form>
+</dialog></div></main>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<script src="assets/ti.js"></script>
+<script>
+/* ==========================================================
+   DATA LAYER — every page talks to the backend ONLY through `api`.
+   Right now it returns demo data. In the backend step we replace
+   the bodies of these functions with fetch('/api/...') calls.
+   ========================================================== */
+const DEMO_DELAY = 500;
+const wait = ms => new Promise(r => setTimeout(r, ms));
+const rupiah = n => 'Rp' + Math.round(n).toLocaleString('id-ID');
+function toast(msg){const t=document.getElementById('toast'); if(!t) return; t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),2200);}
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+if(TI.live) TI.guard('traveler');
+function newTrip(e){ if(e) e.preventDefault(); document.getElementById('ntErr').style.display='none'; document.getElementById('ntDialog').showModal(); document.getElementById('ntName').focus(); }
+document.getElementById('ntForm').addEventListener('submit', async e => { e.preventDefault();
+  const name=document.getElementById('ntName').value.trim(), s=document.getElementById('ntStart').value, en=document.getElementById('ntEnd').value;
+  const err=m=>{const b=document.getElementById('ntErr'); b.textContent=m; b.style.display='block';};
+  if(!name||!s||!en) return err('Please add a name and both dates.');
+  if(en < s) return err('The last day must be after the first day.');
+  if(!TI.live){ location.href='06b-trip-itinerary.html'; return; }
+  try{ const r = await TI.http('POST','/api/trips',{name, start_date:s, end_date:en, stay_area:document.getElementById('ntStay').value}); TI.setTrip(r.id); location.href='06b-trip-itinerary.html?trip='+r.id; }
+  catch(x){ err(x.message); }
+});
+</script>
+</body>
+</html>

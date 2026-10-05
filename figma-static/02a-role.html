@@ -1,0 +1,192 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tourism Intelligence — Sign up</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  /* ============ DESIGN TOKENS (same as 01-landing) ============ */
+  :root{
+    --earth:#513229; --dice:#F4F1E2; --blue:#D8EBF9; --bay:#FCE6B7; --vinnie:#D7D4B1;
+    --paper:#FBF9F0; --ink-2:#7A5E55; --line:rgba(81,50,41,.16);
+    --serif:'Fraunces', Georgia, serif;
+    --sans:'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+    --r-s:8px; --r-m:14px; --r-l:22px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--dice);color:var(--earth);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--earth);outline-offset:3px}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:50px;padding:0 22px;border-radius:999px;font-family:var(--sans);font-size:15px;font-weight:600;border:1.5px solid var(--earth);cursor:pointer}
+  .btn-primary{background:var(--earth);color:var(--dice)}
+  .btn-ghost{background:transparent;color:var(--earth)}
+  .btn-full{width:100%}
+
+  .logo{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:21px;font-weight:600;letter-spacing:-.01em}
+  .logo-mark{display:flex;gap:2px;height:26px}
+  .logo-mark span{width:6px;border-radius:2px}
+  .top{display:flex;justify-content:space-between;align-items:center;height:56px}
+  .top .back{font-size:14.5px;color:var(--ink-2)}
+
+  /* ---------- Split layout (forms) ---------- */
+  .page{display:flex;min-height:100vh;min-height:920px}
+  .side-form{flex:1 1 0;display:flex;flex-direction:column;padding-left:64px;padding-right:64px;padding-top:28px;padding-bottom:40px}
+  .form-area{flex:1;display:flex;align-items:center;justify-content:center;padding-top:32px;padding-bottom:32px}
+  .form{width:100%;max-width:440px}
+  .role-pill{display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 12px;border-radius:999px;font-size:13px;font-weight:600;border:1px solid var(--line)}
+  .role-pill a{font-weight:500;color:var(--ink-2);text-decoration:underline;text-underline-offset:3px;margin-left:4px}
+  .form h1{font-family:var(--serif);font-weight:500;font-size:42px;line-height:1.08;letter-spacing:-.02em;margin-top:16px}
+  .form .sub{margin-top:10px;color:var(--ink-2);font-size:16px}
+
+  .steps{display:flex;gap:8px;align-items:center;margin-top:22px;font-size:13px;color:var(--ink-2)}
+  .st{display:flex;align-items:center;gap:6px}
+  .st i{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-style:normal;font-size:11.5px;font-weight:600}
+  .st.now{color:var(--earth);font-weight:600}.st.now i{background:var(--earth);color:var(--dice);border-color:var(--earth)}
+  .st-line{flex:0 0 18px;height:1px;background:var(--line)}
+
+  .google{margin-top:24px;background:var(--paper);border-color:var(--line);width:100%}
+  .g-dot{width:18px;height:18px;border-radius:50%;background:conic-gradient(#4285F4 0 25%,#34A853 0 50%,#FBBC05 0 75%,#EA4335 0)}
+  .or{display:flex;align-items:center;gap:14px;margin:20px 0;font-size:13.5px;color:var(--ink-2)}
+  .or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+  .fields{display:flex;flex-direction:column;gap:16px}
+  .row{display:flex;gap:12px}.row .field{flex:1}
+  .field label{display:flex;justify-content:space-between;font-size:14px;font-weight:500;margin-bottom:6px}
+  .field label span{font-weight:400;color:var(--ink-2)}
+  .field label a{font-weight:500;color:var(--ink-2);text-decoration:underline;text-underline-offset:3px}
+  .input{width:100%;height:48px;border:1px solid var(--line);background:var(--paper);border-radius:var(--r-s);padding:0 14px;font-size:15px;display:flex;align-items:center}
+  .input.ph{color:#A8958D}
+  .select{justify-content:space-between}
+  .select::after{content:"";width:8px;height:8px;border-right:1.5px solid var(--earth);border-bottom:1.5px solid var(--earth);transform:rotate(45deg) translateY(-3px)}
+  .hint{font-size:13px;color:var(--ink-2);margin-top:6px}
+  .types{display:flex;flex-wrap:wrap;gap:8px}
+  .type{height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--paper);font-size:14px;display:flex;align-items:center}
+  .type.on-b{background:var(--bay);border-color:rgba(81,50,41,.35);font-weight:600}
+  .type.on-t{background:var(--blue);border-color:rgba(81,50,41,.35);font-weight:600}
+
+  .consent{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:var(--r-m);background:var(--paper);border:1px solid var(--line)}
+  .switch{flex:0 0 38px;height:22px;border-radius:999px;background:var(--earth);position:relative;margin-top:2px}
+  .switch::after{content:"";position:absolute;right:3px;top:3px;width:16px;height:16px;border-radius:50%;background:var(--dice)}
+  .consent b{display:block;font-size:14px;font-weight:600}
+  .consent p{font-size:13px;color:var(--ink-2)}
+  .check{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--ink-2)}
+  .box{flex:0 0 18px;height:18px;border-radius:5px;border:1.5px solid var(--earth);background:var(--earth);position:relative;margin-top:2px}
+  .box::after{content:"";position:absolute;left:5px;top:1px;width:4px;height:9px;border-right:2px solid var(--dice);border-bottom:2px solid var(--dice);transform:rotate(45deg)}
+  .check a{text-decoration:underline;text-underline-offset:3px;color:var(--earth)}
+  .submit{margin-top:24px}
+  .below{margin-top:18px;font-size:14px;color:var(--ink-2);text-align:center}
+  .below a{color:var(--earth);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+
+  /* ---------- Right panels ---------- */
+  .panel{flex:0 0 46%;display:flex;flex-direction:column;padding:56px 64px;position:relative;overflow:hidden}
+  .panel.t{background:var(--blue)}
+  .panel.b{background:var(--earth);color:var(--dice)}
+  .strips{position:absolute;top:0;right:64px;display:flex;gap:6px;height:110px}
+  .strips span{width:22px;border-radius:0 0 6px 6px}
+  .panel h2{margin-top:110px;font-family:var(--serif);font-weight:500;font-size:38px;line-height:1.1;letter-spacing:-.02em;max-width:460px}
+  .panel .p-sub{margin-top:12px;font-size:16px;max-width:430px}
+  .panel.t .p-sub{color:#5E4238}.panel.b .p-sub{color:var(--vinnie)}
+  .mock{margin-top:32px;background:var(--dice);color:var(--earth);border-radius:var(--r-l);padding:18px;max-width:480px}
+  .m-title{font-size:13px;color:var(--ink-2);padding:0 6px 10px;display:flex;justify-content:space-between}
+  .m-item{display:flex;gap:12px;align-items:center;padding:11px 6px;border-top:1px solid var(--line);font-size:14.5px;line-height:1.35}
+  .m-item small{display:block;font-size:12.5px;color:var(--ink-2)}
+  .m-dot{flex:0 0 10px;height:10px;border-radius:3px}
+  .m-txt{flex:1}
+  .m-tag{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px}
+  .cols{margin-top:auto;padding-top:36px;display:flex;gap:16px;max-width:480px}
+  .col{flex:1;padding-top:14px}
+  .panel.t .col{border-top:1px solid rgba(81,50,41,.25)}
+  .panel.b .col{border-top:1px solid rgba(244,241,226,.22)}
+  .col h3{font-family:var(--serif);font-weight:500;font-size:19px;margin-bottom:8px}
+  .col ul{list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px}
+  .panel.b .col ul{color:rgba(244,241,226,.8)}
+  .col li{padding-left:16px;position:relative}
+  .col li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:2px;background:var(--earth)}
+  .panel.b .col li::before{background:var(--bay)}
+  .next-steps{margin-top:auto;padding-top:36px;max-width:480px;display:flex;flex-direction:column}
+  .ns{display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(244,241,226,.2)}
+  .ns i{flex:0 0 26px;height:26px;border-radius:50%;border:1.5px solid var(--vinnie);display:flex;align-items:center;justify-content:center;font-style:normal;font-size:12px;font-weight:600;color:var(--vinnie)}
+  .ns.now i{background:var(--bay);border-color:var(--bay);color:var(--earth)}
+  .ns b{display:block;font-weight:600;font-size:15px}
+  .ns span{font-size:13.5px;color:rgba(244,241,226,.72)}
+
+  /* ---------- Role chooser ---------- */
+  .chooser{min-height:100vh;min-height:900px;display:flex;flex-direction:column;padding-left:64px;padding-right:64px;padding-top:28px;padding-bottom:48px;max-width:1280px;margin:0 auto}
+  .ch-head{text-align:center;padding-top:56px}
+  .ch-head h1{font-family:var(--serif);font-weight:500;font-size:56px;line-height:1.05;letter-spacing:-.025em}
+  .ch-head p{margin-top:12px;font-size:17px;color:var(--ink-2)}
+  .roles{display:flex;gap:20px;margin-top:48px}
+  .role{flex:1;border-radius:var(--r-l);padding:36px;display:flex;flex-direction:column;min-height:460px;border:1px solid rgba(81,50,41,.18)}
+  .role.t{background:var(--blue)}.role.b{background:var(--bay)}
+  .role-top{display:flex;justify-content:space-between;align-items:flex-start}
+  .role-icon{display:flex;gap:4px;align-items:flex-end;height:48px}
+  .role-icon span{width:12px;border-radius:3px;background:var(--earth)}
+  .price-tag{font-size:13px;font-weight:600;padding:5px 12px;border-radius:999px;background:rgba(255,253,246,.65);border:1px solid rgba(81,50,41,.2)}
+  .role h2{font-family:var(--serif);font-weight:500;font-size:36px;line-height:1.1;margin-top:28px}
+  .role .lead{margin-top:8px;font-size:16px;color:#5E4238;max-width:440px}
+  .role ul{list-style:none;margin-top:22px;display:flex;flex-direction:column;gap:9px;font-size:15px}
+  .role li{padding-left:22px;position:relative}
+  .role li::before{content:"";position:absolute;left:2px;top:6px;width:5px;height:10px;border-right:2px solid var(--earth);border-bottom:2px solid var(--earth);transform:rotate(45deg)}
+  .role .btn{margin-top:auto}
+  .role .foot{margin-top:28px}
+  .role .foot p{margin-top:10px;font-size:13.5px;color:#5E4238;text-align:center}
+  .ch-foot{margin-top:32px;display:flex;justify-content:center;gap:28px;font-size:14.5px;color:var(--ink-2)}
+  .ch-foot a{color:var(--earth);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+
+  @media (max-width: 1080px){
+    .panel{display:none}.side-form,.chooser{padding-left:40px;padding-right:40px}
+  }
+  @media (max-width: 760px){
+    .side-form,.chooser{padding-left:20px;padding-right:20px}
+    .roles{flex-direction:column}.role{min-height:0}
+    .ch-head h1{font-size:38px}.form h1{font-size:34px}.row{flex-direction:column}
+    .ch-foot{flex-direction:column;align-items:center;gap:10px}
+  }
+</style>
+</head>
+<body>
+
+<main class="chooser">
+  <div class="top"><a href="01-landing.html" class="logo"><span class="logo-mark" aria-hidden="true"><span style="background:var(--earth)"></span><span style="background:var(--vinnie)"></span><span style="background:var(--bay)"></span><span style="background:var(--blue)"></span></span>Tourism Intelligence</a><a href="02d-login.html" class="back">Already have an account? <b style="color:var(--earth)">Log in</b></a></div>
+  <div class="ch-head">
+    <h1>How will you use Tourism Intelligence?</h1>
+    <p>You'll get a different app for each. You can add the other one later.</p>
+  </div>
+
+  <div class="roles">
+    <a href="02b-signup-traveler.html" class="role t">
+      <div class="role-top">
+        <div class="role-icon" aria-hidden="true"><span style="height:40%"></span><span style="height:70%"></span><span style="height:55%"></span></div>
+        <span class="price-tag">Free to use</span>
+      </div>
+      <h2>I'm a traveler</h2>
+      <p class="lead">Plan your own trips with honest advice on where to go, and when.</p>
+      <ul>
+        <li>Ask anything about Bali, any time</li>
+        <li>See how busy places will be</li>
+        <li>Save trips, places and itineraries</li>
+      </ul>
+      <div class="foot"><span class="btn btn-primary btn-full">Continue as a traveler</span><p>No card needed.</p></div>
+    </a>
+
+    <a href="02c-signup-business.html" class="role b">
+      <div class="role-top">
+        <div class="role-icon" aria-hidden="true"><span style="height:45%"></span><span style="height:60%"></span><span style="height:100%"></span><span style="height:75%"></span></div>
+        <span class="price-tag">Free for 14 days</span>
+      </div>
+      <h2>I run a business</h2>
+      <p class="lead">For hotels in Bali, and tour operators through our API.</p>
+      <ul>
+        <li>14-day demand forecast for your area</li>
+        <li>What travelers near you are asking about</li>
+        <li>Analysis chat, tasks and monthly reports</li>
+      </ul>
+      <div class="foot"><span class="btn btn-primary btn-full">Continue as a business</span><p>Takes about 3 minutes, including property setup.</p></div>
+    </a>
+  </div>
+
+  <div class="ch-foot"><span>Just looking? <a href="09-guest-chat.html">Try it as a guest</a></span><span>Not a hotel in Bali yet? <a href="#">Join the waitlist</a></span></div>
+</main>
+
+</body></html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tourism Intelligence — Plan a quieter trip to Bali</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  /* ============ DESIGN TOKENS ============ */
+  :root{
+    --earth:#513229; --dice:#F4F1E2; --blue:#D8EBF9; --bay:#FCE6B7; --vinnie:#D7D4B1;
+    --paper:#FBF9F0; --white:#FFFDF6; --ink-2:#7A5E55; --line:rgba(81,50,41,.14);
+    --ok:#3F5A33; --ok-bg:rgba(124,154,107,.18);
+    --serif:'Fraunces', Georgia, serif;
+    --sans:'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+    /* spacing scale: 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96 */
+    --r-s:10px; --r-m:16px; --r-l:24px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--dice)}
+  body{color:var(--earth);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  button,input,select,textarea{font:inherit;color:inherit}
+  button{cursor:pointer;background:none;border:0}
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--earth);outline-offset:3px}
+  .serif{font-family:var(--serif);font-weight:500}
+  .muted{color:var(--ink-2)}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:999px;font-size:15px;font-weight:600;border:1.5px solid var(--earth);white-space:nowrap}
+  .btn-primary{background:var(--earth);color:var(--dice)}
+  .btn-ghost{background:transparent;color:var(--earth)}
+  .btn-soft{background:var(--paper);border-color:var(--line);color:var(--earth)}
+  .btn-sm{height:38px;padding:0 16px;font-size:14px}
+  .btn-full{width:100%}
+  .link{font-weight:600;text-decoration:underline;text-underline-offset:4px}
+
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-l);padding:32px}
+  .pill{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;font-size:13px;font-weight:600;white-space:nowrap}
+  .p-quiet{background:var(--blue)} .p-mid{background:var(--bay)} .p-busy{background:var(--earth);color:var(--dice)} .p-local{background:var(--vinnie)} .p-line{border:1px solid var(--line);background:var(--white)}
+
+  .logo{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:20px;font-weight:600;letter-spacing:-.01em}
+  .logo-mark{display:flex;gap:2px;height:24px}
+  .logo-mark span{width:5px;border-radius:2px}
+
+  .field label{display:block;font-size:14px;font-weight:600;margin-bottom:8px}
+  .input{width:100%;height:48px;border:1px solid var(--line);background:var(--white);border-radius:var(--r-s);padding:0 14px;font-size:15px}
+  .toast{position:fixed;left:50%;bottom:32px;transform:translateX(-50%) translateY(20px);background:var(--earth);color:var(--dice);padding:12px 20px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;transition:all .25s;pointer-events:none;z-index:50}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  .wrap{width:100%;max-width:1280px;margin:0 auto;padding-left:64px;padding-right:64px}
+  .nav-top{display:flex;align-items:center;justify-content:space-between;height:88px}
+  .links{display:flex;gap:36px;font-size:15px;color:var(--ink-2)}
+  .nav-r{display:flex;align-items:center;gap:16px}
+  .nav-r .login{font-size:15px;font-weight:500}
+
+  .hero{display:flex;gap:72px;align-items:center;padding-top:56px;padding-bottom:120px}
+  .hero-copy{flex:1;min-width:0}
+  .hero h1{font-family:var(--serif);font-weight:500;font-size:72px;line-height:1.02;letter-spacing:-.03em}
+  .hero p{margin-top:24px;font-size:20px;color:var(--ink-2);max-width:520px}
+  .cta{display:flex;gap:12px;margin-top:40px}
+  .note{margin-top:16px;font-size:14px;color:var(--ink-2)}
+
+  .demo{flex:0 0 500px;background:var(--blue);border-radius:32px;padding:28px;display:flex;flex-direction:column;gap:16px}
+  .q{align-self:flex-end;max-width:85%;background:var(--white);border-radius:20px 20px 6px 20px;padding:14px 18px;font-size:16px}
+  .a{background:var(--white);border-radius:20px;padding:22px 24px}
+  .a h3{font-family:var(--serif);font-weight:500;font-size:22px;line-height:1.25}
+  .a .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .a .why{margin-top:16px;padding-top:16px;border-top:1px solid var(--line);font-size:14.5px;color:var(--ink-2)}
+  .a .why b{color:var(--earth)}
+  .demo .add{align-self:flex-start}
+
+  section.block{padding-top:112px;padding-bottom:112px}
+  .sh{text-align:center;max-width:680px;margin:0 auto 56px}
+  .sh h2{font-family:var(--serif);font-weight:500;font-size:48px;line-height:1.1;letter-spacing:-.02em}
+  .sh p{margin-top:16px;font-size:18px;color:var(--ink-2)}
+
+  .steps{display:flex;gap:24px}
+  .step{flex:1;background:var(--paper);border:1px solid var(--line);border-radius:var(--r-l);padding:36px 32px}
+  .num{width:40px;height:40px;border-radius:50%;background:var(--earth);color:var(--dice);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:18px}
+  .step h3{font-family:var(--serif);font-weight:500;font-size:26px;margin-top:24px}
+  .step p{margin-top:10px;font-size:16px;color:var(--ink-2)}
+  .step .mini{margin-top:24px;border-radius:var(--r-m);padding:16px;font-size:14px}
+
+  .pick{background:var(--earth);color:var(--dice)}
+  .pick .sh p{color:var(--vinnie)}
+  .crit{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .c{border:1px solid rgba(244,241,226,.2);border-radius:var(--r-l);padding:28px}
+  .c i{display:block;width:44px;height:8px;border-radius:999px;margin-bottom:24px}
+  .c h3{font-family:var(--serif);font-weight:500;font-size:22px}
+  .c p{margin-top:10px;font-size:15px;color:rgba(244,241,226,.78)}
+  .not{margin-top:40px;text-align:center;font-size:16px;color:var(--vinnie)}
+  .not b{color:var(--dice)}
+
+  .hotel{display:flex;gap:56px;align-items:center;background:var(--bay);border-radius:32px;padding:56px}
+  .hotel-copy{flex:1}
+  .hotel h2{font-family:var(--serif);font-weight:500;font-size:42px;line-height:1.1;letter-spacing:-.02em}
+  .hotel p{margin-top:16px;font-size:17px;color:#5E4238;max-width:480px}
+  .hotel .cta{margin-top:28px}
+  .hotel-card{flex:0 0 420px;background:var(--white);border-radius:var(--r-l);padding:28px}
+  .hotel-card small{font-size:13px;font-weight:600;color:var(--ink-2)}
+  .hotel-card h3{font-family:var(--serif);font-weight:500;font-size:24px;line-height:1.2;margin-top:6px}
+  .hotel-card .why{margin-top:16px;display:flex;flex-direction:column;gap:10px;font-size:14.5px}
+
+  .final{text-align:center;padding-top:112px;padding-bottom:112px}
+  .final h2{font-family:var(--serif);font-weight:500;font-size:52px;letter-spacing:-.02em}
+  .final p{margin-top:14px;font-size:18px;color:var(--ink-2)}
+  .final .cta{justify-content:center}
+
+  footer{border-top:1px solid var(--line);padding-top:32px;padding-bottom:48px;display:flex;justify-content:space-between;align-items:center;gap:24px;font-size:14px;color:var(--ink-2)}
+  footer nav{display:flex;gap:28px}
+
+  @media (max-width: 1080px){
+    .wrap{padding-left:40px;padding-right:40px}
+    .hero,.hotel{flex-direction:column;align-items:stretch}.demo,.hotel-card{flex:none}
+    .steps{flex-direction:column}.crit{grid-template-columns:1fr 1fr}.links{display:none}
+  }
+  @media (max-width: 640px){
+    .wrap{padding-left:20px;padding-right:20px}
+    .hero h1{font-size:44px}.sh h2,.hotel h2,.final h2{font-size:32px}
+    .crit{grid-template-columns:1fr}.cta{flex-direction:column}.hotel{padding:28px}
+    footer{flex-direction:column;align-items:flex-start}
+  }
+
+</style>
+</head>
+<body>
+
+<header class="wrap nav-top">
+  <a href="01-landing.html" class="logo"><span class="logo-mark" aria-hidden="true"><span style="background:var(--earth)"></span><span style="background:var(--vinnie)"></span><span style="background:var(--bay)"></span><span style="background:var(--blue)"></span></span>Tourism Intelligence</a>
+  <nav class="links"><a href="#how">How it works</a><a href="#hotels">For hotels</a><a href="04-pricing.html">Pricing</a></nav>
+  <div class="nav-r"><a href="02d-login.html" class="login">Log in</a><a href="02a-role.html" class="btn btn-primary btn-sm">Get started</a></div>
+</header>
+
+<section class="wrap hero">
+  <div class="hero-copy">
+    <h1>Plan a quieter, better trip to Bali.</h1>
+    <p>Ask our AI where to go and when. It finds places worth visiting, not just the viral ones, and tells you when they're quiet.</p>
+    <div class="cta"><a href="02b-signup-traveler.html" class="btn btn-primary">Start planning, free</a><a href="09-guest-chat.html" class="btn btn-ghost">Try without an account</a></div>
+    <p class="note">Free to use. No card needed.</p>
+  </div>
+  <div class="demo" aria-label="Example of the AI">
+    <div class="q">A quiet waterfall near Ubud on Saturday?</div>
+    <div class="a">
+      <h3>Tibumana Waterfall, before 11:00</h3>
+      <div class="row"><span class="pill p-quiet">Quiet in the morning</span><span class="pill p-line">18 min from Ubud</span><span class="pill p-local">Family warung nearby</span></div>
+      <p class="why"><b>Why this place:</b> locals rate it highly, it rarely gets crowded before 11:00, and Saturday looks dry.</p>
+    </div>
+    <span class="btn btn-primary btn-sm add">+ Add to my trip</span>
+  </div>
+</section>
+
+<section class="block" id="how" style="padding-top:0">
+  <div class="wrap">
+    <div class="sh"><h2>How it works</h2><p>Three steps, from first question to a full plan.</p></div>
+    <div class="steps">
+      <div class="step"><span class="num">1</span><h3>Ask</h3><p>Ask anything about Bali, the way you'd ask a local friend.</p><div class="mini" style="background:var(--blue)">"Where can we see rice terraces without the crowds?"</div></div>
+      <div class="step"><span class="num">2</span><h3>Plan your days</h3><p>Add the answers to your trip and arrange them day by day.</p><div class="mini" style="background:var(--bay)">Sat 10 · 07:30 Tibumana · 10:00 Warung breakfast</div></div>
+      <div class="step"><span class="num">3</span><h3>Go together</h3><p>Invite friends, see the total cost and split it fairly.</p><div class="mini" style="background:var(--vinnie)">Total Rp8,4 jt · Rp4,2 jt each</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block pick">
+  <div class="wrap">
+    <div class="sh"><h2>How we choose places</h2><p>Every recommendation shows its reasons. We look at four things.</p></div>
+    <div class="crit">
+      <div class="c"><i style="background:var(--blue)"></i><h3>Quiet at your time</h3><p>Crowd patterns by hour and day, so you go when it's calm.</p></div>
+      <div class="c"><i style="background:var(--bay)"></i><h3>Worth the trip</h3><p>Places our team has checked and locals rate highly.</p></div>
+      <div class="c"><i style="background:var(--vinnie)"></i><h3>Easy to reach</h3><p>Real travel time from where you're staying.</p></div>
+      <div class="c"><i style="background:var(--dice)"></i><h3>Good for locals</h3><p>Family-run warungs and workshops nearby.</p></div>
+    </div>
+    <p class="not"><b>What we don't use:</b> how viral a place is, or who paid to be shown. Businesses can't buy a spot in your answers.</p>
+  </div>
+</section>
+
+<section class="block" id="hotels">
+  <div class="wrap">
+    <div class="hotel">
+      <div class="hotel-copy">
+        <h2>Run a hotel in Bali?</h2>
+        <p>See what travelers near you are asking for, get a 14-day demand forecast, and set the right price for each night.</p>
+        <div class="cta"><a href="02c-signup-business.html" class="btn btn-primary">Try it free for 14 days</a><a href="04-pricing.html#business" class="btn btn-ghost">Business pricing</a></div>
+      </div>
+      <div class="hotel-card">
+        <small>This week's suggestion</small>
+        <h3>Raise Saturday 10 Oct by 8%</h3>
+        <div class="why"><span class="pill p-mid" style="align-self:flex-start">Demand 12% above normal</span><span class="muted">Based on weather, local events and what travelers near you are asking.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap final">
+  <h2>Where do you want to go first?</h2>
+  <p>Your first trip takes about two minutes to start.</p>
+  <div class="cta"><a href="02b-signup-traveler.html" class="btn btn-primary">Start planning, free</a><a href="09-guest-chat.html" class="btn btn-ghost">Try without an account</a></div>
+</section>
+
+<footer class="wrap">
+  <a href="01-landing.html" class="logo"><span class="logo-mark" aria-hidden="true"><span style="background:var(--earth)"></span><span style="background:var(--vinnie)"></span><span style="background:var(--bay)"></span><span style="background:var(--blue)"></span></span>Tourism Intelligence</a>
+  <nav><a href="04-pricing.html">Pricing</a><a href="#how">How it works</a><a href="#hotels">For hotels</a><a href="#">Privacy</a></nav>
+  <span>© 2026 Tourism Intelligence</span>
+</footer>
+
+
+
+
+</body></html>

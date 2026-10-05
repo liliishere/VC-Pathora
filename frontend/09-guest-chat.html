@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tourism Intelligence — Try Ask AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============ DESIGN TOKENS ============ */
+  :root{
+    --earth:#513229; --dice:#F4F1E2; --blue:#D8EBF9; --bay:#FCE6B7; --vinnie:#D7D4B1;
+    --paper:#FBF9F0; --white:#FFFDF6; --ink-2:#7A5E55; --line:rgba(81,50,41,.14);
+    --ok:#3F5A33; --ok-bg:rgba(124,154,107,.18);
+    --serif:'Fraunces', Georgia, serif;
+    --sans:'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+    /* spacing scale: 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96 */
+    --r-s:10px; --r-m:16px; --r-l:24px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--dice)}
+  body{color:var(--earth);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  button,input,select,textarea{font:inherit;color:inherit}
+  button{cursor:pointer;background:none;border:0}
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--earth);outline-offset:3px}
+  .serif{font-family:var(--serif);font-weight:500}
+  .muted{color:var(--ink-2)}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:999px;font-size:15px;font-weight:600;border:1.5px solid var(--earth);white-space:nowrap}
+  .btn-primary{background:var(--earth);color:var(--dice)}
+  .btn-ghost{background:transparent;color:var(--earth)}
+  .btn-soft{background:var(--paper);border-color:var(--line);color:var(--earth)}
+  .btn-sm{height:38px;padding:0 16px;font-size:14px}
+  .btn-full{width:100%}
+  .link{font-weight:600;text-decoration:underline;text-underline-offset:4px}
+
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-l);padding:32px}
+  .pill{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;font-size:13px;font-weight:600;white-space:nowrap}
+  .p-quiet{background:var(--blue)} .p-mid{background:var(--bay)} .p-busy{background:var(--earth);color:var(--dice)} .p-local{background:var(--vinnie)} .p-line{border:1px solid var(--line);background:var(--white)}
+
+  .logo{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:20px;font-weight:600;letter-spacing:-.01em}
+  .logo-mark{display:flex;gap:2px;height:24px}
+  .logo-mark span{width:5px;border-radius:2px}
+
+  .field label{display:block;font-size:14px;font-weight:600;margin-bottom:8px}
+  .input{width:100%;height:48px;border:1px solid var(--line);background:var(--white);border-radius:var(--r-s);padding:0 14px;font-size:15px}
+  .toast{position:fixed;left:50%;bottom:32px;transform:translateX(-50%) translateY(20px);background:var(--earth);color:var(--dice);padding:12px 20px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;transition:all .25s;pointer-events:none;z-index:50}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  .chat{max-width:780px;margin:0 auto;display:flex;flex-direction:column;min-height:calc(100vh - 120px)}
+  .thread{flex:1;display:flex;flex-direction:column;gap:28px;padding-bottom:32px}
+  .empty{text-align:center;padding:48px 0 16px}
+  .empty h2{font-family:var(--serif);font-weight:500;font-size:28px}
+  .empty p{color:var(--ink-2);margin-top:8px}
+  .msg-q{align-self:flex-end;max-width:80%;border-radius:22px 22px 6px 22px;padding:14px 20px;font-size:16px}
+  .q-t{background:var(--blue)} .q-b{background:var(--bay)}
+  .msg-a{display:flex;flex-direction:column;gap:16px}
+  .msg-a h3{font-family:var(--serif);font-weight:500;font-size:24px;line-height:1.25}
+  .msg-a .txt{color:var(--ink-2);font-size:16px}
+  .places{display:flex;flex-direction:column;gap:12px}
+  .pl{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-l);padding:22px 24px}
+  .pl-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+  .pl h4{font-family:var(--serif);font-weight:500;font-size:20px;line-height:1.25}
+  .pl small{display:block;font-size:14px;color:var(--ink-2);margin-top:4px}
+  .pl .pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .pl details{margin-top:12px;font-size:14.5px}
+  .pl summary{cursor:pointer;font-weight:600;color:var(--ink-2);list-style:none}
+  .pl summary::-webkit-details-marker{display:none}
+  .pl details p{margin-top:6px;color:var(--ink-2)}
+  .facts{display:flex;gap:12px;flex-wrap:wrap}
+  .fact{flex:1;min-width:150px;background:var(--paper);border:1px solid var(--line);border-radius:var(--r-m);padding:16px 18px}
+  .fact b{display:block;font-family:var(--serif);font-weight:500;font-size:26px}
+  .fact span{font-size:14px;color:var(--ink-2)}
+  .basis{font-size:13.5px;color:var(--ink-2)}
+  .follow{display:flex;gap:8px;flex-wrap:wrap}
+  .follow button,.sugg button{height:38px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--paper);font-size:14px}
+  .typing{display:flex;gap:6px;padding:8px 0}
+  .typing i{width:8px;height:8px;border-radius:50%;background:var(--ink-2);opacity:.4;animation:b 1s infinite}
+  .typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+  @keyframes b{50%{opacity:1;transform:translateY(-3px)}}
+  @media (prefers-reduced-motion: reduce){ .typing i{animation:none;opacity:.8} }
+  .composer-wrap{position:sticky;bottom:0;background:var(--dice);padding:16px 0 24px}
+  .sugg{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .composer{display:flex;gap:12px;align-items:flex-end;background:var(--white);border:1.5px solid var(--earth);border-radius:24px;padding:12px 12px 12px 22px}
+  .composer textarea{flex:1;border:0;background:transparent;resize:none;font-size:16px;line-height:1.5;padding:10px 0;min-height:44px;max-height:160px;outline:none}
+  .send{flex:none;width:46px;height:46px;border-radius:50%;background:var(--earth);display:flex;align-items:center;justify-content:center}
+  .send::after{content:"";width:10px;height:10px;border-top:2px solid var(--dice);border-right:2px solid var(--dice);transform:rotate(-45deg) translate(-1px,2px)}
+  .send:disabled{opacity:.4}
+  .quota{display:flex;justify-content:space-between;gap:12px;margin-top:10px;font-size:13.5px;color:var(--ink-2)}
+  .quota a{font-weight:600;text-decoration:underline;text-underline-offset:3px;color:var(--earth)}
+
+  .gbar{display:flex;justify-content:space-between;align-items:center;height:80px;padding:0 40px;border-bottom:1px solid var(--line);background:var(--paper)}
+  .gbar .r{display:flex;align-items:center;gap:16px}
+  .gtag{font-size:14px;color:var(--ink-2)}
+  .gwrap{padding:40px 24px 0}
+  .head{text-align:center;margin-bottom:8px}
+  .head h1{font-family:var(--serif);font-weight:500;font-size:36px}
+  .head p{color:var(--ink-2);margin-top:6px}
+  @media (max-width:640px){ .gbar{padding:0 16px} .gtag{display:none} }
+
+</style>
+</head>
+<body>
+
+<header class="gbar"><a href="01-landing.html" class="logo"><span class="logo-mark" aria-hidden="true"><span style="background:var(--earth)"></span><span style="background:var(--vinnie)"></span><span style="background:var(--bay)"></span><span style="background:var(--blue)"></span></span>Tourism Intelligence</a><div class="r"><span class="gtag">Trying without an account</span><a href="02d-login.html">Log in</a><a href="02b-signup-traveler.html" class="btn btn-primary btn-sm">Sign up free</a></div></header>
+<main class="gwrap">
+  <div class="head"><h1>Ask AI about Bali</h1><p>Try 5 questions. Sign up free to save places to a trip.</p></div>
+
+  <div class="chat">
+    <div class="thread" id="thread" aria-live="polite">
+      <div class="empty" id="empty"><h2>What would you like to know?</h2><p>Try one of these, or type your own question.</p></div>
+    </div>
+    <div class="composer-wrap">
+      <div class="sugg" id="sugg"><button type="button" onclick="ask(this.textContent)">A quiet waterfall near Ubud on Saturday?</button><button type="button" onclick="ask(this.textContent)">Rice terraces without the crowds?</button><button type="button" onclick="ask(this.textContent)">Where to eat near Ubud?</button></div>
+      <form class="composer" id="form">
+        <textarea id="input" rows="1" placeholder="Ask about places, times or food…" aria-label="Your question"></textarea>
+        <button class="send" id="send" type="submit" aria-label="Send"></button>
+      </form>
+      <div class="quota"><span id="quota">5 of 5 questions left today</span><a href="02b-signup-traveler.html">Sign up free for 15 a day</a></div>
+    </div>
+  </div>
+</main>
+<div class="toast" id="toast" role="status"></div>
+<script src="assets/ti.js"></script>
+<script>
+/* ==========================================================
+   DATA LAYER — every page talks to the backend ONLY through `api`.
+   Right now it returns demo data. In the backend step we replace
+   the bodies of these functions with fetch('/api/...') calls.
+   ========================================================== */
+const DEMO_DELAY = 500;
+const wait = ms => new Promise(r => setTimeout(r, ms));
+const rupiah = n => 'Rp' + Math.round(n).toLocaleString('id-ID');
+function toast(msg){const t=document.getElementById('toast'); if(!t) return; t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),2200);}
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const QUOTA_LEFT=5, QUOTA_TOTAL=5, Q_CLASS='q-t', ADD_LABEL='Save';
+
+const CROWD = { quiet:['p-quiet','Quiet at this time'], mid:['p-mid','Moderate'], busy:['p-busy','Usually busy'], local:['p-local','Local business'] };
+const ANSWERS = {
+  waterfall: {title:'Two quiet waterfalls near Ubud', text:'Both are calm in the morning. Saturday looks dry.', places:[
+    {name:'Tibumana Waterfall', info:'18 min from Ubud · 2 hours', crowd:'quiet', local:'Family warung at the entrance', why:'Rarely crowded before 11:00. Our team checked it in September.'},
+    {name:'Tegenungan Waterfall', info:'25 min from Ubud · 2 hours', crowd:'mid', local:'Coffee stall run by the village', why:'Popular, but calm before 09:00. Avoid midday.'}]},
+  rice: {title:'Go early, or go a little further', text:'Tegallalang is closest but gets busy from late morning. These two have more space.', places:[
+    {name:'Jatiluwih rice terraces', info:'Tabanan · 1 h 30 min drive', crowd:'quiet', local:'Red-rice warung at the trail start', why:'A huge area, so visitors spread out. Best before 10:00.'},
+    {name:'Sidemen valley', info:'Karangasem · 1 h 15 min drive', crowd:'quiet', local:'Songket weaving workshop', why:'Few tour groups. Views of Mount Agung on clear days.'}]},
+  food: {title:'Local places to eat near Ubud', text:'Family-run, good value, and not on every top-10 list.', places:[
+    {name:'Warung Pak Nyoman', info:'Near Tibumana · Rp50.000 per person', crowd:'local', local:'Family-run', why:'Simple Balinese food, open from 08:00.'},
+    {name:'Penestanan vegetarian warung', info:'12 min from Ubud · Rp90.000 per person', crowd:'local', local:'Family-run', why:'Many vegetarian dishes, quiet garden seating.'}]},
+  rain: {title:'Good ideas for a rainy afternoon', text:'Indoor, local, and close to Ubud.', places:[
+    {name:'Bamboo craft workshop', info:'15 min · 2 hours · Rp150.000', crowd:'local', local:'Run by local makers', why:'Hands-on and covered. You take your piece home.'},
+    {name:'Balinese massage', info:'5 min · 1 hour · Rp150.000', crowd:'local', local:'Family spa', why:'Relaxing, and easy to fit around the rain.'}]},
+  general: {title:'Quiet places near Ubud this week', text:'Here are two to start with. Ask about food, waterfalls or rainy days for more.', places:[
+    {name:'Campuhan Ridge Walk', info:'Ubud · 1 hour · Free', crowd:'quiet', local:'Warung at the end of the path', why:'Calm at sunrise, busy after 09:00.'},
+    {name:'Tirta Empul at opening', info:'35 min · 1.5 hours · Rp50.000', crowd:'quiet', local:'Offerings sold by village families', why:'Busy by 10:00, but quiet right at 08:00.'}]}
+};
+const api = {
+  // BACKEND STEP: replace with  fetch('/api/chat', {method:'POST', body: JSON.stringify({message, tripId})}).then(r=>r.json())
+  async ask(message){
+    await wait(900);
+    const m = message.toLowerCase();
+    const key = /waterfall|air terjun/.test(m)?'waterfall' : /rice|terrace|sawah/.test(m)?'rice' : /food|eat|warung|vegetarian|makan/.test(m)?'food' : /rain|hujan|indoor/.test(m)?'rain' : 'general';
+    return ANSWERS[key];
+  }
+};
+function renderAnswer(a){
+  return `<div class="msg-a"><h3>${esc(a.title)}</h3><p class="txt">${esc(a.text)}</p><div class="places">${a.places.map(p=>{const c=CROWD[p.crowd];
+    return `<div class="pl"><div class="pl-top"><div><h4>${esc(p.name)}</h4><small>${esc(p.info)}</small></div><button class="btn btn-primary btn-sm" onclick="addToTrip('${esc(p.name)}', ${p.id||0})">${ADD_LABEL}</button></div>
+    <div class="pills"><span class="pill ${c[0]}">${c[1]}</span><span class="pill p-local">${esc(p.local)}</span></div>
+    <details><summary>Why this place?</summary><p>${esc(p.why)}${p.best_time?' Best time: '+p.best_time+'.':''}</p></details></div>`}).join('')}</div>
+    <p class="basis">Chosen by crowd patterns, travel time and places our team has checked. Not by how viral they are.</p>
+    <div class="follow"><button onclick="ask('Which one is better with kids?')">Which one is better with kids?</button><button onclick="ask('Where can we eat nearby?')">Where can we eat nearby?</button></div></div>`;
+}
+
+let LEFT = QUOTA_LEFT;
+const thread = document.getElementById('thread'), input = document.getElementById('input'), sendBtn = document.getElementById('send');
+function addQ(text){ document.getElementById('empty')?.remove(); const d=document.createElement('div'); d.className='msg-q '+Q_CLASS; d.textContent=text; thread.appendChild(d); }
+function addTyping(){ const d=document.createElement('div'); d.className='typing'; d.id='typing'; d.innerHTML='<i></i><i></i><i></i>'; thread.appendChild(d); }
+async function ask(text, quiet){
+  text = (text||'').trim(); if(!text) return;
+  if(LEFT<=0){ onLimit(); return; }
+  addQ(text); document.getElementById('sugg').style.display='none'; input.value=''; sendBtn.disabled=true; addTyping(); if(!quiet) scrollEnd();
+  try{
+    const ans = await api.ask(text);           // <-- the backend call
+    document.getElementById('typing')?.remove();
+    thread.insertAdjacentHTML('beforeend', renderAnswer(ans));
+    if (window.__quota !== undefined) LEFT = window.__quota === null ? Infinity : window.__quota; else LEFT--;
+    showQuota();
+  }catch(e){ document.getElementById('typing')?.remove(); if(e.status===429){ LEFT=0; showQuota(); onLimit(); } else toast(e.message || 'Something went wrong. Please try again.'); }
+  sendBtn.disabled=false; if(!quiet) scrollEnd();
+}
+function showQuota(){ document.getElementById('quota').textContent = LEFT===Infinity ? 'Unlimited questions' : `${LEFT} of ${QUOTA_TOTAL} questions left today`; }
+function scrollEnd(){ window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'}); }
+document.getElementById('form').addEventListener('submit', e=>{ e.preventDefault(); ask(input.value); });
+input.addEventListener('keydown', e=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); ask(input.value); } });
+input.addEventListener('input', ()=>{ input.style.height='auto'; input.style.height=Math.min(160,input.scrollHeight)+'px'; });
+
+function addToTrip(name){ toast('Sign up free to save places to a trip'); }
+function onLimit(){ toast('That was your last guest question. Sign up free to keep going.'); }
+if (TI.live) { api.ask = async (message) => { const r = await TI.http('POST','/api/chat',{message}); window.__quota = r.quota_left; return r.answer; }; }
+</script>
+</body>
+</html>

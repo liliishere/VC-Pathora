@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tourism Intelligence — Trip · Itinerary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============ DESIGN TOKENS ============ */
+  :root{
+    --earth:#513229; --dice:#F4F1E2; --blue:#D8EBF9; --bay:#FCE6B7; --vinnie:#D7D4B1;
+    --paper:#FBF9F0; --white:#FFFDF6; --ink-2:#7A5E55; --line:rgba(81,50,41,.14);
+    --ok:#3F5A33; --ok-bg:rgba(124,154,107,.18);
+    --serif:'Fraunces', Georgia, serif;
+    --sans:'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+    /* spacing scale: 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96 */
+    --r-s:10px; --r-m:16px; --r-l:24px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--dice)}
+  body{color:var(--earth);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  button,input,select,textarea{font:inherit;color:inherit}
+  button{cursor:pointer;background:none;border:0}
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--earth);outline-offset:3px}
+  .serif{font-family:var(--serif);font-weight:500}
+  .muted{color:var(--ink-2)}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:999px;font-size:15px;font-weight:600;border:1.5px solid var(--earth);white-space:nowrap}
+  .btn-primary{background:var(--earth);color:var(--dice)}
+  .btn-ghost{background:transparent;color:var(--earth)}
+  .btn-soft{background:var(--paper);border-color:var(--line);color:var(--earth)}
+  .btn-sm{height:38px;padding:0 16px;font-size:14px}
+  .btn-full{width:100%}
+  .link{font-weight:600;text-decoration:underline;text-underline-offset:4px}
+
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-l);padding:32px}
+  .pill{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;font-size:13px;font-weight:600;white-space:nowrap}
+  .p-quiet{background:var(--blue)} .p-mid{background:var(--bay)} .p-busy{background:var(--earth);color:var(--dice)} .p-local{background:var(--vinnie)} .p-line{border:1px solid var(--line);background:var(--white)}
+
+  .logo{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:20px;font-weight:600;letter-spacing:-.01em}
+  .logo-mark{display:flex;gap:2px;height:24px}
+  .logo-mark span{width:5px;border-radius:2px}
+
+  .field label{display:block;font-size:14px;font-weight:600;margin-bottom:8px}
+  .input{width:100%;height:48px;border:1px solid var(--line);background:var(--white);border-radius:var(--r-s);padding:0 14px;font-size:15px}
+  .toast{position:fixed;left:50%;bottom:32px;transform:translateX(-50%) translateY(20px);background:var(--earth);color:var(--dice);padding:12px 20px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;transition:all .25s;pointer-events:none;z-index:50}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  .app{display:flex;min-height:100vh}
+  .side{flex:0 0 248px;min-height:100vh}
+  .side-in{position:sticky;top:0;height:100vh;min-height:860px;display:flex;flex-direction:column;padding:24px 16px}
+  .side .logo{padding:0 8px 28px;font-size:19px}
+  .side .primary{margin-bottom:24px}
+  .nav{display:flex;flex-direction:column;gap:6px}
+  .nav a{display:flex;align-items:center;gap:14px;height:52px;padding:0 14px;border-radius:14px;font-size:15.5px;font-weight:500}
+  .side-t{background:var(--blue)}
+  .side-t .nav a.on{background:var(--earth);color:var(--dice);font-weight:600}
+  .side-b{background:var(--earth);color:var(--dice)}
+  .side-b .nav a{color:rgba(244,241,226,.8)}
+  .side-b .nav a.on{background:var(--bay);color:var(--earth);font-weight:600}
+  .side-b .primary{background:var(--bay);color:var(--earth);border-color:var(--bay)}
+  .side .bottom{margin-top:auto;display:flex;flex-direction:column;gap:12px}
+  .plan{border-radius:14px;padding:14px;font-size:13.5px}
+  .side-t .plan{background:var(--white)}
+  .side-b .plan{background:rgba(244,241,226,.08)}
+  .plan b{display:block;font-size:14px;font-weight:600}
+  .plan a{font-weight:600;text-decoration:underline;text-underline-offset:3px}
+  .me{display:flex;align-items:center;gap:12px;padding:8px}
+  .me .av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:600}
+  .side-t .me .av{background:var(--earth);color:var(--dice)}
+  .side-b .me .av{background:var(--bay);color:var(--earth)}
+  .me small{display:block;font-size:12.5px;opacity:.75;line-height:1.3}
+  .me .out{margin-left:auto;font-size:13px;font-weight:600;opacity:.8;white-space:nowrap}
+  .me>div{min-width:0}
+
+  .ico{flex:none;width:20px;height:20px;position:relative;display:block}
+  .i-home::before{content:"";position:absolute;left:3px;right:3px;bottom:2px;top:8px;border:1.6px solid currentColor;border-top:0;border-radius:0 0 3px 3px}
+  .i-home::after{content:"";position:absolute;left:3px;top:3px;width:11px;height:11px;border-left:1.6px solid currentColor;border-top:1.6px solid currentColor;transform:translateX(0) rotate(45deg);transform-origin:center;left:4.5px}
+  .i-trip::before{content:"";position:absolute;left:2px;right:2px;top:6px;bottom:2px;border:1.6px solid currentColor;border-radius:4px}
+  .i-trip::after{content:"";position:absolute;left:7px;right:7px;top:2px;height:5px;border:1.6px solid currentColor;border-bottom:0;border-radius:3px 3px 0 0}
+  .i-cal::before{content:"";position:absolute;left:2px;right:2px;top:3px;bottom:2px;border:1.6px solid currentColor;border-radius:4px}
+  .i-cal::after{content:"";position:absolute;left:2px;right:2px;top:8px;border-top:1.6px solid currentColor}
+  .i-ask::before{content:"";position:absolute;left:2px;right:2px;top:3px;bottom:5px;border:1.6px solid currentColor;border-radius:7px 7px 7px 2px}
+  .i-ask::after{content:"";position:absolute;left:4px;bottom:1px;width:5px;height:5px;border-left:1.6px solid currentColor;border-bottom:1.6px solid currentColor;transform:skewX(-20deg)}
+  .i-box::before{content:"";position:absolute;inset:3px;border:1.6px solid currentColor;border-radius:4px}
+  .i-box::after{content:"";position:absolute;left:3px;right:3px;top:9px;border-top:1.6px solid currentColor}
+
+  .page{flex:1;min-width:0;padding:40px 56px 80px}
+  .page-in{max-width:1080px;margin:0 auto}
+  .head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:32px}
+  .head h1{font-family:var(--serif);font-weight:500;font-size:40px;line-height:1.1;letter-spacing:-.02em}
+  .head p{font-size:16px;color:var(--ink-2);margin-top:8px;max-width:560px}
+  .head .acts{display:flex;gap:10px}
+
+  .mbar{display:none}
+  @media (max-width: 900px){
+    .side{display:none}
+    .page{padding:24px 20px 100px}
+    .head{flex-direction:column;align-items:flex-start}
+    .head h1{font-size:30px}
+    .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px))}
+    .mbar-t{background:var(--blue)} .mbar-b{background:var(--earth)}
+    .mbar a{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 0;border-radius:12px;font-size:12px;font-weight:600}
+    .mbar-t a{color:var(--ink-2)} .mbar-t a.on{background:var(--earth);color:var(--dice)}
+    .mbar-b a{color:rgba(244,241,226,.75)} .mbar-b a.on{background:var(--bay);color:var(--earth)}
+  }
+
+  .crumb{font-size:14px;color:var(--ink-2);margin-bottom:12px}
+  .crumb a{text-decoration:underline;text-underline-offset:3px}
+  .trip-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
+  .trip-head h1{font-family:var(--serif);font-weight:500;font-size:40px;line-height:1.1;letter-spacing:-.02em}
+  .meta{display:flex;gap:16px;align-items:center;margin-top:10px;font-size:15px;color:var(--ink-2);flex-wrap:wrap}
+  .avs{display:flex}
+  .avs span{width:32px;height:32px;border-radius:50%;border:2px solid var(--dice);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:14px;font-weight:600;margin-left:-8px}
+  .avs span:first-child{margin-left:0}
+  .ttabs{display:flex;gap:8px;margin-top:28px;border-bottom:1px solid var(--line)}
+  .ttabs a{height:48px;padding:0 20px;display:flex;align-items:center;font-weight:600;font-size:15.5px;color:var(--ink-2);border-bottom:3px solid transparent;margin-bottom:-1px}
+  .ttabs a.on{color:var(--earth);border-bottom-color:var(--earth)}
+  .tbody{padding-top:32px}
+  @media (max-width: 900px){ .trip-head{flex-direction:column;align-items:flex-start} .trip-head h1{font-size:30px} .ttabs{overflow-x:auto} }
+
+  .itin{display:flex;gap:32px;align-items:flex-start}
+  .daycol{flex:1;min-width:0}
+  .days{display:flex;gap:10px;margin-bottom:24px;overflow-x:auto;padding-bottom:4px}
+  .day{flex:0 0 76px;height:84px;border-radius:16px;border:1px solid var(--line);background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:13px;color:var(--ink-2);position:relative}
+  .day b{font-family:var(--serif);font-weight:500;font-size:24px;color:var(--earth);line-height:1.1}
+  .day i{position:absolute;bottom:9px;width:6px;height:6px;border-radius:50%;background:var(--earth)}
+  .day.empty i{background:transparent;border:1.5px solid rgba(81,50,41,.35)}
+  .day.on{background:var(--earth);color:var(--vinnie);border-color:var(--earth)}
+  .day.on b{color:var(--dice)} .day.on i{background:var(--bay)}
+
+  .daycard{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-l);padding:32px}
+  .dc-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:24px}
+  .dc-head h2{font-family:var(--serif);font-weight:500;font-size:28px}
+  .dc-head span{font-size:14.5px;color:var(--ink-2)}
+  .stop{display:flex;gap:20px;position:relative}
+  .stop .t{flex:0 0 56px;font-weight:600;font-size:15px;padding-top:18px}
+  .stop .box{flex:1;background:var(--white);border:1px solid var(--line);border-radius:var(--r-m);padding:18px 20px;display:flex;gap:16px;align-items:flex-start}
+  .stop .box.busy{border:1.5px solid var(--earth)}
+  .stop .main{flex:1;min-width:0}
+  .stop h3{font-size:17px;font-weight:600;line-height:1.3}
+  .stop .sub{font-size:14px;color:var(--ink-2);margin-top:2px}
+  .stop .pills{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .stop details{margin-top:10px;font-size:14px}
+  .stop summary{cursor:pointer;font-weight:600;color:var(--ink-2);list-style:none}
+  .stop summary::-webkit-details-marker{display:none}
+  .stop details p{margin-top:6px;color:var(--ink-2)}
+  .stop .side-r{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+  .stop .cost{font-size:14.5px;font-weight:600}
+  .rm{font-size:13px;color:var(--ink-2);text-decoration:underline;text-underline-offset:3px}
+  .fix{margin-top:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--bay);border-radius:12px;padding:10px 14px;font-size:14px}
+  .gap{display:flex;gap:20px;height:40px}
+  .gap .t{flex:0 0 56px}
+  .gap .line{flex:1;display:flex;align-items:center;gap:10px;padding-left:24px;font-size:13.5px;color:var(--ink-2);border-left:2px dashed rgba(81,50,41,.25);margin-left:24px}
+  .emptyday{text-align:center;padding:48px 24px}
+  .emptyday h3{font-family:var(--serif);font-weight:500;font-size:24px}
+  .emptyday p{margin-top:8px;color:var(--ink-2)}
+  .emptyday .row{display:flex;gap:10px;justify-content:center;margin-top:24px}
+
+  .ideas{flex:0 0 360px;position:sticky;top:24px}
+  .ideas h2{font-family:var(--serif);font-weight:500;font-size:24px}
+  .ideas .hint{font-size:14.5px;color:var(--ink-2);margin-top:4px}
+  .ideas .input{margin-top:20px}
+  .ilist{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+  .idea{background:var(--white);border:1px solid var(--line);border-radius:var(--r-m);padding:16px 18px}
+  .idea-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+  .idea b{font-size:15.5px;font-weight:600}
+  .idea small{display:block;font-size:13.5px;color:var(--ink-2);margin-top:2px}
+  .idea .pill{margin-top:10px}
+  .ask-ai{margin-top:20px;padding-top:20px;border-top:1px solid var(--line);font-size:14.5px;color:var(--ink-2)}
+  .ask-ai .btn{margin-top:12px}
+  @media (max-width: 1100px){ .itin{flex-direction:column} .ideas{flex:none;width:100%;position:static} }
+  @media (max-width: 640px){ .daycard{padding:20px} .stop .t{flex-basis:44px} .stop .box{flex-direction:column} .stop .side-r{flex-direction:row;align-items:center} }
+
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side side-t" aria-label="Main navigation"><div class="side-in">
+    <a href="06a-traveler-home.html" class="logo"><span class="logo-mark" aria-hidden="true"><span style="background:var(--earth)"></span><span style="background:var(--vinnie)"></span><span style="background:var(--bay)"></span><span style="background:var(--blue)"></span></span>Tourism Intelligence</a>
+    <a href="06b-trip-itinerary.html" class="btn btn-primary btn-full primary">+ New trip</a>
+    <nav class="nav"><a href="06a-traveler-home.html" class=""><span class="ico i-home" aria-hidden="true"></span>Home</a><a href="06b-trip-itinerary.html" class="on" aria-current="page"><span class="ico i-trip" aria-hidden="true"></span>My trips</a><a href="06c-traveler-ask.html" class=""><span class="ico i-ask" aria-hidden="true"></span>Ask AI</a></nav>
+    <div class="bottom"><div class="plan"><b>Free plan</b><span data-quota>9 of 15 AI questions left today.</span> <a href="04-pricing.html">See plans</a></div><div class="me"><span class="av" data-me-initial>M</span><div><span data-me-name>Maya</span><small>Traveler</small></div><a href="01-landing.html" class="out" onclick="event.preventDefault();TI.logout().then(()=>location.href='01-landing.html')">Log out</a></div></div>
+  </div></aside>
+  <nav class="mbar mbar-t" aria-label="Main"><a href="06a-traveler-home.html" class=""><span class="ico i-home" aria-hidden="true"></span>Home</a><a href="06b-trip-itinerary.html" class="on"><span class="ico i-trip" aria-hidden="true"></span>My trips</a><a href="06c-traveler-ask.html" class=""><span class="ico i-ask" aria-hidden="true"></span>Ask AI</a></nav>
+  <main class="page"><div class="page-in">
+    <div class="crumb"><a href="06a-traveler-home.html">My trips</a> / <span id="trip-crumb">Bali</span></div>
+    <div class="trip-head">
+      <div><h1 id="trip-name">Bali, slow and quiet</h1>
+        <div class="meta"><span id="trip-dates">Thu 8 – Wed 14 Oct · 7 days</span><span id="trip-stay">Staying in Ubud</span>
+          <span class="avs" id="trip-avs" aria-label="People on this trip"><span style="background:var(--earth);color:var(--dice)">M</span><span style="background:var(--bay)">J</span></span></div></div>
+      <div style="display:flex;gap:10px"><a href="06b-trip-group.html" class="btn btn-soft btn-sm">Invite friends</a></div>
+    </div>
+    <nav class="ttabs" aria-label="Trip sections"><a href="06b-trip-itinerary.html" class="on" aria-current="page">Itinerary</a><a href="06b-trip-budget.html" class="">Budget and split bill</a><a href="06b-trip-group.html" class="">Friends</a></nav>
+  <div class="tbody itin">
+    <div class="daycol">
+      <div class="days" id="days" role="tablist" aria-label="Days"></div>
+      <section class="daycard" id="daycard" aria-live="polite"></section>
+    </div>
+    <aside class="card ideas" aria-label="Places to add">
+      <h2>Add places</h2>
+      <p class="hint">Picked for this trip. Tap Add to put one on the selected day.</p>
+      <input class="input" id="q" type="search" placeholder="Search places" aria-label="Search places">
+      <div class="ilist" id="ilist"></div>
+      <div class="ask-ai">Looking for something else?<br><a href="06c-traveler-ask.html" class="btn btn-ghost btn-sm">Ask AI for ideas</a></div>
+    </aside>
+  </div>
+</div></main>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<script src="assets/ti.js"></script>
+<script>
+/* ==========================================================
+   DATA LAYER — every page talks to the backend ONLY through `api`.
+   Right now it returns demo data. In the backend step we replace
+   the bodies of these functions with fetch('/api/...') calls.
+   ========================================================== */
+const DEMO_DELAY = 500;
+const wait = ms => new Promise(r => setTimeout(r, ms));
+const rupiah = n => 'Rp' + Math.round(n).toLocaleString('id-ID');
+function toast(msg){const t=document.getElementById('toast'); if(!t) return; t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),2200);}
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+const TRIP = {
+  id: 'bali-oct', name: 'Bali, slow and quiet', dates: 'Thu 8 – Wed 14 Oct', stay: 'Ubud',
+  people: [ {id:'m', name:'Maya', role:'Organiser'}, {id:'j', name:'Jess', role:'Can edit'} ],
+  days: [
+    {id:'d8',  label:'Thu', num:8,  weather:'Arrival day', stops:[]},
+    {id:'d9',  label:'Fri', num:9,  weather:'Dry, 31°', stops:[
+      {id:'s1', time:'07:00', name:'Campuhan Ridge Walk', area:'Ubud', crowd:'quiet', cost:0, travel:'', why:'Calm at sunrise, 12 minutes from your stay.'},
+      {id:'s2', time:'09:00', name:'Breakfast at Warung Sari', area:'Ubud', crowd:'local', cost:60000, travel:'10 min walk', why:'Family-run, known for its jaffles and coffee.'},
+      {id:'s3', time:'11:00', name:'Ubud Palace', area:'Ubud', crowd:'mid', cost:0, travel:'8 min walk', why:'Moderate at 11:00. Saraswati Temple is next door.'},
+      {id:'s4', time:'18:30', name:'Dinner in Penestanan', area:'Penestanan', crowd:'local', cost:90000, travel:'12 min drive', why:'Vegetarian-friendly local warung.'} ]},
+    {id:'d10', label:'Sat', num:10, weather:'Dry, 30°', stops:[
+      {id:'s5', time:'07:30', name:'Tibumana Waterfall', area:'Bangli', crowd:'quiet', cost:20000, travel:'', why:'Rarely crowded before 11:00, and Saturday looks dry.'},
+      {id:'s6', time:'10:00', name:'Warung Pak Nyoman', area:'Bangli', crowd:'local', cost:50000, travel:'4 min walk', why:'Family-run, right next to the waterfall path.'},
+      {id:'s7', time:'13:00', name:'Ubud Art Market', area:'Ubud', crowd:'busy', cost:0, travel:'18 min drive', why:'Great for crafts, but busiest around midday.', better:'09:00'},
+      {id:'s8', time:'16:00', name:'Family cooking class', area:'Penestanan', crowd:'local', cost:350000, travel:'10 min drive', why:'Run by a local family, with a market visit.'} ]},
+    {id:'d11', label:'Sun', num:11, weather:'Cloudy, 28°', stops:[
+      {id:'s9',  time:'08:00', name:'Jatiluwih rice terraces', area:'Tabanan', crowd:'quiet', cost:50000, travel:'1 h 30 min drive', why:'Huge area, so crowds spread out. Best in the morning.'},
+      {id:'s10', time:'11:30', name:'Red-rice warung', area:'Tabanan', crowd:'local', cost:70000, travel:'5 min walk', why:'At the trail start, cooks the local red rice.'} ]},
+    {id:'d12', label:'Mon', num:12, weather:'Rain after 15:00', stops:[
+      {id:'s11', time:'08:00', name:'Sidemen valley walk', area:'Karangasem', crowd:'quiet', cost:150000, travel:'1 h 15 min drive', why:'Few tour groups. A local guide is included in the cost.'} ]},
+    {id:'d13', label:'Tue', num:13, weather:'Dry, 30°', stops:[]},
+    {id:'d14', label:'Wed', num:14, weather:'Flying home', stops:[]}
+  ]
+};
+const IDEAS = [
+  {id:'i1', name:'Tirta Empul at opening', area:'Tampaksiring', crowd:'quiet', cost:50000, info:'35 min · 1.5 h', why:'Busy by 10:00, but calm right at 08:00.'},
+  {id:'i2', name:'Tegenungan Waterfall', area:'Gianyar', crowd:'quiet', cost:20000, info:'25 min · 2 h', why:'Quiet before 09:00. Gets busy later.'},
+  {id:'i3', name:'Bamboo craft workshop', area:'Ubud', crowd:'local', cost:150000, info:'15 min · 2 h', why:'Hands-on, run by local makers. Good for rain.'},
+  {id:'i4', name:'Goa Gajah', area:'Bedulu', crowd:'mid', cost:50000, info:'10 min · 1 h', why:'Busy 10:00–13:00. Go early or late.'},
+  {id:'i5', name:'Balinese massage', area:'Ubud', crowd:'local', cost:150000, info:'5 min · 1 h', why:'Indoor, good for a rainy afternoon.'}
+];
+const CROWD = { quiet:['p-quiet','Quiet at this time'], mid:['p-mid','Moderate'], busy:['p-busy','Usually busy now'], local:['p-local','Local business'] };
+
+/* api: swap these bodies for real fetch() calls in the backend step */
+const api = {
+  async getTrip(id){ await wait(0); return TRIP; },
+  async addStop(dayId, idea){ await wait(150); const d=TRIP.days.find(x=>x.id===dayId);
+    const last=d.stops[d.stops.length-1]; let h=last?Math.min(20,parseInt(last.time)+2):9;
+    const stop={id:'s'+Date.now(), time:String(h).padStart(2,'0')+':00', name:idea.name, area:idea.area, crowd:idea.crowd, cost:idea.cost, travel:'', why:idea.why};
+    d.stops.push(stop); return stop; },
+  async removeStop(dayId, stopId){ await wait(100); const d=TRIP.days.find(x=>x.id===dayId); d.stops=d.stops.filter(s=>s.id!==stopId); },
+  async moveStop(dayId, stopId, time){ await wait(100); const s=TRIP.days.find(x=>x.id===dayId).stops.find(s=>s.id===stopId); s.time=time; s.crowd='quiet'; delete s.better;
+    TRIP.days.find(x=>x.id===dayId).stops.sort((a,b)=>a.time.localeCompare(b.time)); }
+};
+
+let cur = 'd10';
+function dayCost(d){return d.stops.reduce((a,s)=>a+s.cost,0);}
+function renderDays(){
+  document.getElementById('days').innerHTML = TRIP.days.map(d=>`<button class="day ${d.id===cur?'on':''} ${d.stops.length?'':'empty'}" role="tab" aria-selected="${d.id===cur}" onclick="pick('${d.id}')">${d.label}<b>${d.num}</b><i></i></button>`).join('');
+}
+function renderDay(){
+  const d = TRIP.days.find(x=>x.id===cur);
+  const head = `<div class="dc-head"><h2>${d.label==='Thu'?'Thursday':d.label==='Fri'?'Friday':d.label==='Sat'?'Saturday':d.label==='Sun'?'Sunday':d.label==='Mon'?'Monday':d.label==='Tue'?'Tuesday':'Wednesday'} ${d.num} Oct</h2><span>${esc(d.weather)} · ${d.stops.length} stops · about ${rupiah(dayCost(d))} each</span></div>`;
+  if(!d.stops.length){
+    document.getElementById('daycard').innerHTML = head + `<div class="emptyday"><h3>Nothing planned yet</h3><p>Add a place from the list, or ask AI for ideas for this day.</p><div class="row"><a href="06c-traveler-ask.html" class="btn btn-primary btn-sm">Ask AI for ideas</a></div></div>`;
+    return;
+  }
+  let html = head;
+  d.stops.forEach((s,i)=>{
+    if(i>0) html += `<div class="gap"><span class="t"></span><span class="line">${s.travel?esc(s.travel):'Travel time will be added'}</span></div>`;
+    const c = CROWD[s.crowd];
+    html += `<div class="stop"><span class="t">${s.time}</span>
+      <div class="box ${s.crowd==='busy'?'busy':''}">
+        <div class="main"><h3>${esc(s.name)}</h3><div class="sub">${esc(s.area)}</div>
+          <div class="pills"><span class="pill ${c[0]}">${c[1]}</span></div>
+          ${s.better?`<div class="fix">Calmer before 10:00. <button class="btn btn-primary btn-sm" onclick="move('${s.id}','${s.better}')">Move to ${s.better}</button></div>`:''}
+          <details><summary>Why this place?</summary><p>${esc(s.why)}</p></details>
+        </div>
+        <div class="side-r"><span class="cost">${s.cost?rupiah(s.cost):'Free'}</span><button class="rm" onclick="removeStop('${s.id}')">Remove</button></div>
+      </div></div>`;
+  });
+  document.getElementById('daycard').innerHTML = html;
+}
+function renderIdeas(){
+  const q = document.getElementById('q').value.toLowerCase();
+  document.getElementById('ilist').innerHTML = IDEAS.filter(i=>!q || (i.name+i.area).toLowerCase().includes(q)).map(i=>{
+    const c=CROWD[i.crowd];
+    return `<div class="idea"><div class="idea-top"><div><b>${esc(i.name)}</b><small>${esc(i.info)} · ${i.cost?rupiah(i.cost):'Free'}</small></div><button class="btn btn-primary btn-sm" onclick="addIdea('${i.id}')">Add</button></div><span class="pill ${c[0]}">${c[1]}</span></div>`;
+  }).join('') || '<p class="muted">No matches. Try Ask AI.</p>';
+}
+function pick(id){cur=id; renderDays(); renderDay();}
+async function addIdea(id){ const idea=IDEAS.find(i=>String(i.id)===String(id)); if(!idea) return; await api.addStop(cur, idea); renderDays(); renderDay(); const d=TRIP.days.find(x=>x.id===cur); toast(`Added to ${d.label} ${d.num}`); }
+async function removeStop(id){ await api.removeStop(cur,id); renderDays(); renderDay(); toast('Removed'); }
+async function move(id,t){ await api.moveStop(cur,id,t); renderDay(); toast('Moved to '+t); }
+document.getElementById('q').addEventListener('input', renderIdeas);
+
+function fillHead(t){
+  document.getElementById('trip-name').textContent=t.name; document.getElementById('trip-crumb').textContent=t.name;
+  document.getElementById('trip-dates').textContent=`${t.dates} · ${t.days.length} days`; document.getElementById('trip-stay').textContent='Staying in '+t.stay;
+  const cols=['var(--earth);color:var(--dice)','var(--bay)','var(--blue)','var(--vinnie)'];
+  document.getElementById('trip-avs').innerHTML=t.people.map((p,i)=>`<span style="background:${cols[i%4]}" title="${esc(p.name)}">${esc(p.name[0])}</span>`).join('');
+}
+
+if (TI.live) {
+  let TID = null;
+  const reload = async () => { const t = await TI.http('GET', `/api/trips/${TID}`); Object.assign(TRIP, t); fillHead(t); if(!TRIP.days.some(d=>d.id===cur)) cur = (TRIP.days.find(d=>d.stops.length)||TRIP.days[0]).id; };
+  const reloadIdeas = async () => { IDEAS.length = 0; IDEAS.push(...await TI.http('GET', `/api/trips/${TID}/ideas`)); };
+  api.addStop    = async (dayId, idea) => { await TI.http('POST', `/api/trips/${TID}/stops`, {date: dayId, place_id: idea.id}); await reload(); await reloadIdeas(); };
+  api.removeStop = async (dayId, stopId) => { await TI.http('DELETE', `/api/stops/${stopId}`); await reload(); await reloadIdeas(); };
+  api.moveStop   = async (dayId, stopId, time) => { await TI.http('PATCH', `/api/stops/${stopId}`, {time}); await reload(); };
+  TI.guard('traveler').then(async m => { if(!m) return; TID = await TI.tripId();
+    if(!TID){ location.href='06a-traveler-home-first-time.html'; return; }
+    TI.setTrip(TID); cur = '2026-10-10'; await reload(); await reloadIdeas(); renderDays(); renderDay(); renderIdeas(); });
+} else { renderDays(); renderDay(); renderIdeas(); }
+</script>
+</body>
+</html>
