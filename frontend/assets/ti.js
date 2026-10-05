@@ -1,5 +1,5 @@
 /* =====================================================================
-   Tourism Intelligence — tiny API client shared by every page.
+      Pathora — tiny API client shared by every page.
    - Served by the backend (http://localhost:8000)  → LIVE mode, real API.
    - Opened as a file (Figma import, quick demo)     → DEMO mode, pages use built-in demo data.
    ===================================================================== */

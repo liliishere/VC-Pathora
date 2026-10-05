@@ -1,5 +1,5 @@
 """
-Tourism Intelligence — Streamlit version (for demos and presentations).
+   Pathora — Streamlit version (for demos and presentations).
 Uses the SAME backend logic and database as the FastAPI app (backend/app).
 
 Run locally:   streamlit run streamlit_app.py
@@ -18,7 +18,7 @@ from app.services.geo import AREAS
 from app.ai.provider import get_provider
 from app.routers import trips as T, chat as C
 
-st.set_page_config(page_title="Tourism Intelligence", page_icon="🌿", layout="wide", initial_sidebar_state="expanded")
+st.set_page_config(page_title="   Pathora", page_icon="🌿", layout="wide", initial_sidebar_state="expanded")
 
 # ---------------------------------------------------------------- setup
 @st.cache_resource
@@ -129,7 +129,7 @@ def page_public():
     if ss.public == "auth": page_auth(); return
     # ---- top bar
     a, b, c, d = st.columns([3, 3.2, 1, 1.4])
-    a.markdown('<div class="serif" style="font-size:1.35rem;font-weight:600;padding-top:6px">🌿 Tourism Intelligence</div>', unsafe_allow_html=True)
+    a.markdown('<div class="serif" style="font-size:1.35rem;font-weight:600;padding-top:6px">🌿    Pathora</div>', unsafe_allow_html=True)
     b.markdown('<div style="padding-top:10px;color:#7A5E55"><a href="#how" style="color:inherit;text-decoration:none;margin-right:26px">How it works</a>'
                '<a href="#hotels" style="color:inherit;text-decoration:none;margin-right:26px">For hotels</a>'
                '<a href="#pricing" style="color:inherit;text-decoration:none">Pricing</a></div>', unsafe_allow_html=True)
@@ -214,7 +214,7 @@ def page_public():
 
 def page_auth():
     a, b = st.columns([4, 1])
-    a.markdown('<div class="serif" style="font-size:1.35rem;font-weight:600;padding-top:6px">🌿 Tourism Intelligence</div>', unsafe_allow_html=True)
+    a.markdown('<div class="serif" style="font-size:1.35rem;font-weight:600;padding-top:6px">🌿    Pathora</div>', unsafe_allow_html=True)
     if b.button("← Back to home", key="back_home"): ss.public = "landing"; st.rerun()
     _, mid, _ = st.columns([1, 1.6, 1])
     with mid:
@@ -685,7 +685,7 @@ def main():
              "business": {"Home": b_home, "Rates": b_rates, "Packages": b_packages, "Ask AI": b_ask},
              "admin": {"Overview": a_overview}}[u["role"]]
     with st.sidebar:
-        st.markdown('<div class="serif" style="font-size:1.35rem;font-weight:600;margin-bottom:.6rem">🌿 Tourism Intelligence</div>', unsafe_allow_html=True)
+        st.markdown('<div class="serif" style="font-size:1.35rem;font-weight:600;margin-bottom:.6rem">🌿    Pathora</div>', unsafe_allow_html=True)
         if ss.page not in pages: ss.page = list(pages)[0]
         for name in pages:
             if st.button(name, key=f"nav{name}", width="stretch", type="primary" if ss.page == name else "secondary"):

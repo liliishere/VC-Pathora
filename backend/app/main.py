@@ -1,5 +1,5 @@
 """
-Tourism Intelligence — MVP backend.
+   Pathora — MVP backend.
 Run:   uvicorn app.main:app --reload        then open http://localhost:8000
 API docs (try every endpoint in the browser): http://localhost:8000/docs
 """
@@ -20,7 +20,7 @@ async def lifespan(app):
     if empty: seed.run()
     yield
 
-app = FastAPI(title="Tourism Intelligence API", version="0.1.0", lifespan=lifespan,
+app = FastAPI(title="   Pathora API", version="0.1.0", lifespan=lifespan,
               description="MVP backend: auth, Ask AI, trips (itinerary, budget, split bill, friends), business forecast, rates, packages, admin.")
 
 app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:8000", "http://127.0.0.1:8000", "http://localhost:5500", "http://127.0.0.1:5500"],

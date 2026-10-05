@@ -1,4 +1,4 @@
-# Tourism Intelligence — MVP
+#    Pathora — MVP
 
 Travelers ask where to go in Bali and plan quieter trips. Their questions (anonymous, combined)
 become demand forecasts that hotels use to set prices and build packages.
