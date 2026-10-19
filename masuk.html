@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Masuk atau daftar — Pathora</title>
+<link rel="icon" href="assets/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/pages.css">
+<style>
+.auth{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
+.auth-side{position:relative;background:var(--jungle);color:var(--cream);overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:36px 48px}
+.auth-side .bg{position:absolute;inset:0;opacity:.9}
+.auth-side .bg svg{width:100%;height:100%}
+.auth-side::after{z-index:1;content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(46,27,19,.78),rgba(46,27,19,.25) 55%,rgba(46,27,19,.85))}
+.auth-side>*:not(.bg){position:relative;z-index:2}.auth-side .bg{z-index:0}
+.auth-side .logo img{height:34px}
+.auth-side h2{font-size:clamp(28px,3.2vw,42px);max-width:460px;margin-bottom:30px}
+.auth-side ul{list-style:none;padding:0;margin:0;display:grid;gap:12px;max-width:440px}
+.auth-side li{display:flex;gap:12px;color:rgba(244,241,226,.92)}
+.auth-side li svg{color:var(--gold);flex:none;margin-top:3px}
+.auth-main{display:flex;align-items:center;justify-content:center;padding:40px 24px}
+.auth-card{width:min(440px,100%);display:grid;gap:20px}
+.auth-card h1{font-size:30px}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:rgba(46,27,19,.07);padding:4px;border-radius:14px;gap:4px}
+.seg button{border:0;background:transparent;padding:11px;border-radius:11px;font-weight:600;color:var(--ink-2)}
+.seg button.on{background:var(--paper);color:var(--ink);box-shadow:0 1px 3px rgba(46,27,19,.15)}
+.err{background:rgba(163,67,29,.1);color:#86320f;border-radius:10px;padding:10px 12px;font-size:13.5px;display:none}
+.err.show{display:block}
+.sep{display:flex;align-items:center;gap:12px;color:var(--ink-3);font-size:12.5px}
+.sep::before,.sep::after{content:'';flex:1;height:1px;background:var(--line-2)}
+@media(max-width:860px){.auth{grid-template-columns:1fr}.auth-side{display:none}}
+</style>
+</head>
+<body>
+<div class="auth">
+  <aside class="auth-side">
+    <a class="logo" href="index.html" aria-label="Pathora"><img src="assets/img/logo-white.png" alt="Pathora"></a>
+    <div><h2 id="sideH"></h2><ul id="sideL"></ul></div>
+    <small style="color:rgba(244,241,226,.6)">Prototipe. Akun hanya tersimpan di browser ini dan tidak diverifikasi.</small>
+    <div class="bg" id="sideBg" aria-hidden="true"></div>
+  </aside>
+  <main class="auth-main">
+    <div class="auth-card">
+      <a href="index.html" class="faint" style="font-size:13px;display:inline-flex;gap:6px;align-items:center" id="backL"></a>
+      <div><h1 id="h1"></h1><p class="muted" id="sub" style="margin-top:6px"></p></div>
+      <span class="badge" id="roleTag" style="justify-self:start"></span>
+      <div class="err" id="err" role="alert"></div>
+      <form id="f" style="display:grid;gap:14px" novalidate>
+        <div class="field" id="fName"><label for="name">Nama lengkap</label><input class="input" id="name" autocomplete="name"></div>
+        <div id="hostF" style="display:grid;gap:14px">
+          <div class="field"><label for="community">Nama komunitas atau usaha</label><input class="input" id="community" placeholder="Contoh: Kelompok Tani Bakau Pesanggaran"></div>
+          <div class="field"><label for="place">Lokasi kegiatan</label><input class="input" id="place" placeholder="Desa dan kabupaten"></div>
+          <div class="field"><label for="phone">Nomor WhatsApp</label><input class="input" id="phone" inputmode="tel" placeholder="08xxxxxxxxxx"></div>
+        </div>
+        <div class="field"><label for="email">Email</label><input class="input" id="email" type="email" autocomplete="email" placeholder="nama@email.com"></div>
+        <div class="field"><label for="pw">Kata sandi</label><input class="input" id="pw" type="password" autocomplete="current-password" placeholder="Minimal 6 karakter"></div>
+        <button class="btn btn-primary btn-lg btn-block" id="submit">Lanjut</button>
+      </form>
+      <p class="faint" style="font-size:13px;text-align:center" id="switch"></p>
+      <div class="sep">atau</div>
+      <button class="btn btn-line btn-block" id="demo"></button>
+      <a class="btn btn-ghost btn-block" id="guest" href="trip.html">Lanjutkan tanpa akun</a>
+    </div>
+  </main>
+</div>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/store.js"></script>
+<script src="assets/js/art.js"></script>
+<script>
+(function(){
+  const { ic } = PA; const q = new URLSearchParams(location.search);
+  const st = { role: q.get('role') === 'host' ? 'host' : 'traveler', mode: q.get('mode') === 'daftar' ? 'daftar' : 'masuk' };
+  const next = q.get('next');
+  const $ = (id) => document.getElementById(id);
+  $('sideBg').innerHTML = PA.hero() + '<img src="assets/img/gallery/kelas-janur-canang.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.remove()">'; $('backL').innerHTML = ic('back', 14) + ' Kembali ke beranda';
+  const COPY = {
+    traveler: { h: 'Rencanakan perjalanan alam dan budaya Bali.', l: ['Asisten AI menyusun jadwal berdasarkan cuaca, keramaian, dan hari raya', 'Kalender trip, pengajuan ke host, dan pembayaran dalam satu tempat', 'Perjalanan pribadi maupun bersama teman, lengkap dengan pembagian biaya', 'Paspor Alam mencatat kegiatan yang sudah Anda ikuti'] },
+    host: { h: 'Bagikan kegiatan dan keahlian lokal Anda.', l: ['Anda yang menentukan jadwal, kuota, dan hari tutup', 'Permintaan tamu masuk ke Studio Host, tamu baru membayar setelah Anda menyetujui', 'Komisi 12 persen per pesanan lunas, tanpa biaya bulanan', 'Pendapatan dan kalender kuota terpantau di satu dasbor'] }
+  };
+  function paint(){
+    const c = COPY[st.role], reg = st.mode === 'daftar';
+    $('sideH').textContent = c.h; $('sideL').innerHTML = c.l.map(function(t){ return '<li>' + ic('check', 18) + '<span>' + t + '</span></li>'; }).join('');
+    $('h1').textContent = reg ? (st.role === 'host' ? 'Daftar sebagai host' : 'Buat akun Pathora') : (st.role === 'host' ? 'Masuk ke Studio Host' : 'Masuk ke Pathora');
+    $('sub').textContent = reg ? 'Gratis. Tidak perlu kartu kredit.' : 'Selamat datang kembali.';
+    $('roleTag').textContent = st.role === 'host' ? 'Studio Host untuk komunitas lokal' : 'Akun traveler'; $('roleTag').className = 'badge' + (st.role === 'host' ? ' b-ok' : '');
+    $('fName').style.display = reg ? '' : 'none'; $('hostF').style.display = reg && st.role === 'host' ? 'grid' : 'none';
+    $('submit').textContent = reg ? (st.role === 'host' ? 'Daftarkan host' : 'Buat akun') : 'Masuk';
+    $('switch').innerHTML = reg ? 'Sudah punya akun? <a href="#" id="sw" style="color:var(--olive);font-weight:700">Masuk</a>' : 'Belum punya akun? <a href="#" id="sw" style="color:var(--olive);font-weight:700">Daftar</a>';
+    $('sw').onclick = function(e){ e.preventDefault(); st.mode = reg ? 'masuk' : 'daftar'; err(''); paint(); };
+    $('demo').textContent = st.role === 'host' ? 'Coba dengan akun host demo' : 'Coba dengan akun traveler demo';
+    $('guest').style.display = st.role === 'traveler' ? '' : 'none';
+    $('pw').autocomplete = reg ? 'new-password' : 'current-password';
+  }
+  function err(m){ const e = $('err'); e.textContent = m; e.classList.toggle('show', !!m); }
+  function done(a){
+    const dest = a.role === 'host' ? 'host.html' : (next && !/^(https?:|\/\/|javascript:)/i.test(next) ? next : 'trip.html');
+    location.href = dest;
+  }
+  $('f').addEventListener('submit', function(e){
+    e.preventDefault(); err('');
+    const r = st.mode === 'daftar'
+      ? PAUTH.signup({ role: st.role, name: $('name').value, email: $('email').value, password: $('pw').value, community: $('community').value, place: $('place').value, phone: $('phone').value })
+      : PAUTH.login($('email').value, $('pw').value);
+    if (r.error) return err(r.error);
+    if (r.ok.role !== st.role) { PAUTH.logout(); return err((r.ok.role === 'host' ? 'Email ini terdaftar sebagai host. Masuk melalui tombol Masuk ke Studio Host di bagian bawah beranda.' : 'Email ini terdaftar sebagai traveler. Gunakan tombol Masuk di bagian atas beranda.')); }
+    done(r.ok);
+  });
+  $('demo').onclick = function(){ done(PAUTH.demo(st.role).ok); };
+  const cur = PAUTH.current(); if (cur && !q.get('stay')) { /* sudah masuk: tetap tampilkan formulir agar bisa berganti akun */ }
+  paint();
+})();
+</script>
+</body>
+</html>
