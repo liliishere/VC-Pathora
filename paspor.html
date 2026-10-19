@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Paspor Alam — Pathora</title>
+<link rel="icon" href="assets/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/pages.css">
+<style>
+.cover{background:var(--jungle);color:var(--cream);border-radius:var(--r-xl);padding:40px;display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center;position:relative;overflow:hidden}
+.cover::before{content:'';position:absolute;right:-80px;top:-80px;width:340px;height:340px;border-radius:50%;border:2px solid rgba(240,207,138,.25)}
+.cover::after{content:'';position:absolute;right:-30px;top:-30px;width:240px;height:240px;border-radius:50%;border:2px solid rgba(240,207,138,.18)}
+.cover h1{font-size:clamp(30px,4vw,46px);margin:10px 0 8px}
+.cover .meta{display:flex;gap:30px;flex-wrap:wrap;margin-top:24px;position:relative;z-index:1}
+.cover .meta b{display:block;font-size:30px;color:var(--gold);letter-spacing:-.02em}
+.cover .meta small{color:rgba(244,241,226,.75);font-size:12.5px}
+.ring{width:140px;height:140px;position:relative;z-index:1}
+.stamps{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:20px;padding:28px 0 70px}
+.stamp{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px 18px 18px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.seal{width:132px;height:132px;border-radius:50%;position:relative;padding:7px;background:conic-gradient(from 0deg,var(--bamboo),var(--gold),var(--bamboo));transform:rotate(-5deg)}
+.seal>div{width:100%;height:100%;border-radius:50%;overflow:hidden;position:relative;box-shadow:inset 0 0 0 3px var(--paper)}
+.seal .art{position:absolute;inset:0}
+.stamp.lock .seal{background:repeating-conic-gradient(var(--line-2) 0 8deg,transparent 8deg 16deg);filter:grayscale(1);opacity:.55}
+.stamp.lock .seal>div{box-shadow:inset 0 0 0 3px var(--paper),inset 0 0 0 100px rgba(244,241,226,.6)}
+.stamp h3{font-size:15.5px;line-height:1.25}
+.stamp small{color:var(--ink-3);font-size:12.5px}
+.code{font-variant-numeric:tabular-nums;font-size:11.5px;letter-spacing:.1em;color:var(--bamboo);font-weight:700}
+.prog{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:26px 0 0}
+.prog .kpi b{font-size:22px}
+@media(max-width:860px){.cover{grid-template-columns:1fr;padding:28px}.ring{display:none}}
+</style>
+</head>
+<body class="mesh">
+<div id="nav"></div>
+<main class="wrap" id="root" style="padding-top:34px"></main>
+<div id="footer"></div>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/store.js"></script>
+<script src="assets/js/art.js"></script>
+<script src="assets/js/ui.js"></script>
+<script>
+(function(){
+  const { A, D } = PD, { ic } = PA, esc = UI.esc;
+  UI.mountNav('paspor', 'dark'); UI.mountFooter();
+  const root = document.getElementById('root');
+  const REG = ['Selatan','Tengah','Barat','Utara','Timur'];
+  function render(){
+    const s = PS.get(), pp = s.passport, got = A.filter(function(a){ return pp[a.id]; });
+    const regs = REG.filter(function(r){ return got.some(function(a){ return a.region === r; }); });
+    const pct = Math.round(got.length / A.length * 100);
+    const C = 2 * Math.PI * 58;
+    root.innerHTML = '<div class="cover"><div><span class="eyebrow on-dark">Paspor Alam</span><h1>Jejak perjalanan ' + esc(PS.me().name.split(' ')[0]) + ' di Bali</h1><p style="max-width:520px;color:rgba(244,241,226,.8)">Setiap kegiatan yang Anda selesaikan bersama host lokal mendapat satu stempel. Stempel diberikan setelah kegiatan lunas dan dikonfirmasi di lokasi.</p>' +
+      '<div class="meta"><div><b>' + got.length + '/' + A.length + '</b><small>Stempel</small></div><div><b>' + regs.length + '/' + REG.length + '</b><small>Wilayah dikunjungi</small></div><div><b>' + new Set(got.map(function(a){ return a.host.name; })).size + '</b><small>Host lokal ditemui</small></div></div></div>' +
+      '<svg class="ring" viewBox="0 0 140 140" aria-label="Progres ' + pct + ' persen"><circle cx="70" cy="70" r="58" fill="none" stroke="rgba(244,241,226,.14)" stroke-width="10"/><circle cx="70" cy="70" r="58" fill="none" stroke="#F0CF8A" stroke-width="10" stroke-linecap="round" stroke-dasharray="' + C + '" stroke-dashoffset="' + (C * (1 - pct/100)) + '" transform="rotate(-90 70 70)"/><text x="70" y="78" text-anchor="middle" fill="#F4F1E2" font-size="28" font-weight="800" font-family="inherit">' + pct + '%</text></svg></div>' +
+      (got.length ? '' : '<div class="card" style="margin-top:22px;padding:22px;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><div style="flex:1;min-width:240px"><b>Belum ada stempel</b><p class="muted" style="font-size:14px">Pesan kegiatan, lakukan pembayaran, lalu tekan <b>Kegiatan selesai</b> di halaman Pembayaran. Untuk melihat tampilan paspor yang terisi, gunakan contoh di samping.</p></div><button class="btn btn-dark" id="demoS">Isi contoh stempel</button></div>') +
+      '<div class="stamps">' + A.map(function(a){ const st = pp[a.id];
+        return '<div class="stamp' + (st ? '' : ' lock') + '"><div class="seal"><div>' + PA.scene(a.art) + '</div></div><h3>' + esc(a.short) + '</h3>' + (st ? '<small>' + D.long(st.date) + '</small><span class="code">' + st.code + '</span>' : '<small>' + esc(a.place.split(',')[0]) + '</small><a class="btn btn-line btn-sm" href="kegiatan.html?id=' + a.id + '">Lihat kegiatan</a>') + '</div>'; }).join('') + '</div>';
+    const d = document.getElementById('demoS'); if (d) d.onclick = function(){ ['tukik','subak','tenun'].forEach(function(id, i){ PS.stamp(id, D.add('2026-09-05', i * 6)); }); render(); };
+  }
+  render();
+})();
+</script>
+</body>
+</html>
