@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jelajahi kegiatan — Pathora</title>
+<link rel="icon" href="assets/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/pages.css">
+<style>
+.jh{position:relative;color:var(--cream);padding:calc(var(--nav-h) + 40px) 0 130px;z-index:6}
+.jh-bg{position:absolute;inset:0;background:var(--jungle);-webkit-mask-image:linear-gradient(180deg,#000 0,#000 52%,rgba(0,0,0,.72) 66%,rgba(0,0,0,.4) 79%,rgba(0,0,0,.14) 90%,transparent 100%);mask-image:linear-gradient(180deg,#000 0,#000 52%,rgba(0,0,0,.72) 66%,rgba(0,0,0,.4) 79%,rgba(0,0,0,.14) 90%,transparent 100%);}
+.jh-bg>img{position:absolute;inset:0;width:100%;max-width:none;height:100%;object-fit:cover;filter:saturate(.8) brightness(.85)}
+.jh-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(46,27,19,.78),rgba(90,56,45,.6) 60%,rgba(36,20,14,.9))}
+.jh-in{position:relative;z-index:2;text-align:center}
+.jh h1{font-size:clamp(26px,3.6vw,40px);letter-spacing:-.035em;color:#fff}
+.jh p{max-width:620px;margin:14px auto 0;color:rgba(244,241,226,.9);font-size:15px;line-height:1.7}
+.jsearch{position:relative;max-width:620px;margin:30px auto 0}
+.jsearch #sIc{position:absolute;left:20px;top:50%;transform:translateY(-50%);color:var(--ink-3);display:flex}
+.jsearch .input{height:60px;padding:0 60px 0 52px;line-height:60px;border-radius:99px;font-size:16.5px;box-shadow:0 20px 50px rgba(14,22,14,.35);border:0}
+.tool{position:relative;z-index:5;margin-top:-64px;background:rgba(251,249,240,.92);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow-lg);padding:20px 24px;display:grid;gap:16px}
+.tool-row{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.tool-l{font-size:13px;font-weight:700;color:var(--ink-2);min-width:70px}
+.tool .cats{display:flex;gap:8px;flex-wrap:wrap}
+.tool-ctl{padding-top:16px;border-top:1px solid var(--line);gap:12px 22px}
+.ctl{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:var(--ink-2)}
+.ctl .select{width:auto;min-width:170px;padding-top:9px;padding-bottom:9px}
+.tool .tog{margin-left:auto}
+.legend{display:flex;gap:10px 22px;align-items:center;flex-wrap:wrap;margin-top:24px;padding:14px 20px;border-radius:16px;background:rgba(216,235,249,.55);border:1px solid rgba(81,50,41,.1);font-size:13.5px}
+.legend b{font-size:13.5px}.legend #lg{display:flex;gap:18px;flex-wrap:wrap}.legend small{color:var(--ink-2);flex-basis:100%;font-size:12.5px}
+@media(max-width:760px){.tool{padding:16px}.tool .tog{margin-left:0}.ctl{width:100%;justify-content:space-between}.ctl .select{flex:1}}
+.jsearch{position:relative}.jsearch input{color:var(--ink)}
+[hidden]{display:none!important}
+.jclr{position:absolute;right:15px;top:50%;margin-top:-15px;width:30px;height:30px;border:0;border-radius:50%;background:rgba(81,50,41,.1);color:var(--ink);display:grid;place-items:center;padding:0;cursor:pointer}
+.jclr:hover{background:rgba(81,50,41,.2)}
+.sgx{position:absolute;left:12px;right:12px;top:calc(100% + 8px);z-index:20;background:var(--paper);color:var(--ink);border-radius:18px;box-shadow:var(--shadow-lg);padding:8px;text-align:left;border:1px solid var(--line)}
+.sgx a{display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:12px}
+.sgx a:hover,.sgx a.act{background:rgba(81,50,41,.08)}
+.sgx .th{width:44px;height:44px;border-radius:10px;overflow:hidden;position:relative;flex:none}
+.sgx .th .art{position:absolute;inset:0}
+.sgx b{display:block;font-size:14px}.sgx small{color:var(--ink-3);font-size:12.5px}
+.sgx .all{justify-content:center;font-weight:600;font-size:13.5px;color:var(--canopy)}
+mark{background:rgba(252,230,183,.9);color:inherit;border-radius:4px;padding:0 2px}
+</style>
+</head>
+<body class="mesh">
+<div id="nav"></div>
+<main>
+  <header class="jh" data-tone="dark">
+    <div class="jh-bg"><img src="assets/img/gallery/tari-topeng.jpg" alt=""></div>
+    <div class="jh-in wrap">
+      <h1>Kegiatan alam dan budaya Bali</h1>
+      <p>Seluruh kegiatan dipandu warga dan komunitas lokal. Tambahkan yang Anda minati ke trip, lalu asisten akan mengaturnya ke dalam jadwal.</p>
+      <div class="jsearch"><span id="sIc"></span><label class="sr" for="q">Cari kegiatan</label><input id="q" class="input" placeholder="Cari kegiatan" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="sg"><button type="button" class="jclr" id="jclr" aria-label="Hapus pencarian" hidden><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 2l8 8M10 2l-8 8"/></svg></button><div class="sgx" id="sg" role="listbox" hidden></div></div>
+    </div>
+  </header>
+  <div class="wrap">
+    <section class="tool" aria-label="Penyaring kegiatan">
+      <div class="tool-row"><span class="tool-l">Kategori</span><div class="cats" id="cats" role="group" aria-label="Kategori"></div></div>
+      <div class="tool-row tool-ctl">
+        <label class="ctl"><span>Wilayah</span><select class="select" id="region"><option value="">Semua wilayah</option></select></label>
+        <label class="ctl"><span>Urutkan</span><select class="select" id="sort"><option value="rec">Rekomendasi</option><option value="sepi">Paling lengang</option><option value="murah">Termurah</option><option value="durasi">Durasi tersingkat</option></select></label>
+      </div>
+    </section>
+    <div class="legend" aria-label="Arti label keramaian">
+      <b>Label keramaian</b>
+      <span id="lg"></span>
+      <small>Perkiraan jumlah pengunjung lain di lokasi pada tanggal trip Anda. Data contoh.</small>
+    </div>
+    <p class="faint" id="count" style="margin:18px 0 16px;font-size:13px"></p>
+    <div class="grid-acts" id="grid"></div>
+  </div>
+</main>
+<div id="footer"></div>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/store.js"></script>
+<script src="assets/js/art.js"></script>
+<script src="assets/js/ui.js"></script>
+<script>
+(function(){
+  const { A, D, crowdFor, dayScore } = PD, { ic } = PA;
+  UI.mountNav('jelajahi', true); UI.mountFooter();
+  document.getElementById('sIc').innerHTML = ic('search', 16);
+  const CAT = { semua:'Semua', laut:'Laut', satwa:'Satwa', sawah:'Sawah', hutan:'Hutan', air:'Air', budaya:'Budaya', kuliner:'Kuliner', kerajinan:'Kerajinan' };
+  const st = { cat:'semua', q:'', region:'', sort:'rec' };
+  const trip = PS.get().trip;
+  document.getElementById('lg').innerHTML = [[0, 'sedikit pengunjung lain'], [1, 'ada pengunjung lain, tidak padat'], [2, 'cenderung padat']].map(function(x){ return '<span style="display:inline-flex;gap:8px;align-items:center">' + UI.crowd(x[0]) + '<span class="faint">' + x[1] + '</span></span>'; }).join('');
+  document.getElementById('cats').innerHTML = Object.keys(CAT).map(function(k){ return '<button class="chip' + (k==='semua'?' on':'') + '" data-c="' + k + '">' + CAT[k] + '</button>'; }).join('');
+  const reg = document.getElementById('region');
+  Array.from(new Set(A.map(function(a){ return a.region; }))).forEach(function(r){ reg.insertAdjacentHTML('beforeend', '<option>' + r + '</option>'); });
+
+  /* pencarian: kata dicocokkan satu per satu, tanpa peduli huruf besar dan tanda baca */
+  const norm = function(t){ return String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim(); };
+  const FIELDS = [['name', 6], ['short', 6], ['kw', 5], ['cats', 4], ['place', 3], ['region', 3], ['story', 1]];
+  function score(a, q){
+    const toks = norm(q).split(' ').filter(Boolean); if (!toks.length) return 1;
+    let total = 0;
+    for (let i = 0; i < toks.length; i++) {
+      let best = 0;
+      FIELDS.forEach(function(f){ const v = a[f[0]]; if (v == null) return; const h = norm(Array.isArray(v) ? v.join(' ') : v); if (h.indexOf(toks[i]) > -1) best = Math.max(best, f[1] + (h.split(' ').indexOf(toks[i]) > -1 ? 1 : 0)); });
+      if (!best) return 0; total += best;
+    }
+    return total;
+  }
+  const hi = function(t, q){ const toks = norm(q).split(' ').filter(Boolean); let out = UI.esc(t); toks.forEach(function(k){ out = out.replace(new RegExp('(' + k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig'), '<mark>$1</mark>'); }); return out; };
+  function avgScore(a){ const ds = D.range(trip.start, trip.end); return ds.reduce(function(t,d){ return t + dayScore(a, d, PS.get().hostClosed); }, 0) / ds.length; }
+  function render(){
+    let list = A.filter(function(a){
+      if (st.cat !== 'semua' && a.cats.indexOf(st.cat) < 0) return false;
+      if (st.region && a.region !== st.region) return false;
+      if (st.q && score(a, st.q) <= 0) return false;
+      return true;
+    });
+    const sc = function(a){ return crowdFor(a, trip.start); };
+    const byRel = !!st.q;
+    if (st.sort === 'sepi') list.sort(function(a,b){ return sc(a) - sc(b) || a.price - b.price; });
+    else if (st.sort === 'murah') list.sort(function(a,b){ return a.price - b.price; });
+    else if (st.sort === 'durasi') list.sort(function(a,b){ return a.dur - b.dur; });
+    else list.sort(function(a,b){ return avgScore(b) - avgScore(a); });
+    if (byRel && st.sort === 'rec') list.sort(function(a,b){ return score(b, st.q) - score(a, st.q); });
+    document.getElementById('count').textContent = list.length + ' kegiatan' + ' · harga dan kondisi adalah data contoh';
+    const g = document.getElementById('grid');
+    if (!list.length) { g.innerHTML = '<div class="empty" style="grid-column:1/-1"><h3>Tidak ada yang cocok</h3><p style="margin:8px 0 16px">Ubah filter, atau tanyakan langsung ke asisten AI.</p><a class="btn btn-dark" href="trip.html?tab=chat">Buka asisten AI</a></div>'; return; }
+    g.innerHTML = list.map(function(a){ return UI.actCard(a, { date: trip.start }); }).join('') +
+      '<div class="ai-cta"><span class="k">Perlu rekomendasi</span><h3>Biarkan asisten menyusun jadwal Anda.</h3><p>Sebutkan durasi dan suasana yang Anda cari. Jadwal lengkap dengan cuaca dan biaya tersusun dalam hitungan detik.</p><a class="btn btn-gold" href="trip.html?tab=chat">Buka asisten AI</a></div>';
+  }
+  document.getElementById('cats').addEventListener('click', function(e){ const b = e.target.closest('[data-c]'); if (!b) return; st.cat = b.dataset.c; Array.prototype.forEach.call(this.children, function(x){ x.classList.toggle('on', x === b); }); render(); });
+  const qi = document.getElementById('q'), sg = document.getElementById('sg'), clr = document.getElementById('jclr'); let ai = -1;
+  function suggest(){
+    const v = qi.value.trim(); clr.hidden = !v;
+    const hits = v ? A.filter(function(a){ return score(a, v) > 0; }).sort(function(a,b){ return score(b, v) - score(a, v); }).slice(0, 5) : [];
+    ai = -1;
+    if (!v || document.activeElement !== qi) { sg.hidden = true; qi.setAttribute('aria-expanded', 'false'); return; }
+    sg.innerHTML = hits.length
+      ? hits.map(function(a){ return '<a role="option" href="kegiatan.html?id=' + a.id + '"><span class="th">' + PA.photo(a) + '</span><span><b>' + hi(a.short, v) + '</b><small>' + UI.esc(a.place) + '</small></span></a>'; }).join('') + '<a class="all" href="#" data-all>Lihat semua hasil untuk &ldquo;' + UI.esc(v) + '&rdquo;</a>'
+      : '<a class="all" href="#" data-none>Tidak ada kegiatan yang cocok. Coba kata lain, misalnya penyu, sawah, atau tenun.</a>';
+    sg.hidden = false; qi.setAttribute('aria-expanded', 'true');
+  }
+  qi.addEventListener('input', function(){ st.q = this.value.trim(); render(); suggest(); });
+  qi.addEventListener('focus', suggest);
+  qi.addEventListener('keydown', function(e){
+    const items = Array.from(sg.querySelectorAll('a'));
+    if (e.key === 'ArrowDown' && items.length) { e.preventDefault(); ai = (ai + 1) % items.length; }
+    else if (e.key === 'ArrowUp' && items.length) { e.preventDefault(); ai = (ai - 1 + items.length) % items.length; }
+    else if (e.key === 'Enter') { if (ai > -1 && items[ai] && !items[ai].hasAttribute('data-all') && !items[ai].hasAttribute('data-none')) { location.href = items[ai].href; } else { sg.hidden = true; document.getElementById('grid').scrollIntoView({ behavior: 'smooth', block: 'start' }); } return; }
+    else if (e.key === 'Escape') { qi.value = ''; st.q = ''; render(); suggest(); return; }
+    else return;
+    items.forEach(function(a, j){ a.classList.toggle('act', j === ai); });
+  });
+  sg.addEventListener('mousedown', function(e){ const t = e.target.closest('[data-all],[data-none]'); if (t) { e.preventDefault(); sg.hidden = true; document.getElementById('grid').scrollIntoView({ behavior: 'smooth', block: 'start' }); } });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.jsearch')) { sg.hidden = true; } });
+  clr.addEventListener('click', function(){ qi.value = ''; st.q = ''; render(); suggest(); qi.focus(); });
+  document.addEventListener('keydown', function(e){ if (e.key === '/' && document.activeElement !== qi && !/input|textarea|select/i.test(document.activeElement.tagName)) { e.preventDefault(); qi.focus(); } });
+  reg.addEventListener('change', function(){ st.region = this.value; render(); });
+  document.getElementById('sort').addEventListener('change', function(){ st.sort = this.value; render(); });
+  UI.bindAdd(document.getElementById('grid'));
+  const p = new URLSearchParams(location.search); if (p.get('q')) { document.getElementById('q').value = p.get('q'); st.q = p.get('q'); document.getElementById('jclr').hidden = false; }
+  render();
+})();
+</script>
+</body>
+</html>

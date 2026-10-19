@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Detail kegiatan — Pathora</title>
+<link rel="icon" href="assets/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/pages.css">
+<style>
+.k-hero{height:clamp(380px,56vh,540px);overflow:visible;background:transparent}
+.k-hero .art{-webkit-mask-image:linear-gradient(180deg,#000 0,#000 52%,rgba(0,0,0,.72) 66%,rgba(0,0,0,.4) 79%,rgba(0,0,0,.14) 90%,transparent 100%);mask-image:linear-gradient(180deg,#000 0,#000 52%,rgba(0,0,0,.72) 66%,rgba(0,0,0,.4) 79%,rgba(0,0,0,.14) 90%,transparent 100%)}
+.k-hero .wrap{bottom:96px}
+.k-hero::after{background:linear-gradient(180deg,rgba(46,27,19,.62) 0,rgba(46,27,19,.12) 30%,rgba(46,27,19,.32) 52%,rgba(46,27,19,.5) 70%,rgba(46,27,19,.18) 86%,transparent 100%);bottom:0}
+.k-hero .pill{display:inline-flex;align-items:center;gap:6px;background:rgba(46,27,19,.72);color:#fff;backdrop-filter:blur(6px);border-radius:99px;padding:6px 13px;font-size:13px;font-weight:600;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+.k-hero .pill.light{background:rgba(251,249,240,.92);color:var(--ink);box-shadow:none}
+.k-hero h1{text-shadow:0 2px 24px rgba(46,27,19,.55)}
+.k-hero .wrap.back{bottom:auto;position:absolute;top:calc(var(--nav-h) + 12px);left:0;right:0;z-index:2;margin-inline:auto}
+.lede{font-size:19px!important;line-height:1.7!important;color:var(--ink)!important}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:22px}
+.fact{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:4px}
+.fact svg{color:var(--olive)}.fact b{font-size:15px}.fact span{font-size:12.5px;color:var(--ink-3)}
+.hls{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.hl{background:var(--sand);background:linear-gradient(160deg,#EFEBCF,#E3E0BF);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:10px;font-weight:600;line-height:1.45;color:var(--ink)}
+.hl i{width:30px;height:30px;border-radius:50%;background:var(--canopy);color:var(--gold);display:grid;place-items:center;font-style:normal;font-size:13px;font-weight:700}
+.fit{margin-top:16px;padding:14px 16px;border-left:3px solid var(--bamboo);background:rgba(168,123,54,.08);border-radius:0 12px 12px 0;font-size:15px!important}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.two>div{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px}
+.two h3{font-size:16px;margin-bottom:12px}
+.host-box .av{background:var(--canopy)}
+.host-note{margin-top:14px;display:grid;gap:8px;font-size:14.5px!important}
+.mini{display:grid;gap:8px}
+.mini-h{display:flex;align-items:center;justify-content:space-between}
+.mini-h b{font-size:14px}.mini-h button{width:30px;height:30px;border-radius:8px;border:1px solid var(--line-2);background:transparent;display:grid;place-items:center}
+.mini-h button[disabled]{opacity:.35;pointer-events:none}
+.mini-g{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;text-align:center}
+.mini-g .w{font-size:11px;color:var(--ink-3);padding:3px 0;font-weight:600}
+.mini-g button,.mini-g span.e{height:34px;border:0;border-radius:9px;background:transparent;font-size:13px;font-weight:600;position:relative;color:var(--ink)}
+.mini-g button:hover:not([disabled]):not(.on){background:rgba(81,50,41,.09)}
+.mini-g button.on{background:var(--canopy);color:var(--cream)}
+.mini-g button[disabled]{color:var(--ink-3);opacity:.38;text-decoration:line-through;pointer-events:none}
+.mini-g button.low::after{content:'';position:absolute;bottom:4px;left:50%;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--rust)}
+.mini-g button.trip{box-shadow:inset 0 0 0 1px var(--line-2)}
+.sel-info{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:12.5px;background:var(--cream);border-radius:12px;padding:9px 12px}
+@media(max-width:700px){.two{grid-template-columns:1fr}}
+
+.k-more{background:linear-gradient(180deg,var(--cream) 0,#E6F1F8 100%);padding:56px 0 76px}
+.sec-h2{text-align:center;margin-bottom:34px}.sec-h2 h2{font-size:clamp(22px,2.6vw,30px);letter-spacing:-.03em}.sec-h2 p{margin-top:10px;color:var(--ink-2)}
+.k-grid{padding-bottom:64px}
+</style>
+</head>
+<body class="mesh">
+<div id="nav"></div>
+<main id="root"></main>
+<div id="footer"></div>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/store.js"></script>
+<script src="assets/js/art.js"></script>
+<script src="assets/js/ui.js"></script>
+<script>
+(function(){
+  const { A, byId, D, rp, weatherFor, crowdFor, moonFor, festivalFor, isClosed, seatsLeft } = PD, { ic } = PA, esc = UI.esc;
+  UI.mountNav('jelajahi', true); UI.mountFooter();
+  const id = new URLSearchParams(location.search).get('id');
+  const a = byId[id];
+  const root = document.getElementById('root');
+  if (!a) { root.innerHTML = '<div class="wrap empty"><h2>Kegiatan tidak ditemukan</h2><p style="margin:10px 0 18px">Mungkin tautannya sudah berubah.</p><a class="btn btn-dark" href="jelajahi.html">Kembali ke Jelajahi</a></div>'; return; }
+  document.title = a.name + ' — Pathora';
+  const s = PS.get();
+  const today = D.today();
+  const st = { people: Math.min(s.members.length, a.cap), month: null, date: null, time: a.times[0] };
+  const ok = function(d){ return d >= today && !isClosed(a, d, s.hostClosed) && seatsLeft(a, d, s.items) >= st.people; };
+  const start = D.range(s.trip.start, D.add(s.trip.start, 60)).find(ok) || s.trip.start;
+  st.date = start; st.month = start.slice(0, 7) + '-01';
+  const hm = (t, off) => { const p = t.split(':').map(Number); const m = p[0]*60 + p[1] + off; return String(Math.floor(m/60)).padStart(2,'0') + '.' + String(m%60).padStart(2,'0'); };
+  const lastMonth = D.add(today, 120).slice(0, 7) + '-01';
+
+  function miniCal(){
+    const m0 = D.parse(st.month), y = m0.getFullYear(), m = m0.getMonth();
+    const off = (new Date(y, m, 1).getDay() + 6) % 7, n = new Date(y, m + 1, 0).getDate();
+    let cells = '';
+    for (let i = 0; i < off; i++) cells += '<span class="e"></span>';
+    for (let d = 1; d <= n; d++) {
+      const iso = D.iso(new Date(y, m, d)), past = iso < today, cl = isClosed(a, iso, s.hostClosed), left = seatsLeft(a, iso, s.items);
+      const dis = past || !!cl || left < 1;
+      cells += '<button data-d="' + iso + '" class="' + (iso === st.date ? 'on ' : '') + (!dis && left <= 3 ? 'low ' : '') + (iso >= s.trip.start && iso <= s.trip.end ? 'trip' : '') + '"' + (dis ? ' disabled' : '') + ' aria-label="' + D.long(iso) + (dis ? ', tidak tersedia' : '') + '">' + d + '</button>';
+    }
+    const prevDis = st.month <= today.slice(0, 7) + '-01', nextDis = st.month >= lastMonth;
+    return '<div class="mini"><div class="mini-h"><button id="pm" aria-label="Bulan sebelumnya"' + (prevDis ? ' disabled' : '') + '>' + ic('back', 14) + '</button><b>' + D.BULAN[m] + ' ' + y + '</b><button id="nm" aria-label="Bulan berikutnya"' + (nextDis ? ' disabled' : '') + ' style="transform:scaleX(-1)">' + ic('back', 14) + '</button></div>' +
+      '<div class="mini-g">' + ['Sen','Sel','Rab','Kam','Jum','Sab','Min'].map(function(w){ return '<div class="w">' + w + '</div>'; }).join('') + cells + '</div>' +
+      '<div class="faint" style="font-size:11.5px">Titik merah: kursi hampir habis. Dicoret: tutup atau penuh. Kotak tipis: tanggal trip Anda.</div></div>';
+  }
+  function selInfo(){
+    const d = st.date, w = weatherFor(d), c = crowdFor(a, d), left = seatsLeft(a, d, s.items), mn = moonFor(d), f = festivalFor(d);
+    return '<div class="sel-info"><b>' + D.long(d) + '</b>' + UI.wx(w) + UI.crowd(c) + '<span class="faint">' + (left <= 3 ? 'Sisa ' + left + ' kursi' : left + ' kursi') + '</span>' + ((mn || f) ? '<span class="faint">' + (f || ('Hari ' + mn)) + '</span>' : '') + '</div>';
+  }
+  function condCard(d){
+    const w = weatherFor(d), c = crowdFor(a, d), cl = isClosed(a, d, s.hostClosed), left = seatsLeft(a, d, s.items);
+    return '<div class="cond' + (cl ? ' bad' : '') + '"><b>' + D.short(d) + ' ' + D.med(d).split(' ')[1] + '</b>' +
+      (cl ? '<span style="color:#86320f;font-weight:600">' + esc(cl) + '</span>' : UI.wx(w) + UI.crowd(c) + '<span class="faint">' + (left <= 3 ? 'Sisa ' + left + ' kursi' : left + ' kursi') + '</span>') + '</div>';
+  }
+
+  function related(){
+    const sc = function(o){ return (o.cats.filter(function(c){ return a.cats.indexOf(c) >= 0; }).length * 2) + (o.region === a.region ? 1 : 0); };
+    return A.filter(function(o){ return o.id !== a.id; }).sort(function(x, y){ return sc(y) - sc(x); }).slice(0, 3);
+  }
+  function render(){
+    const cl = isClosed(a, st.date, s.hostClosed), left = seatsLeft(a, st.date, s.items);
+    const total = a.price * st.people;
+    root.innerHTML =
+    '<div class="k-hero" data-tone="dark">' + PA.photo(a) + '<div class="back wrap"><a href="jelajahi.html" class="pill">' + ic('back', 14) + ' Semua kegiatan</a></div><div class="wrap">' +
+      '<div class="tags">' + a.cats.map(function(c){ return '<span class="pill">' + c + '</span>'; }).join('') + '<span class="pill light">' + ic('pin', 13) + ' ' + a.place + '</span></div>' +
+      '<h1>' + esc(a.name) + '</h1></div></div>' +
+    '<div class="wrap k-grid"><div class="k-main">' +
+      '<section><p class="lede">' + esc(a.story) + '</p>' +
+        '<div class="facts"><div class="fact">' + ic('clock', 20) + '<b>' + a.dur.toString().replace('.', ',') + ' jam</b><span>Durasi</span></div><div class="fact">' + ic('users', 20) + '<b>Maks. ' + a.cap + ' orang</b><span>Kelompok kecil</span></div><div class="fact">' + ic('heart', 20) + '<b>' + (a.kid ? 'Ramah anak' : 'Remaja dan dewasa') + '</b><span>Cocok untuk</span></div><div class="fact">' + ic('calendar', 20) + '<b>' + a.times.map(function(t){ return t.replace(':', '.'); }).join(' / ') + '</b><span>Waktu mulai</span></div></div>' +
+        '<p class="fit"><b>Cocok untuk.</b> ' + esc(a.fit) + '</p></section>' +
+      '<section><h2>Yang akan Anda alami</h2><div class="hls">' + a.hl.map(function(h, i){ return '<div class="hl"><i>' + (i + 1) + '</i>' + esc(h) + '</div>'; }).join('') + '</div></section>' +
+      '<section><h2>Urutan acara</h2><ul class="tl">' + a.steps.map(function(x){ return '<li><time>' + hm(st.time, x[0]) + '</time><i></i><span>' + esc(x[1]) + '</span></li>'; }).join('') + '</ul>' +
+        '<p class="faint" style="font-size:13px;margin-top:10px">Waktu mengikuti sesi yang Anda pilih. Urutan dapat berubah menyesuaikan kondisi di lapangan.</p></section>' +
+      '<section><h2>Kondisi 10 hari ke depan</h2><div class="cond-days">' + D.range(today, D.add(today, 9)).map(condCard).join('') + '</div><p class="faint" style="font-size:12.5px;margin-top:12px">Data demo. Pada versi sesungguhnya, cuaca dan keramaian diambil dari sumber resmi, dan jadwal tutup dari host.</p></section>' +
+      '<section><div class="two"><div><h3>Etika di lapangan</h3><ul class="checklist">' + a.ethics.map(function(e){ return '<li>' + ic('check', 18) + '<span>' + esc(e) + '</span></li>'; }).join('') + '</ul></div>' +
+        '<div><h3>Yang perlu dibawa</h3><ul class="checklist">' + a.bring.map(function(e){ return '<li>' + ic('check', 18) + '<span>' + esc(e) + '</span></li>'; }).join('') + '</ul></div></div></section>' +
+      '<section><h2>Titik kumpul</h2><p style="display:flex;gap:8px;align-items:center">' + ic('pin', 18) + esc(a.meet) + '</p></section>' +
+      '<section><h2>Dipandu oleh</h2><div class="host-box"><span class="av">' + a.host.ini + '</span><div><b>' + esc(a.host.name) + '</b><div class="muted" style="font-size:14px">Bahasa: ' + esc(a.host.lang) + '</div></div></div>' +
+        '<div class="host-note"><p>Permintaan Anda diteruskan ke host melalui Pathora. Host menyetujui atau menolak berdasarkan jadwal dan kuota, dan pembayaran baru dibuka setelah disetujui.</p><p><b>Kontribusi ke komunitas.</b> ' + esc(a.contrib) + '</p></div></section>' +
+    '</div>' +
+    '<aside><div class="book">' +
+      '<div><div class="price">' + rp(a.price) + ' <small>/ orang</small></div><span class="badge b-demo" style="margin-top:6px">Harga contoh</span></div>' +
+      '<div class="field"><label>Pilih tanggal</label>' + miniCal() + selInfo() + '</div>' +
+      (a.times.length > 1 ? '<div class="field"><label>Sesi</label><div class="dates">' + a.times.map(function(t){ return '<button class="dchip' + (t === st.time ? ' on' : '') + '" data-t="' + t + '"><b>' + t.replace(':', '.') + '</b>mulai</button>'; }).join('') + '</div></div>' : '') +
+      '<div class="field"><label>Jumlah orang</label><div style="display:flex;justify-content:space-between;align-items:center"><div class="stepper"><button id="mn" aria-label="Kurangi">−</button><b id="pp">' + st.people + '</b><button id="pl" aria-label="Tambah">+</button></div><span class="faint" style="font-size:13px">' + (cl ? '' : 'Sisa ' + left + ' kursi') + '</span></div></div>' +
+      '<div class="sum"><div><span>' + rp(a.price) + ' × ' + st.people + ' orang</span><span>' + rp(total) + '</span></div><div class="tot"><span>Total</span><span>' + rp(total) + '</span></div></div>' +
+      '<div style="display:grid;gap:10px"><button class="btn btn-primary btn-lg btn-block" id="req"' + (cl ? ' disabled' : '') + '>Ajukan pesanan</button>' +
+      '<button class="btn btn-line btn-block" id="draft">Simpan ke trip sebagai draf</button>' +
+      '<a class="btn btn-ghost btn-block" href="trip.html?tab=chat&prompt=' + encodeURIComponent('Ceritakan ' + a.short.toLowerCase() + ' dan hari terbaik untuk mengikutinya') + '">' + ic('sparkles', 16) + ' Tanya asisten AI</a></div>' +
+      '<p class="faint" style="font-size:12.5px;display:flex;gap:8px">' + ic('shield', 16) + 'Anda belum ditagih. Pembayaran dibuka setelah host menyetujui.</p>' +
+    '</div></aside></div>' +
+    '<section class="k-more"><div class="wrap"><div class="sec-h2"><h2>Kegiatan lain yang mungkin Anda suka</h2><p>Dipilih dari kategori dan wilayah yang mirip.</p></div><div class="grid-acts" id="rel">' + related().map(function(r){ return UI.actCard(r, { date: st.date }); }).join('') + '</div></div></section>';
+    UI.bindAdd(document.getElementById('rel'));
+    wire();
+  }
+  function wire(){
+    root.querySelectorAll('[data-d]').forEach(function(b){ b.onclick = function(){ st.date = b.dataset.d; render(); }; });
+    root.querySelectorAll('[data-t]').forEach(function(b){ b.onclick = function(){ st.time = b.dataset.t; render(); }; });
+    const mv = function(n){ const d = D.parse(st.month); d.setMonth(d.getMonth() + n); st.month = D.iso(d); render(); };
+    root.querySelector('#pm').onclick = function(){ mv(-1); }; root.querySelector('#nm').onclick = function(){ mv(1); };
+    root.querySelector('#mn').onclick = function(){ st.people = Math.max(1, st.people - 1); render(); };
+    root.querySelector('#pl').onclick = function(){ st.people = Math.min(a.cap, seatsLeft(a, st.date, s.items), st.people + 1); render(); };
+    function add(status){
+      const it = PS.addItem({ actId: a.id, date: st.date, time: st.time, people: st.people });
+      if (it.status === 'draft' && status !== 'draft') PS.setStatus(it.uid, status);
+      UI.toast(status === 'draft' ? a.short + ' disimpan ke trip sebagai draf' : 'Permintaan dikirim ke ' + a.host.name, '<a href="trip.html?tab=bayar">Lihat pesanan</a>');
+    }
+    root.querySelector('#req').onclick = function(){ const a2 = PAUTH.current(); if (!a2 || a2.role !== 'traveler') { UI.needLogin('Mengajukan kegiatan ke host memerlukan akun traveler.'); return; } add('diajukan'); };
+    root.querySelector('#draft').onclick = function(){ add('draft'); };
+  }
+  render();
+})();
+</script>
+</body>
+</html>
