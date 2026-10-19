@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trip saya — Pathora</title>
+<link rel="icon" href="assets/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/pages.css">
+<style>
+.tripbar{position:relative;z-index:4}
+.tripbar .wrap{display:flex;align-items:center;gap:14px 20px;padding:9px 0;flex-wrap:wrap}
+.tb-main{display:flex;align-items:center;gap:14px;min-width:0}
+.tb-side{display:flex;align-items:center;gap:12px;margin-left:auto}
+.tripbar .tabs{margin-left:0}
+.tripbar .tabs button{padding:7px 11px;font-size:13.5px}
+.tripbar .wrap{flex-wrap:nowrap}
+.tripbar .tabs button{white-space:nowrap}.tb-dates{flex:none}.tb-side{flex:none}
+@media(max-width:1600px){#tMembers{display:none!important}}
+@media(max-width:1180px){.tripbar .wrap{flex-wrap:wrap}}
+.tname{font:700 17px/1.2 var(--font);letter-spacing:-.01em;color:var(--ink);background:transparent;border:1px solid transparent;border-radius:10px;padding:6px 10px;margin-left:-10px;width:112px}
+.tname:hover{border-color:var(--line-2)}.tname:focus{outline:none;border-color:var(--canopy);background:var(--paper)}
+.tb-dates{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;white-space:nowrap;background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:3px 10px}
+.tb-l{display:none}
+.dt{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-3)}
+.dt input{font:600 13px var(--font);color:var(--ink);background:transparent;border:0;padding:4px 2px;cursor:pointer}
+.dt input:focus{outline:2px solid var(--bamboo);border-radius:6px}
+.tb-sep{font-size:12px;color:var(--ink-3)}.tb-n{font-size:12px;font-weight:700;color:var(--ink-2);background:var(--mist);border-radius:99px;padding:2px 10px}
+@media(max-width:900px){.tb-side{margin-left:0}.tb-dates{flex-wrap:wrap!important}}
+/* halaman asisten pas satu layar */
+body.fit{height:100vh;height:100svh;overflow:hidden;display:flex;flex-direction:column}
+body.fit #view{flex:1;min-height:0;display:flex;flex-direction:column}
+body.fit .ws2{flex:1;min-height:0;height:auto;padding:14px 0 18px}
+</style>
+</head>
+<body class="mesh">
+<div id="nav"></div>
+<div class="tripbar"><div class="wrap">
+  <div class="tb-main">
+    <label class="sr" for="tName">Nama trip</label>
+    <input id="tName" class="tname" maxlength="40" value="Trip Bali" autocomplete="off">
+    <div class="tb-dates" role="group" aria-label="Tanggal di Bali">
+      <span class="tb-l">Di Bali</span>
+      <label class="dt"><span>Tiba</span><input type="date" id="d1"></label>
+      <span class="tb-sep" aria-hidden="true">sampai</span>
+      <label class="dt"><span>Pulang</span><input type="date" id="d2"></label>
+      <span class="tb-n" id="tDays"></span>
+    </div>
+  </div>
+  <div class="tb-side"><span id="tMembers" style="display:inline-flex;gap:8px;align-items:center;font-size:13px;color:var(--ink-2)"></span><button class="btn btn-line btn-sm" id="invite"></button></div>
+  <div class="tabs" role="tablist" id="tabs"></div>
+</div></div>
+<main class="wrap" id="view"></main>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/store.js"></script>
+<script src="assets/js/art.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/ai.js"></script>
+<script src="assets/js/trip.js"></script>
+</body>
+</html>
