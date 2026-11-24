@@ -42,7 +42,7 @@
         <div><label for="phone">Nomor WhatsApp</label><input id="phone" inputmode="tel" placeholder="08xxxxxxxxxx"></div>
       </div>
       <div><label for="email">Email</label><input id="email" type="email" autocomplete="email" placeholder="nama@email.com"></div>
-      <div><label for="pw">Kata sandi</label><input id="pw" type="password" autocomplete="current-password" placeholder="Minimal 6 karakter"></div>
+      <div><label for="pw">Kata sandi</label><input id="pw" type="password" autocomplete="current-password" placeholder="Minimal 8 karakter"></div>
       <button class="au-btn pri" id="submit" type="submit">Masuk</button>
     </form>
     <div class="au-sep">atau</div>
@@ -58,6 +58,7 @@
 <script src="assets/js/store.js"></script>
 <script src="assets/js/art.js"></script>
 <script src="assets/js/ui.js"></script>
+<script src="assets/js/api.js"></script>
 <script>
 (function(){
   const { ic } = PA; const q = new URLSearchParams(location.search);
@@ -90,16 +91,33 @@
   function setRole(r){ st.role = r; err(''); paint(); }
   $('tMasuk').onclick = function(){ setMode('masuk'); }; $('tDaftar').onclick = function(){ setMode('daftar'); };
   $('rTraveler').onclick = function(){ setRole('traveler'); }; $('rHost').onclick = function(){ setRole('host'); };
+  function lokalCek(o){
+    if (!(o.name || '').trim()) return 'Nama wajib diisi.';
+    if (!/^\S+@\S+\.\S+$/.test((o.email || '').trim())) return 'Format email belum sesuai.';
+    if ((o.password || '').length < 8) return 'Kata sandi minimal 8 karakter.';
+    if (o.role === 'host' && !(o.community || '').trim()) return 'Nama komunitas atau usaha wajib diisi.';
+    return '';
+  }
   function err(m){ const e = $('err'); e.textContent = m; e.classList.toggle('show', !!m); }
   function done(a){
     const dest = a.role === 'host' ? 'host' : (next && !/^(https?:|\/\/|javascript:)/i.test(next) ? next : 'trip');
     location.href = dest;
   }
-  $('f').addEventListener('submit', function(e){
+  $('f').addEventListener('submit', async function(e){
     e.preventDefault(); err('');
-    const r = st.mode === 'daftar'
-      ? PAUTH.signup({ role: st.role, name: $('name').value, email: $('email').value, password: $('pw').value, community: $('community').value, place: $('place').value, phone: $('phone').value })
-      : PAUTH.login($('email').value, $('pw').value);
+    const o = { role: st.role, name: $('name').value, email: $('email').value, password: $('pw').value, community: $('community').value, place: $('place').value, phone: $('phone').value };
+    const lokal = function(){ return st.mode === 'daftar' ? PAUTH.signup(o) : PAUTH.login(o.email, o.password); };
+    if (st.mode === 'daftar') { const cek = lokalCek(o); if (cek) return err(cek); }
+    let r;
+    if (window.PAPI && PAPI.enabled()) {
+      /* Akun disimpan di server Pathora. Kalau server tidak bisa dihubungi, akun tetap dibuat di browser ini. */
+      const btn = $('submit'), label = btn.textContent; btn.disabled = true; btn.textContent = 'Memproses...';
+      const rb = await PAPI.akun(st.mode, o);
+      btn.disabled = false; btn.textContent = label;
+      if (rb.error) return err(rb.error);
+      if (rb.ok) { r = { ok: PAUTH.adopt(rb.ok) }; if (o.phone) PAUTH.update({ phone: o.phone.trim() }); }
+      else r = lokal();
+    } else r = lokal();
     if (r.error) return err(r.error);
     if (r.ok.role !== st.role) { PAUTH.logout(); const was = r.ok.role; st.role = was; paint(); return err(was === 'host' ? 'Email ini terdaftar sebagai host. Pilihan sudah dipindah ke Host lokal, silakan coba masuk lagi.' : 'Email ini terdaftar sebagai traveler. Pilihan sudah dipindah ke Traveler, silakan coba masuk lagi.'); }
     done(r.ok);

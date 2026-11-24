@@ -55,7 +55,7 @@
       const email = (o.email || '').trim().toLowerCase(), name = (o.name || '').trim();
       if (!name) return { error: 'Nama wajib diisi.' };
       if (!/^\S+@\S+\.\S+$/.test(email)) return { error: 'Format email belum sesuai.' };
-      if ((o.password || '').length < 6) return { error: 'Kata sandi minimal 6 karakter.' };
+      if ((o.password || '').length < 8) return { error: 'Kata sandi minimal 8 karakter.' };
       if (o.role === 'host' && !(o.community || '').trim()) return { error: 'Nama komunitas atau usaha wajib diisi.' };
       const all = rd(KEYA, {});
       if (all[email]) return { error: 'Email ini sudah terdaftar. Silakan masuk.' };
@@ -67,7 +67,7 @@
       email = (email || '').trim().toLowerCase();
       const a = rd(KEYA, {})[email];
       if (!a) return { error: 'Akun dengan email ini belum terdaftar.' };
-      if ((password || '').length < 6) return { error: 'Kata sandi minimal 6 karakter.' };
+      if ((password || '').length < 8) return { error: 'Kata sandi minimal 8 karakter.' };
       wr(KEYS, email); mem = null; load(); syncName(); save(); return { ok: a };
     },
     demo(role) {
@@ -76,7 +76,19 @@
       if (!all[email]) all[email] = role === 'host' ? { email, name: 'Wayan Sudarta', role: 'host', community: 'Pokdarwis Desa Selumbung', place: 'Selumbung, Manggis', phone: '', plan: 'gratis', since: D.today() } : { email, name: 'Maya Putri', role: 'traveler', community: '', place: '', phone: '', plan: 'gratis', since: D.today() };
       wr(KEYA, all); wr(KEYS, email); mem = null; load(); syncName(); save(); return { ok: all[email] };
     },
-    logout() { try { localStorage.removeItem(KEYS); } catch (e) { /* abaikan */ } mem = null; },
+    logout() { try { localStorage.removeItem(KEYS); localStorage.removeItem('pathora.token'); localStorage.removeItem('pathora.tanya'); } catch (e) { /* abaikan */ } mem = null; },
+    /* Akun dari backend: salin profilnya ke akun lokal (dibuat kalau belum ada di browser ini), lalu masuk. */
+    adopt(p) {
+      const email = (p.email || '').trim().toLowerCase(); if (!email) return null;
+      const all = rd(KEYA, {}); const lama = all[email] || {};
+      all[email] = Object.assign({ phone: '', since: D.today() }, lama, {
+        email, name: p.nama || lama.name || 'Kamu', role: p.peran === 'host' ? 'host' : 'traveler',
+        community: p.komunitas || lama.community || '', place: p.tempat || lama.place || '',
+        plan: p.paket === 'plus' ? 'plus' : (lama.plan || 'gratis'), server: true
+      });
+      wr(KEYA, all); wr(KEYS, email); mem = null; load(); syncName(); save();
+      return all[email];
+    },
     update(patch) { const a = PAUTH.current(); if (!a) return; const all = rd(KEYA, {}); Object.assign(all[a.email], patch); wr(KEYA, all); syncName(); save(); },
     isPlus() { const a = PAUTH.current(); return !!(a && a.plan === 'plus'); }
   };

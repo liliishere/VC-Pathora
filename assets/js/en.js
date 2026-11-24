@@ -81,7 +81,7 @@
     'Masuk ke Pathora': 'Log in to Pathora', 'Buat akun Pathora': 'Create your Pathora account', 'Masuk ke Studio Host': 'Log in to Host Studio',
     'Daftar sebagai host': 'Sign up as a host', 'Daftarkan host': 'Register host', 'Selamat datang kembali.': 'Welcome back.',
     'Hanya butuh satu menit.': 'It only takes a minute.', 'Jenis akun': 'Account type', 'Perjalanan pribadi': 'Personal trip',
-    'Email': 'Email', 'Kata sandi': 'Password', 'Minimal 6 karakter': 'At least 6 characters', 'Nama lengkap': 'Full name',
+    'Email': 'Email', 'Kata sandi': 'Password', 'Minimal 8 karakter': 'At least 8 characters', 'Nama lengkap': 'Full name',
     'Nama komunitas atau usaha': 'Community or business name', 'Nomor WhatsApp': 'WhatsApp number', 'Lokasi': 'Location',
     'Desa dan kabupaten': 'Village and regency', 'Belum punya akun?': 'No account yet?', 'Sudah punya akun?': 'Already have an account?',
     'Saya sudah punya akun': 'I already have an account', 'Sudah terdaftar sebagai host?': 'Already registered as a host?',
@@ -311,7 +311,7 @@
     'Detail kegiatan — Pathora': 'Activity details | Pathora', 'Paspor lengkap. Semua kegiatan sudah dijelajahi.': 'Passport complete. You have explored every activity.',
     'Format email belum sesuai.': 'That email format does not look right.', 'Nama komunitas atau usaha wajib diisi.': 'Community or business name is required.',
     'Email ini sudah terdaftar. Silakan masuk.': 'This email is already registered. Please log in.', 'Akun dengan email ini belum terdaftar.': 'No account found with this email.',
-    'Kata sandi minimal 6 karakter.': 'Password must be at least 6 characters.', 'Trip Bali bersama': 'Bali trip together', 'Makan malam di Ubud': 'Dinner in Ubud',
+    'Kata sandi minimal 8 karakter.': 'Password must be at least 8 characters.', 'Trip Bali bersama': 'Bali trip together', 'Makan malam di Ubud': 'Dinner in Ubud',
     'Email ini terdaftar sebagai host. Pilihan sudah dipindah ke Host lokal, silakan coba masuk lagi.': 'This email is registered as a host. The choice has been switched to Local host, please try logging in again.',
     'Email ini terdaftar sebagai traveler. Pilihan sudah dipindah ke Traveler, silakan coba masuk lagi.': 'This email is registered as a traveller. The choice has been switched to Traveller, please try logging in again.',
 

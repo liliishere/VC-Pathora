@@ -2,7 +2,7 @@
 
 Planner dan pemesanan kegiatan alam dan budaya Bali yang dipandu warga dan komunitas lokal. Pathora membantu wisatawan menemukan kegiatan, menyusunnya ke dalam satu rencana perjalanan dengan bantuan asisten AI, mengajukannya ke host lokal, lalu membayar setelah kegiatan dipastikan tersedia.
 
-> **Status: prototype.** Seluruh harga, cuaca, tingkat keramaian, dan data kegiatan adalah data contoh. Pembayaran hanya simulasi. Asisten AI berbasis aturan, belum memakai model bahasa sungguhan.
+> **Status: prototype.** Seluruh harga, cuaca, tingkat keramaian, dan data kegiatan adalah data contoh. Pembayaran hanya simulasi. Asisten AI memakai backend Pathora (Gemini + planner berbasis data sheet) saat pengguna masuk dengan akun server; kalau backend mati, lambat, atau kuota habis, situs otomatis memakai mesin aturan lokal.
 
 Proyek Kelompok 2: Felix, Kevin, Rebecca, dan Vania.
 
@@ -54,6 +54,25 @@ Foto kegiatan berada di `assets/img/photos/` dengan nama sesuai id kegiatan (mis
 
 Situs ini statis dan dapat dipasang di hosting statis seperti GitHub Pages, Netlify, atau Cloudflare Pages. Untuk GitHub Pages, buka **Settings, Pages**, pilih branch `main` dengan folder root, lalu simpan.
 
-## Rencana backend
+## Backend
 
-Rancangan backend (arsitektur, aturan bisnis, model data, dan API) disusun terpisah sebagai brief untuk tahap berikutnya. Prototype ini tetap berjalan tanpa server.
+Backend ada di repo [vaniallic/pathora-ai-prototype](https://github.com/vaniallic/pathora-ai-prototype) dan berjalan di
+`https://pathora-backend-production-96394f16.up.railway.app` (cek: `/api/health`). Kontraknya ada di `docs/BACKEND-BRIEF.md`.
+
+Yang sudah tersambung lewat `assets/js/api.js`:
+
+- **Masuk dan Daftar** (`masuk.html`) membuat akun di server. Profil server disalin ke akun lokal, jadi halaman lain tetap
+  jalan seperti biasa. Kalau server tidak bisa dihubungi, akun dibuat di browser saja (seperti sebelumnya).
+- **Asisten** di Trip saya memanggil `POST /api/rencana`, menunggu maksimal 8 detik. Kegiatan dari server (K01 sampai K12)
+  dipetakan ke ID front-end (`arak`, `camping`, ...), lalu tampil sebagai kartu rencana yang sama. Pertanyaan balik
+  (`tipe: tanya`) dilanjutkan otomatis dengan `lanjutan_dari`. Gagal, 401, 429, 5xx, atau lebih dari 8 detik: mesin lokal.
+- Angka harga, durasi, dan kuota 12 kegiatan sheet sudah disamakan dengan `data/isian_demo.csv` di backend.
+
+Belum tersambung ke server (masih `localStorage`): trip bersama, pengajuan ke host dan Studio Host, patungan, Paspor Alam.
+Endpoint-nya sudah ada di backend (bagian Pemesanan di README backend).
+
+Alamat backend bisa diganti untuk uji lokal lewat Console browser:
+
+    localStorage.setItem('pathora_api', 'http://localhost:8000')   // backend lokal
+    localStorage.setItem('pathora_api', 'off')                     // matikan backend, pakai mesin lokal saja
+    localStorage.removeItem('pathora_api')                         // kembali ke backend produksi

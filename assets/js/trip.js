@@ -118,11 +118,24 @@
     log.insertAdjacentHTML('beforeend', '<div class="msg ai" id="typ"><span class="who">Pathora</span><div class="bubble"><span class="typing"><i></i><i></i><i></i></span></div></div>');
     document.getElementById('chips').innerHTML = ''; scrollLog(); renderQuota();
     const wait = new Promise((r) => setTimeout(r, 650 + Math.min(900, text.length * 8)));
-    let hint = null;
-    if (window.PAPI && PAPI.enabled()) { const s0 = PS.get(); hint = await PAPI.parse(text, { start: s0.trip.start, end: s0.trip.end, members: s0.members.length, items: s0.items.map((i) => ({ act: i.actId, date: i.date })) }); }
+    /* Backend dulu (kalau sudah login ke server). Gagal, lambat, kuota habis, atau bentuk aneh: mesin lokal. */
+    let be = null;
+    if (window.PAPI && PAPI.login()) {
+      const s0 = PS.get();
+      be = await PAPI.rencana(text, { start: s0.trip.start, end: s0.trip.end, people: s0.members.length,
+        actIds: s0.items.filter((i) => i.status !== 'ditolak').map((i) => i.actId) });
+    }
     await wait;
     let res;
-    try { res = AI.respond(text, hint); } catch (err) { console.error(err); res = { text: 'Maaf, terjadi kendala saat menyusun jawaban. Silakan coba dengan kalimat lain.', blocks: [], chips: AI.chipsDefault }; }
+    try {
+      if (be && be.tipe === 'tanya') res = { text: be.pesan, blocks: [], chips: [] };
+      else if (be && be.tipe === 'rencana') {
+        const s1 = PS.get();
+        const plan = be.items.length ? AI.planFrom(be.items, be.start || s1.trip.start, be.people) : null;
+        res = { text: be.pesan, blocks: plan && plan.items.length ? [{ type: 'plan', plan }] : [],
+          chips: plan && plan.items.length ? ['Cari alternatif yang lebih hemat', 'Cari tanggal terbaik', 'Bagaimana jika hujan'] : ['Tampilkan semua kegiatan'] };
+      } else res = AI.respond(text, null);
+    } catch (err) { console.error(err); res = { text: 'Maaf, terjadi kendala saat menyusun jawaban. Silakan coba dengan kalimat lain.', blocks: [], chips: AI.chipsDefault }; }
     const msg = PS.pushChat({ role: 'ai', text: res.text, blocks: res.blocks, chips: res.chips });
     const typ = document.getElementById('typ'); if (typ) typ.remove();
     log.insertAdjacentHTML('beforeend', '<div class="msg ai" data-id="' + msg.uid + '"><span class="who">Pathora</span><div class="stack"><div class="bubble"></div></div></div>');
@@ -554,7 +567,7 @@
       '<p class="muted">Paket gratis mencakup ' + FREE_Q + ' pertanyaan per hari. Kuota diperbarui besok, atau kamu dapat melanjutkan sekarang dengan Pathora Plus.</p>' +
       '<div class="card" style="padding:18px;display:grid;gap:10px"><b style="font-size:18px">Pathora Plus <span class="faint" style="font-weight:500;font-size:14px">Rp49.000 per bulan, gratis 7 hari pertama</span></b><ul class="checklist"><li>' + ic('check', 18) + 'Pertanyaan tanpa batas ke asisten AI</li><li>' + ic('check', 18) + 'Trip dan anggota tanpa batas</li><li>' + ic('check', 18) + 'Prakiraan keramaian untuk tanggal pilihan kamu</li></ul></div>' +
       '<button class="btn btn-primary btn-lg btn-block" id="goPlus">Mulai uji coba 7 hari</button><button class="btn btn-ghost btn-block" data-close>Nanti saja</button></div>', (ov, close) => {
-      ov.querySelector('#goPlus').onclick = () => { if (!isTraveler()) { close(); return UI.needLogin('Berlangganan Pathora Plus memerlukan akun.'); } PAUTH.update({ plan: 'plus' }); close(); renderQuota(); UI.toast('Pathora Plus aktif', '<a href="akun">Kelola</a>'); };
+      ov.querySelector('#goPlus').onclick = () => { if (!isTraveler()) { close(); return UI.needLogin('Berlangganan Pathora Plus memerlukan akun.'); } PAUTH.update({ plan: 'plus' }); if (window.PAPI && PAPI.login()) PAPI.plus(true); /* simulasi: uji coba 7 hari di server */ close(); renderQuota(); UI.toast('Pathora Plus aktif', '<a href="akun">Kelola</a>'); };
     });
   }
   function inviteModal() {

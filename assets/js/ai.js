@@ -145,6 +145,24 @@
     return { start, end, days: days.map((d) => ({ date: d, wx: weatherFor(d), moon: moonFor(d), fest: festivalFor(d), items: picked.filter((p) => p.date === d).sort((a, b) => a.time.localeCompare(b.time)) })), people, total, perPerson: Math.round(total / Math.max(1, people)), items: picked };
   }
 
+  /* Rencana dari backend (asisten Gemini + planner berbasis data): hanya urutan kegiatan per hari yang dipakai.
+     Jam, cuaca, purnama/tilem, dan hari raya tetap dihitung di sini supaya tampilan sama dengan rencana lokal. */
+  function planFrom(list, start, people) {
+    const s = S.get();
+    const n = Math.max(1, ...list.map((x) => x.day));
+    const end = D.add(start, n - 1);
+    const picked = [];
+    list.forEach((x) => {
+      const a = byId[x.actId]; if (!a) return;
+      const date = D.add(start, x.day - 1);
+      const tm = freeTime(a, date, s.items.concat(picked)) || a.times[0];
+      picked.push({ actId: a.id, date, time: tm, reason: 'dipilih asisten Pathora dari data kegiatan', sc: 0 });
+    });
+    people = people || s.members.length;
+    const total = picked.reduce((t, i) => t + byId[i.actId].price * people, 0);
+    return { start, end, days: D.range(start, end).map((d) => ({ date: d, wx: weatherFor(d), moon: moonFor(d), fest: festivalFor(d), items: picked.filter((p) => p.date === d).sort((a, b) => a.time.localeCompare(b.time)) })), people, total, perPerson: Math.round(total / Math.max(1, people)), items: picked };
+  }
+
   /* ---------- cari tanggal terbaik ---------- */
   function bestWindows(len, ctx) {
     const s = S.get(); const from = D.add(D.today(), 4); const out = [];
@@ -327,5 +345,5 @@
     plan.items.forEach((p) => S.addItem({ actId: p.actId, date: p.date, time: p.time, people: plan.people }));
   }
 
-  g.AI = { respond, parse, findAct, buildPlan, applyPlan, bestWindows, alternativeFor, freeTime, chipsDefault, memberBusy };
+  g.AI = { respond, parse, findAct, buildPlan, planFrom, applyPlan, bestWindows, alternativeFor, freeTime, chipsDefault, memberBusy };
 })(window);

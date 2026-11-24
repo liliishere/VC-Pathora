@@ -49,7 +49,7 @@
     {
       id: 'arak', name: 'Belajar proses pembuatan arak tradisional', short: 'Arak tradisional', art: 'cooking',
       cats: ['budaya', 'kuliner'], region: 'Sidemen', place: 'Tri Eka Buana, Sidemen', lat: -8.47, lng: 115.445,
-      dur: 3, times: ['09:00'], price: 150000, cap: 10, kid: false, outdoor: true, indoorOk: false,
+      dur: 3, times: ['09:00'], price: 50000, cap: 10, kid: false, outdoor: true, indoorOk: false,
       crowd: 0.25, moon: true,
       kw: ['arak', 'tradisional', 'sidemen', 'tri eka buana', 'gembleng', 'air terjun', 'karangasem', 'budaya', 'minuman', 'kuliner'],
       host: { name: 'Kelompok usaha arak Oemah Arak', ini: 'OA', lang: 'Indonesia, Bali' },
@@ -64,7 +64,7 @@
     {
       id: 'camping', name: 'Camping semalam di Bukit Asah', short: 'Camping Bukit Asah', art: 'terrace',
       cats: ['hutan', 'laut'], region: 'Karangasem', place: 'Bukit Asah, Bugbug', lat: -8.496, lng: 115.575,
-      dur: 15, times: ['15:00'], price: 38000, cap: 16, kid: true, outdoor: true, indoorOk: false,
+      dur: 12, times: ['15:00'], price: 37500, cap: 20, kid: true, outdoor: true, indoorOk: false,
       crowd: 0.5, moon: false,
       kw: ['camping', 'berkemah', 'tenda', 'bukit asah', 'bugbug', 'karangasem', 'alam', 'menginap', 'pantai', 'virgin beach'],
       host: { name: 'BP2DAB / Taman Harmoni Bali', ini: 'TH', lang: 'Indonesia, Bali' },
@@ -79,7 +79,7 @@
     {
       id: 'garam', name: 'Wisata edukasi garam tradisional Amed', short: 'Garam tradisional Amed', art: 'coral',
       cats: ['laut', 'kuliner'], region: 'Amed', place: 'Purwakerthi, Amed', lat: -8.345, lng: 115.655,
-      dur: 2, times: ['08:00', '15:00'], price: 85000, cap: 12, kid: true, outdoor: true, indoorOk: false,
+      dur: 2, times: ['08:00', '15:00'], price: 75000, cap: 10, kid: true, outdoor: true, indoorOk: false,
       crowd: 0.3, moon: false,
       kw: ['garam', 'amed', 'petani', 'pantai', 'edukasi', 'karangasem', 'kuliner', 'laut', 'purwakerthi'],
       host: { name: 'Kelompok petani garam Amed', ini: 'KG', lang: 'Indonesia, Bali' },
@@ -94,7 +94,7 @@
     {
       id: 'yehlabuh', name: 'Trekking ke Air Terjun Yeh Labuh', short: 'Air terjun Yeh Labuh', art: 'waterfall',
       cats: ['hutan'], region: 'Manggis', place: 'Selumbung, Manggis', lat: -8.497, lng: 115.525,
-      dur: 2.5, times: ['07:30'], price: 75000, cap: 10, kid: false, outdoor: true, indoorOk: false,
+      dur: 3, times: ['07:30'], price: 0, cap: 10, kid: false, outdoor: true, indoorOk: false,
       crowd: 0.2, moon: false,
       kw: ['air terjun', 'yeh labuh', 'trekking', 'selumbung', 'manggis', 'karangasem', 'hutan', 'sungai', 'alam', 'jalan kaki'],
       host: { name: 'Pokdarwis Desa Selumbung', ini: 'PS', lang: 'Indonesia, Bali' },
@@ -109,7 +109,7 @@
     {
       id: 'menenun', name: 'Belajar menenun dan memanen madu bersama warga', short: 'Menenun dan madu', art: 'weave',
       cats: ['budaya', 'kerajinan'], region: 'Manggis', place: 'Selumbung, Manggis', lat: -8.49, lng: 115.532,
-      dur: 3, times: ['09:00'], price: 175000, cap: 8, kid: true, outdoor: false, indoorOk: true,
+      dur: 3, times: ['09:00'], price: 100000, cap: 6, kid: true, outdoor: false, indoorOk: true,
       crowd: 0.2, moon: true,
       kw: ['tenun', 'menenun', 'madu', 'selumbung', 'manggis', 'karangasem', 'kerajinan', 'desa', 'budaya', 'lebah'],
       host: { name: 'Pokdarwis Desa Selumbung', ini: 'PS', lang: 'Indonesia, Bali' },
@@ -124,7 +124,7 @@
     {
       id: 'cakepung', name: 'Menonton pertunjukan Cakepung', short: 'Pertunjukan Cakepung', art: 'canang',
       cats: ['budaya'], region: 'Bebandem', place: 'Budakeling, Bebandem', lat: -8.452, lng: 115.565,
-      dur: 2, times: ['19:00'], price: 120000, cap: 20, kid: true, outdoor: false, indoorOk: true,
+      dur: 2, times: ['19:00'], price: 150000, cap: 15, kid: true, outdoor: false, indoorOk: true,
       crowd: 0.2, moon: true, festival: true,
       kw: ['cakepung', 'pertunjukan', 'seni', 'sanggar', 'budakeling', 'bebandem', 'karangasem', 'budaya', 'gamelan', 'musik'],
       host: { name: 'Sanggar Seni Citta Wistara', ini: 'SC', lang: 'Indonesia, Bali' },
@@ -139,7 +139,7 @@
     {
       id: 'lontar', name: 'Belajar membaca dan menulis lontar', short: 'Belajar lontar', art: 'weave',
       cats: ['budaya', 'kerajinan'], region: 'Karangasem', place: 'Dukuh Penaban, Karangasem', lat: -8.44, lng: 115.61,
-      dur: 3, times: ['09:00', '13:30'], price: 60000, cap: 15, kid: true, outdoor: false, indoorOk: true,
+      dur: 2, times: ['09:00', '13:30'], price: 50000, cap: 15, kid: true, outdoor: false, indoorOk: true,
       crowd: 0.25, moon: false,
       kw: ['lontar', 'menulis', 'membaca', 'museum', 'dukuh penaban', 'karangasem', 'budaya', 'aksara', 'kerajinan'],
       host: { name: 'Pokdarwis Desa Wisata Dukuh Penaban', ini: 'PD', lang: 'Indonesia, Bali' },
@@ -154,7 +154,7 @@
     {
       id: 'jongkok', name: 'Trekking sawah ke puncak Bukit Jongkok', short: 'Bukit Jongkok', art: 'terrace',
       cats: ['sawah', 'hutan'], region: 'Karangasem', place: 'Dukuh Penaban, Karangasem', lat: -8.436, lng: 115.604,
-      dur: 3.5, times: ['06:30'], price: 200000, cap: 10, kid: false, outdoor: true, indoorOk: false,
+      dur: 3, times: ['06:30'], price: 150000, cap: 8, kid: false, outdoor: true, indoorOk: false,
       crowd: 0.2, moon: false,
       kw: ['trekking', 'sawah', 'bukit jongkok', 'dukuh penaban', 'karangasem', 'jalan kaki', 'gunung agung', 'pemandangan', 'alam'],
       host: { name: 'Pokdarwis Desa Wisata Dukuh Penaban', ini: 'PD', lang: 'Indonesia, Bali' },
@@ -169,7 +169,7 @@
     {
       id: 'sangkan', name: 'Trekking dan swing di Sangkan Gunung', short: 'Trekking Sangkan Gunung', art: 'mangrove',
       cats: ['hutan'], region: 'Sidemen', place: 'Sangkan Gunung, Sidemen', lat: -8.458, lng: 115.475,
-      dur: 2, times: ['08:00', '15:30'], price: 100000, cap: 12, kid: true, outdoor: true, indoorOk: false,
+      dur: 1.5, times: ['08:00', '15:30'], price: 50000, cap: 15, kid: true, outdoor: true, indoorOk: false,
       crowd: 0.35, moon: false,
       kw: ['trekking', 'swing', 'sangkan gunung', 'sidemen', 'karangasem', 'hutan', 'keluarga', 'spot foto', 'alam'],
       host: { name: 'Pengelola Desa Wisata Sangkan Gunung', ini: 'SG', lang: 'Indonesia, Bali' },
@@ -184,7 +184,7 @@
     {
       id: 'salak', name: 'Belajar olahan salak bersama Kelompok Wanita Tani', short: 'Olahan salak', art: 'coffee',
       cats: ['kuliner'], region: 'Selat', place: 'Duda Timur, Selat', lat: -8.435, lng: 115.465,
-      dur: 2.5, times: ['09:00'], price: 90000, cap: 12, kid: true, outdoor: false, indoorOk: true,
+      dur: 2, times: ['09:00'], price: 75000, cap: 10, kid: true, outdoor: false, indoorOk: true,
       crowd: 0.2, moon: false,
       kw: ['salak', 'olahan', 'dodol', 'manisan', 'kuliner', 'duda timur', 'selat', 'karangasem', 'wanita tani', 'pasar'],
       host: { name: 'Pokdarwis Desa Duda Timur', ini: 'PT', lang: 'Indonesia, Bali' },
@@ -199,7 +199,7 @@
     {
       id: 'muntigunung', name: 'Trekking Muntigunung dipandu warga dan kunjungan workshop', short: 'Trekking Muntigunung', art: 'bird',
       cats: ['hutan'], region: 'Kubu', place: 'Muntigunung, Kubu', lat: -8.285, lng: 115.575,
-      dur: 10.5, times: ['06:00'], price: 1450000, cap: 4, kid: false, outdoor: true, indoorOk: false,
+      dur: 10.5, times: ['06:00'], price: 1500000, cap: 4, kid: false, outdoor: true, indoorOk: false,
       crowd: 0.15, moon: false,
       kw: ['trekking', 'muntigunung', 'kubu', 'karangasem', 'dipandu warga', 'workshop', 'hutan', 'sehari', 'alam'],
       host: { name: 'Muntigunung Community Development Program', ini: 'MC', lang: 'Indonesia, Bali, English' },
@@ -214,7 +214,7 @@
     {
       id: 'saptatirtha', name: 'Wisata spiritual ke Pura Bukit dan mata air Sapta Tirtha', short: 'Pura Bukit dan Sapta Tirtha', art: 'waterfall',
       cats: ['budaya'], region: 'Karangasem', place: 'Desa Bukit, Karangasem', lat: -8.42, lng: 115.6,
-      dur: 3, times: ['07:00'], price: 100000, cap: 10, kid: true, outdoor: true, indoorOk: false,
+      dur: 2, times: ['07:00'], price: 50000, cap: 10, kid: true, outdoor: true, indoorOk: false,
       crowd: 0.15, moon: true, festival: true,
       kw: ['spiritual', 'pura bukit', 'sapta tirtha', 'mata air', 'desa bukit', 'karangasem', 'pura', 'budaya', 'suci', 'melukat'],
       host: { name: 'Pokdarwis Desa Bukit', ini: 'PB', lang: 'Indonesia, Bali' },
