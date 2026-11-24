@@ -88,11 +88,12 @@
       const ig = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>';
       const tt = '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.3 2.4 1.7 4 4 4.2v3.1c-1.5 0-2.9-.4-4-1.2v6.1a6 6 0 1 1-6-6c.3 0 .6 0 .9.1v3.2a2.9 2.9 0 1 0 2 2.7V3z"/></svg>';
       el.outerHTML = '<footer class="footer" data-tone="dark"><div class="wrap"><div class="cols">' +
-        '<div><img src="assets/img/logo-white.png" alt="Pathora"><p style="max-width:300px">Perencana perjalanan alam dan budaya Bali dengan bantuan AI, bersama pemandu dan komunitas lokal.</p>' +
-        '<div class="social"><a href="https://www.instagram.com/pathora_id" target="_blank" rel="noopener" aria-label="Instagram Pathora, pathora_id">' + ig + '<span>@pathora_id</span></a><a href="https://www.tiktok.com/@pathora_id" target="_blank" rel="noopener" aria-label="TikTok Pathora, pathora_id">' + tt + '<span>@pathora_id</span></a></div></div>' +
-        '<div><h4>Traveler</h4><a href="jelajahi">Jelajahi kegiatan</a><a href="trip">Asisten perjalanan</a><a href="paspor">Paspor Alam</a><a href="masuk?mode=daftar">Buat akun</a></div>' +
-        '<div><h4>Host lokal</h4><a href="masuk?role=host&mode=daftar">Daftar sebagai host</a></div>' +
-        '<div><h4>Pathora</h4><a href="./#cara">Cara kerja</a><a href="./#prinsip">Prinsip kami</a><a href="./#faq">Pertanyaan umum</a></div></div>' +
+        '<div class="f-brand"><a class="f-logo" href="./" aria-label="Pathora, beranda"><img src="assets/img/logo-white.png" alt="Pathora"></a><p>Perencana perjalanan alam dan budaya Bali dengan bantuan AI, bersama pemandu dan komunitas lokal.</p>' +
+        '<div class="social"><a href="https://www.instagram.com/pathora_id" target="_blank" rel="noopener" aria-label="Instagram Pathora, pathora_id">' + ig + '<span class="sd">@pathora_id</span><span class="sm">Instagram</span></a><a href="https://www.tiktok.com/@pathora_id" target="_blank" rel="noopener" aria-label="TikTok Pathora, pathora_id">' + tt + '<span class="sd">@pathora_id</span><span class="sm">TikTok</span></a></div></div>' +
+        '<div class="f-trv"><h4>Traveler</h4><a href="jelajahi">Jelajahi kegiatan</a><a href="trip">Asisten perjalanan</a><a href="paspor">Paspor Alam</a><a href="masuk?mode=daftar">Buat akun</a></div>' +
+        '<div class="f-host"><h4>Host lokal</h4><a href="masuk?role=host&mode=daftar">Daftar sebagai host</a><a href="masuk?role=host">Masuk ke Studio Host</a></div>' +
+        '<div class="f-pth"><h4>Pathora</h4><a href="./#cara">Cara kerja</a><a href="./#prinsip">Prinsip kami</a><a href="./#faq">Pertanyaan umum</a></div></div>' +
+        '<div class="fine"><span>© 2026 Pathora</span><span>Kegiatan alam dan budaya Bali</span></div>' +
         '</div></footer>';
     },
 
