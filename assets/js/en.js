@@ -13,6 +13,7 @@
     'Instagram Pathora, pathora_id': 'Pathora on Instagram, pathora_id', 'TikTok Pathora, pathora_id': 'Pathora on TikTok, pathora_id',
     'Cara kerja': 'How it works', 'Prinsip kami': 'Our principles', 'Pertanyaan umum': 'FAQ', 'Cara menjadi host': 'Become a host',
     'Jelajahi kegiatan': 'Explore activities', 'Asisten perjalanan': 'Trip assistant', 'Buat akun': 'Create account',
+    'Masuk ke Studio Host': 'Log in to Host Studio', 'Kegiatan alam dan budaya Bali': 'Nature and culture activities in Bali', 'Instagram': 'Instagram', 'TikTok': 'TikTok',
     'Daftar sebagai host': 'Sign up as a host', 'Host lokal': 'Local hosts', 'Traveler': 'Traveller',
     'Simpan': 'Save', 'Salin': 'Copy', 'Hapus': 'Delete', 'Tambah': 'Add', 'Atur ulang': 'Reset', 'Detail': 'Details',
     'Lihat semua': 'See all', 'atau': 'or', 'Filter': 'Filters', 'Urutkan': 'Sort', 'Tampilan': 'View', 'Peta': 'Map',
